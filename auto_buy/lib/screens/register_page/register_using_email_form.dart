@@ -1,3 +1,4 @@
+import 'package:auto_buy/screens/register_page/gender_radio_buttons.dart';
 import 'package:auto_buy/widgets/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,10 @@ class _RegisterFormState extends State<RegisterForm> {
   String _password;
   int _value;
   Gender _gender;
-  // Default Radio Button Selected Item When App Starts.
-  String radioButtonItem = 'ONE';
-  bool secure = true;
 
-  // Group Value for Radio Button.
+  // Default Radio Button Selected Item When App Starts.
+  String _radioButtonItem = 'ONE';
+  bool _secure = true;
   int id = 1;
 
   Widget _buildForm(BuildContext context) {
@@ -44,7 +44,20 @@ class _RegisterFormState extends State<RegisterForm> {
       _createEmailTextField(),
       _createPasswordTextFormField(),
       SizedBox(height: 15),
-      _genderRadioButtons(),
+      GenderRadioButtons(
+        onPressMale: (int val) {
+          setState(() {
+            _gender = Gender.MALE;
+            print(_gender);
+          });
+        },
+        onPressFeMale: (int val) {
+          setState(() {
+            _gender = Gender.FEMALE;
+            print(_gender);
+          });
+        },
+      ),
       SizedBox(height: 15),
       _createSubmitButton(),
       // if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black,),
@@ -63,7 +76,7 @@ class _RegisterFormState extends State<RegisterForm> {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       validator: (value) =>
-          value.isNotEmpty ? null : "First Name can\'t be empty",
+      value.isNotEmpty ? null : "First Name can\'t be empty",
     );
   }
 
@@ -79,7 +92,7 @@ class _RegisterFormState extends State<RegisterForm> {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       validator: (value) =>
-          value.isNotEmpty ? null : "Last name can\'t be empty",
+      value.isNotEmpty ? null : "Last name can\'t be empty",
     );
   }
 
@@ -100,8 +113,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
   CustomRaisedButton _createSubmitButton() {
     return CustomRaisedButton(
-      text: "Sign In",
-      onPressed: () {},
+      text: "Register",
+      onPressed: _submit,
       textColor: Colors.black,
       backgroundColor: Colors.white,
     );
@@ -116,7 +129,7 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       onSaved: (password) => _password = password,
       validator: (value) => value.isNotEmpty ? null : "email can\'t be empty",
-      obscureText: secure,
+      obscureText: _secure,
       textInputAction: TextInputAction.next,
     );
   }
@@ -126,56 +139,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return _buildForm(context);
   }
 
-  _genderRadioButtons() => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text("Gender", style: TextStyle(
-          color: Colors.white,
-          fontSize: 17.0,
-          fontWeight: FontWeight.bold,
-        ),),
-        Row(
-          children: [
-            Radio(
-              value: 1,
-              groupValue: id,
-              activeColor:Colors.red,
-              onChanged: (val) {
-                setState(() {
-                  radioButtonItem = 'ONE';
-                  _gender = Gender.MALE;
-                  id = 1;
-                });
-              },
-            ),
-            Text(
-              'Male',
-              style: new TextStyle(fontSize: 17.0, color: Colors.white),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Radio(
-              value: 2,
-              groupValue: id,
-              onChanged: (val) {
-                setState(() {
-                  radioButtonItem = 'TWO';
-                  _gender = Gender.FEMALE;
-                  id = 2;
-                });
-              },
-              activeColor:Colors.red,
-            ),
-            Text(
-              'Female',
-              style: new TextStyle(fontSize: 17.0, color: Colors.white),
-            ),
-          ],
-        ),
-      ],
-    );
-
-
+  Future<void> _submit() async {
+    //TODO: Submit register using email form
+  }
 }

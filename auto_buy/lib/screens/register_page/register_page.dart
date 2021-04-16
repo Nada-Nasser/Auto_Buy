@@ -1,4 +1,4 @@
-import 'package:auto_buy/screens/register_page/register_form.dart';
+import 'package:auto_buy/screens/register_page/register_using_email_form.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
@@ -69,10 +69,10 @@ class RegisterScreen extends StatelessWidget {
   );
 
   _signInUsingGoogle() {
-    // TODO
+    // TODO: Register using google
   }
 
   _signInUsingFacebook() {
-    // TODO
+    // TODO: Register using Facebook
   }
 }

@@ -67,10 +67,10 @@ class SignInPage extends StatelessWidget {
       );
 
   _signInUsingGoogle() {
-    // TODO
+    // TODO: Sign in using google
   }
 
   _signInUsingFacebook() {
-    // TODO
+    // TODO: sign in using facebook
   }
 }

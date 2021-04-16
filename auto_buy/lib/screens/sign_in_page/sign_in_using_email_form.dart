@@ -72,4 +72,8 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return _buildForm(context);
   }
+
+  Future<void> _submit() async {
+    //TODO: sign in using email
+  }
 }
