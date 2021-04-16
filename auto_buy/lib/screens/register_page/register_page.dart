@@ -15,7 +15,7 @@ class RegisterScreen extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(10, 50.0, 10, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -23,7 +23,10 @@ class RegisterScreen extends StatelessWidget {
                   RegisterForm(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Or you can use",style: TextStyle(color: Colors.white),),
+                    child: Text(
+                      "Or you can use",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   _signInWithGoogleButton(),
                   _signInWithFacebookButton(),
@@ -37,25 +40,25 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _signInWithGoogleButton() => Padding(
-    padding: const EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 5.0),
-    child: SocialSignInButton(
-      onPressed: _signInUsingGoogle(),
-      textColor: Colors.black,
-      backgroundColor: Colors.white,
-      text: "Register with Google",
-      imageAsset: "assets/images/google-logo.png",
-    ),
-  );
+    padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
+        child: SocialSignInButton(
+          onPressed: _signInUsingGoogle(),
+          textColor: Colors.black,
+          backgroundColor: Colors.white,
+          text: "Register with Google",
+          imageAsset: "assets/images/google-logo.png",
+        ),
+      );
 
   Widget _signInWithFacebookButton() => Padding(
-    padding: const EdgeInsets.fromLTRB(18.0, 15.0, 18.0, 5.0),
-    child: SocialSignInButton(
-        onPressed: _signInUsingFacebook(),
-        textColor: Colors.white,
-        backgroundColor: Colors.blue[800],
-        text: "Register with Facebook",
-        imageAsset: "assets/images/facebook-logo.png"),
-  );
+    padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 5.0),
+        child: SocialSignInButton(
+            onPressed: _signInUsingFacebook(),
+            textColor: Colors.white,
+            backgroundColor: Colors.blue[800],
+            text: "Register with Facebook",
+            imageAsset: "assets/images/facebook-logo.png"),
+      );
 
   _header() => Text(
     "Create Your Account",

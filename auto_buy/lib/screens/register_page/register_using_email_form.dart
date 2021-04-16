@@ -1,8 +1,5 @@
-import 'package:auto_buy/screens/register_page/gender_radio_buttons.dart';
 import 'package:auto_buy/widgets/custom_raised_button.dart';
 import 'package:flutter/material.dart';
-
-enum Gender { MALE, FEMALE }
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -15,12 +12,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _email;
   String _password;
   int _value;
-  Gender _gender;
-
-  // Default Radio Button Selected Item When App Starts.
-  String _radioButtonItem = 'ONE';
   bool _secure = true;
-  int id = 1;
 
   Widget _buildForm(BuildContext context) {
     return Padding(
@@ -39,28 +31,12 @@ class _RegisterFormState extends State<RegisterForm> {
 
   List<Widget> _buildFormFields(BuildContext context) {
     return [
+      // if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black,),
       _createFirstNameTextField(),
-      _createLastNameTextField(),
       _createEmailTextField(),
       _createPasswordTextFormField(),
       SizedBox(height: 15),
-      GenderRadioButtons(
-        onPressMale: (int val) {
-          setState(() {
-            _gender = Gender.MALE;
-            print(_gender);
-          });
-        },
-        onPressFeMale: (int val) {
-          setState(() {
-            _gender = Gender.FEMALE;
-            print(_gender);
-          });
-        },
-      ),
-      SizedBox(height: 15),
       _createSubmitButton(),
-      // if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black,),
     ];
   }
 
@@ -80,21 +56,6 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  TextFormField _createLastNameTextField() {
-    return TextFormField(
-      cursorColor: Colors.white,
-      decoration: InputDecoration(
-        labelText: "Last Name",
-        labelStyle: TextStyle(color: Colors.white),
-        hintText: "write your Last Name here",
-      ),
-      onSaved: (email) => _email = email,
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.next,
-      validator: (value) =>
-      value.isNotEmpty ? null : "Last name can\'t be empty",
-    );
-  }
 
   TextFormField _createEmailTextField() {
     return TextFormField(

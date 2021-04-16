@@ -14,20 +14,26 @@ class SignInPage extends StatelessWidget {
         decoration: gradientDecoration(),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 25.0),
-                _header(),
-                SignInForm(),
-                SizedBox(height: 35.0),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Or you can use",style: TextStyle(color: Colors.white),),
-                ),
-                _signInWithGoogleButton(),
-                _signInWithFacebookButton(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 25.0),
+                  _header(),
+                  SignInForm(),
+                  SizedBox(height: 35.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Or you can use",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  _signInWithGoogleButton(),
+                  _signInWithFacebookButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -36,7 +42,7 @@ class SignInPage extends StatelessWidget {
   }
 
   Widget _signInWithGoogleButton() => Padding(
-        padding: const EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 5.0),
+    padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
         child: SocialSignInButton(
           onPressed: _signInUsingGoogle(),
           textColor: Colors.black,
@@ -47,7 +53,7 @@ class SignInPage extends StatelessWidget {
       );
 
   Widget _signInWithFacebookButton() => Padding(
-        padding: const EdgeInsets.fromLTRB(18.0, 15.0, 18.0, 5.0),
+    padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 5.0),
         child: SocialSignInButton(
             onPressed: _signInUsingFacebook(),
             textColor: Colors.white,
