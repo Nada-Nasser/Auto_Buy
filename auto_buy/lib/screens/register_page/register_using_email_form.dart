@@ -2,6 +2,10 @@ import 'package:auto_buy/widgets/custom_raised_button.dart';
 import 'package:flutter/material.dart';
 
 class RegisterForm extends StatefulWidget {
+  final bool isEnabled;
+
+  const RegisterForm({Key key, this.isEnabled}) : super(key: key);
+
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
@@ -13,6 +17,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String _password;
   int _value;
   bool _secure = true;
+  bool _isLoading = false;
 
   Widget _buildForm(BuildContext context) {
     return Padding(
@@ -30,8 +35,12 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   List<Widget> _buildFormFields(BuildContext context) {
+    bool canSave = widget.isEnabled && !_isLoading;
     return [
-      // if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black,),
+      if (!canSave)
+        CircularProgressIndicator(
+          backgroundColor: Colors.black,
+        ),
       _createFirstNameTextField(),
       _createEmailTextField(),
       _createPasswordTextFormField(),
@@ -51,8 +60,9 @@ class _RegisterFormState extends State<RegisterForm> {
       onSaved: (email) => _email = email,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
-      validator: (value) =>
-      value.isNotEmpty ? null : "First Name can\'t be empty",
+      validator: (value) => value.isNotEmpty
+          ? null
+          : "First Name can\'t be empty", // TODO: Validate User Name
     );
   }
 
@@ -68,14 +78,17 @@ class _RegisterFormState extends State<RegisterForm> {
       onSaved: (email) => _email = email,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      validator: (value) => value.isNotEmpty ? null : "email can\'t be empty",
+      validator: (value) => value.isNotEmpty
+          ? null
+          : "email can\'t be empty", // TODO: Validate Email
     );
   }
 
   CustomRaisedButton _createSubmitButton() {
+    bool canSave = widget.isEnabled && !_isLoading;
     return CustomRaisedButton(
       text: "Register",
-      onPressed: _submit,
+      onPressed: canSave ? _submit : null,
       textColor: Colors.black,
       backgroundColor: Colors.white,
     );
@@ -89,7 +102,9 @@ class _RegisterFormState extends State<RegisterForm> {
         labelStyle: TextStyle(color: Colors.white),
       ),
       onSaved: (password) => _password = password,
-      validator: (value) => value.isNotEmpty ? null : "email can\'t be empty",
+      validator: (value) =>
+          value.isNotEmpty ? null : "password can\'t be empty",
+      //TODO: Validate Password
       obscureText: _secure,
       textInputAction: TextInputAction.next,
     );
@@ -101,6 +116,24 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Future<void> _submit() async {
-    //TODO: Submit register using email form
+    if (_validateForm()) {
+      setState(() {
+        _isLoading = true;
+      });
+      //TODO: Submit register using email form
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  bool _validateForm() {
+    final formState = _formKey.currentState;
+    if (formState.validate()) {
+      formState.save();
+      return true;
+    } else {
+      return false;
+    }
   }
 }
