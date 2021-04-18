@@ -17,9 +17,6 @@ class _VerificationNeededState extends State<VerificationNeeded> {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     timer = Timer.periodic(Duration(seconds: 10), (timer) async {
       await auth.checkEmailVerification();
-      /*if(auth.user.emailVerified){
-        Navigator.of(context).pop();
-      }*/
     });
     super.initState();
   }

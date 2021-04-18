@@ -127,7 +127,7 @@ class _RegisterFormState extends State<RegisterForm> {
           password: _password,
         );
         print("uid:${user.uid}");
-        user.sendEmailVerification(); // TODO: verify email
+        user.sendEmailVerification();
         // TODO: Add user to DB
         Navigator.of(context).pop();
       } on FirebaseException catch (e) {

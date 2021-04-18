@@ -15,7 +15,9 @@ class FirebaseAuthService {
 
   User get user => instance.currentUser;
 
-  bool get emailVerified => user.emailVerified;
+  bool get emailVerified => true;
+
+  //TODO: bool get emailVerified => user.emailVerified;
 
   Future<void> signOut() async {
     // TODO: Google sign out
