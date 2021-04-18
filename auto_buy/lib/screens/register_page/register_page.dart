@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isEnable = false;
     });
-    // TODO: Register using google
+    // TODO: Register using google ()
     setState(() {
       _isEnable = true;
     });
@@ -94,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isEnable = false;
     });
-    // TODO: Register using Facebook
+    // TODO: Register using Facebook()
     setState(() {
       _isEnable = true;
     });
