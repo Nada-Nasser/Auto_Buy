@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/home_page/home_page_screen.dart';
+import 'package:auto_buy/screens/register_page/verification_needed_screen.dart';
 import 'package:auto_buy/screens/welcome_page/welcome_screen.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +18,11 @@ class WrapperPage extends StatelessWidget {
             final user = snapshot.data;
             if (user != null) {
               print("uid:${user.uid}");
-              return HomePage();
+              if (firebaseAuth.emailVerified) {
+                return HomePage();
+              } else {
+                return VerificationNeeded();
+              }
             } else {
               print("NULL USER");
               return WelcomePage();

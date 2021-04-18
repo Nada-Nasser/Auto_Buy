@@ -13,6 +13,10 @@ class FirebaseAuthService {
     return userCredential.user;
   }
 
+  User get user => instance.currentUser;
+
+  bool get emailVerified => user.emailVerified;
+
   Future<void> signOut() async {
     // TODO: Google sign out
     await instance.signOut();
@@ -25,5 +29,13 @@ class FirebaseAuthService {
       password: password,
     ));
     return userCredential.user;
+  }
+
+  Future<void> checkEmailVerification() async {
+    print("${user.email} : checkEmailVerification");
+    user.reload();
+    if (user.emailVerified) {
+      print("Verified");
+    }
   }
 }
