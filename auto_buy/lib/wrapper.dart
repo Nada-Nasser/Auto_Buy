@@ -8,20 +8,21 @@ import 'package:provider/provider.dart';
 class WrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firebaseAuth = Provider.of<FirebaseAuthService>(context , listen: false);
+    final firebaseAuth =
+        Provider.of<FirebaseAuthService>(context, listen: false);
     return StreamBuilder<User>(
         stream: firebaseAuth.onAuthChanges(),
-        builder: (context , snapshot){
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final user = snapshot.data;
-            if(user != null){
-                return HomePage();
-              }
-              else{
-                return WelcomePage();
-              }
-          }
-          else{
+            if (user != null) {
+              print("uid:${user.uid}");
+              return HomePage();
+            } else {
+              print("NULL USER");
+              return WelcomePage();
+            }
+          } else {
             return CircularProgressIndicator();
           }
         });
