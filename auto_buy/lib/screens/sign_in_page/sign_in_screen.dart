@@ -1,7 +1,9 @@
 import 'package:auto_buy/screens/sign_in_page/sign_in_using_email_form.dart';
+import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -87,9 +89,15 @@ class _SignInPageState extends State<SignInPage> {
       _isEnable = false;
     });
     // TODO: Sign in using google
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+    final user =
+      await auth.signInWithGoogle();
     setState(() {
       _isEnable = true;
-    });
+    });if(user != null){
+      Navigator.of(context).pop();
+    }
+    return null;
   }
 
   Future<void> _signInUsingFacebook() async {

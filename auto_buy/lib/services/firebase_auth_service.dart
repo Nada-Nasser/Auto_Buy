@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
   FirebaseAuth instance = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Stream<User> onAuthChanges() => instance.authStateChanges();
 
@@ -18,9 +20,40 @@ class FirebaseAuthService {
   bool get emailVerified => true;
 
   //TODO: bool get emailVerified => user.emailVerified;
+  Future<User> signInWithGoogle() async{
+
+    final GoogleSignInAccount googleSignInAccount =
+    await _googleSignIn.signIn();
+
+    if (googleSignInAccount != null){
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      UserCredential result = await instance.signInWithCredential(credential);
+      User userDetails = result.user;
+      return userDetails;
+    }else{
+      return null;
+    }
+
+
+
+  }
+
+  //TODO: same as signInWithgoogle() function but add the user to database
+  Future<User> registerWithGoogle() async{
+    User userDetails = await signInWithGoogle();
+    //TODO: add user information to database
+    return userDetails;
+  }
 
   Future<void> signOut() async {
-    // TODO: Google sign out
+    await _googleSignIn.signOut();
     await instance.signOut();
   }
 
