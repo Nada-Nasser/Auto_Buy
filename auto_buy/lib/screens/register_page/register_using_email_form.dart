@@ -25,6 +25,8 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _isLoading = false;
 
   Widget _buildForm(BuildContext context) {
+    //final notifier = Provider.of<RegisterChangeNotifier>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
