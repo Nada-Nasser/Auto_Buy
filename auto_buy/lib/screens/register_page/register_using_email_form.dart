@@ -1,3 +1,4 @@
+import 'package:auto_buy/blocs/register_change_notifier.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/services/string_validation.dart';
 import 'package:auto_buy/widgets/custom_raised_button.dart';
@@ -7,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget with EmailAndPasswordValidator {
-  RegisterForm({Key key, this.isEnabled}) : super(key: key);
+  RegisterForm({Key key, this.notifier}) : super(key: key);
 
-  final bool isEnabled;
+  //final bool isEnabled;
+  final RegisterChangeNotifier notifier;
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -18,15 +20,22 @@ class RegisterForm extends StatefulWidget with EmailAndPasswordValidator {
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  Widget build(BuildContext context) {
+    final notifier = Provider.of<RegisterChangeNotifier>(context);
+    print("FROM  FORM ${notifier.model.isEnable}");
+    return _buildForm(context);
+  }
+
+  /*
   String _email;
   String _password;
   int _value;
   bool _secure = true;
   bool _isLoading = false;
+*/
 
   Widget _buildForm(BuildContext context) {
-    //final notifier = Provider.of<RegisterChangeNotifier>(context);
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
@@ -42,7 +51,8 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   List<Widget> _buildFormFields(BuildContext context) {
-    bool canSave = widget.isEnabled && !_isLoading;
+    bool canSave =
+        widget.notifier.model.isEnable && !widget.notifier.model.isLoading;
     return [
       if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black),
       _createNameTextField(),
@@ -61,7 +71,7 @@ class _RegisterFormState extends State<RegisterForm> {
           labelStyle: TextStyle(color: Colors.white),
           hintText: "write your First Name here",
         ),
-        onSaved: (email) => _email = email,
+        onSaved: (email) => widget.notifier.model.updateWith(email: email),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         validator: (value) => widget.nameValidator.isValid(value)
@@ -77,7 +87,7 @@ class _RegisterFormState extends State<RegisterForm> {
           labelStyle: TextStyle(color: Colors.white),
           hintText: "write your email here",
         ),
-        onSaved: (email) => _email = email,
+        onSaved: (email) => widget.notifier.updateModelWith(email: email),
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         validator: (value) => widget.emailValidator.isValid(value)
@@ -86,7 +96,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   CustomRaisedButton _createSubmitButton() {
-    bool canSave = widget.isEnabled && !_isLoading;
+    bool canSave = widget.notifier.isEnable && !widget.notifier.model.isLoading;
     return CustomRaisedButton(
       text: "Register",
       onPressed: canSave ? _submit : null,
@@ -102,31 +112,26 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: "password",
         labelStyle: TextStyle(color: Colors.white),
       ),
-      onSaved: (password) => _password = password,
+      onSaved: (password) =>
+          widget.notifier.updateModelWith(password: password),
       validator: (value) => widget.passwordValidator.isValid(value)
           ? null
           : widget.passwordErrorMessage,
-      obscureText: _secure,
+      obscureText: widget.notifier.model.secure,
       textInputAction: TextInputAction.next,
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildForm(context);
-  }
 
   Future<void> _submit() async {
     if (_validateForm()) {
-      setState(() {
-        _isLoading = true;
-      });
+      widget.notifier.model.updateWith(isLoading: true);
 
       try {
         final auth = Provider.of<FirebaseAuthService>(context, listen: false);
         final user = await auth.createUserWithEmail(
-          email: _email,
-          password: _password,
+          email: widget.notifier.model.email,
+          password: widget.notifier.model.password,
         );
         print("uid:${user.uid}");
         user.sendEmailVerification();
@@ -140,10 +145,7 @@ class _RegisterFormState extends State<RegisterForm> {
           actionButtonString: "OK",
         );
       }
-
-      setState(() {
-        _isLoading = false;
-      });
+      widget.notifier.model.updateWith(isLoading: false);
     }
   }
 

@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 class RegisterChangeNotifier with ChangeNotifier {
   RegisterScreenModel model = RegisterScreenModel();
 
+  bool get isEnable => model.isEnable;
+
   updateModelWith({
     bool isEnable,
     String email,

@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 _header(),
                 RegisterForm(
-                  isEnabled: notifier.model.isEnable,
+                 notifier: notifier,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
