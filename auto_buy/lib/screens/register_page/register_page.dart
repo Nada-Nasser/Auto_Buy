@@ -1,4 +1,4 @@
-import 'package:auto_buy/blocs/register_change_notifier.dart';
+import 'package:auto_buy/blocs/register_screen_change_notifier.dart';
 import 'package:auto_buy/screens/register_page/register_using_email_form.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
@@ -6,30 +6,24 @@ import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatefulWidget {
-  @override
-  _RegisterScreenState createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  bool _isEnable = true;
-
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("RegisterPage SCREEN");
-    //return Container();
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return ChangeNotifierProvider<RegisterChangeNotifier>(
-      create: (context) => RegisterChangeNotifier(),
+      create: (context) => RegisterChangeNotifier(auth: auth),
       child: Consumer<RegisterChangeNotifier>(
         builder: (_, notifier, __) => Scaffold(
           backgroundColor: Colors.transparent,
-          body: _buildContent(notifier),
+          body: _buildContent(context, notifier),
         ),
       ),
     );
   }
 
-  Container _buildContent(RegisterChangeNotifier notifier) {
+  Container _buildContent(
+      BuildContext context, RegisterChangeNotifier notifier) {
     return Container(
       decoration: gradientDecoration(),
       child: Center(
@@ -40,9 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _header(),
-                RegisterForm(
-                 notifier: notifier,
-                ),
+                RegisterForm(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -50,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                _signInWithGoogleButton(notifier),
+                _signInWithGoogleButton(context, notifier),
               ],
             ),
           ),
@@ -59,25 +51,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _signInWithGoogleButton(RegisterChangeNotifier notifier) => Padding(
+  Widget _signInWithGoogleButton(
+          BuildContext context, RegisterChangeNotifier notifier) =>
+      Padding(
         padding: const EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
         child: SocialSignInButton(
-          onPressed: _isEnable ? () => _registerUsingGoogle(notifier) : null,
+          onPressed: notifier.isEnable
+              ? () => _registerUsingGoogle(context, notifier)
+              : null,
           textColor: Colors.black,
           backgroundColor: Colors.white,
           text: "Register with Google",
           imageAsset: "assets/images/google-logo.png",
         ),
-      );
-
-  Widget _signInWithFacebookButton() => Padding(
-        padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 5.0),
-        child: SocialSignInButton(
-            onPressed: _isEnable ? _signInUsingFacebook : null,
-            textColor: Colors.white,
-            backgroundColor: Colors.blue[800],
-            text: "Register with Facebook",
-            imageAsset: "assets/images/facebook-logo.png"),
       );
 
   _header() => Text(
@@ -91,24 +77,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         textAlign: TextAlign.center,
       );
 
-  _registerUsingGoogle(RegisterChangeNotifier notifier) async {
-    notifier.updateModelWith(isEnable: false);
-    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-    final user = await auth.registerWithGoogle();
-    notifier.updateModelWith(isEnable: true);
-    if (user != null) {
+  _registerUsingGoogle(
+      BuildContext context, RegisterChangeNotifier notifier) async {
+    bool flag = await notifier.registerUsingGoogle();
+    if (flag) {
       Navigator.of(context).pop();
+    } else {
+      return null;
     }
-    return null;
-  }
-
-  _signInUsingFacebook() {
-    setState(() {
-      _isEnable = false;
-    });
-    // TODO: Register using Facebook()
-    setState(() {
-      _isEnable = true;
-    });
   }
 }

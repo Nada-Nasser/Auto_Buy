@@ -1,39 +1,17 @@
-import 'package:auto_buy/blocs/register_change_notifier.dart';
-import 'package:auto_buy/services/firebase_auth_service.dart';
-import 'package:auto_buy/services/string_validation.dart';
+import 'package:auto_buy/blocs/register_screen_change_notifier.dart';
 import 'package:auto_buy/widgets/custom_raised_button.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterForm extends StatefulWidget with EmailAndPasswordValidator {
-  RegisterForm({Key key, this.notifier}) : super(key: key);
-
-  //final bool isEnabled;
-  final RegisterChangeNotifier notifier;
-
-  @override
-  _RegisterFormState createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
+class RegisterForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final notifier = Provider.of<RegisterChangeNotifier>(context);
-    print("FROM  FORM ${notifier.model.isEnable}");
     return _buildForm(context);
   }
-
-  /*
-  String _email;
-  String _password;
-  int _value;
-  bool _secure = true;
-  bool _isLoading = false;
-*/
 
   Widget _buildForm(BuildContext context) {
     return Padding(
@@ -51,19 +29,22 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   List<Widget> _buildFormFields(BuildContext context) {
-    bool canSave =
-        widget.notifier.model.isEnable && !widget.notifier.model.isLoading;
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
+    bool canSave = notifier.canSave;
     return [
       if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black),
-      _createNameTextField(),
-      _createEmailTextField(),
-      _createPasswordTextFormField(),
+      _createNameTextField(context),
+      _createEmailTextField(context),
+      _createPasswordTextFormField(context),
       SizedBox(height: 15),
-      _createSubmitButton(),
+      _createSubmitButton(context),
     ];
   }
 
-  TextFormField _createNameTextField() {
+  TextFormField _createNameTextField(BuildContext context) {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
     return TextFormField(
         cursorColor: Colors.white,
         decoration: InputDecoration(
@@ -71,15 +52,17 @@ class _RegisterFormState extends State<RegisterForm> {
           labelStyle: TextStyle(color: Colors.white),
           hintText: "write your First Name here",
         ),
-        onSaved: (email) => widget.notifier.model.updateWith(email: email),
+        onSaved: (name) => notifier.updateModelWith(name: name),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
-        validator: (value) => widget.nameValidator.isValid(value)
+        validator: (value) => notifier.nameValidator.isValid(value)
             ? null
-            : widget.nameErrorMessage);
+            : notifier.nameErrorMessage);
   }
 
-  TextFormField _createEmailTextField() {
+  TextFormField _createEmailTextField(BuildContext context) {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
     return TextFormField(
         cursorColor: Colors.white,
         decoration: InputDecoration(
@@ -87,56 +70,50 @@ class _RegisterFormState extends State<RegisterForm> {
           labelStyle: TextStyle(color: Colors.white),
           hintText: "write your email here",
         ),
-        onSaved: (email) => widget.notifier.updateModelWith(email: email),
+        onSaved: (email) => notifier.updateModelWith(email: email),
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: (value) => widget.emailValidator.isValid(value)
+        validator: (value) => notifier.emailValidator.isValid(value)
             ? null
-            : widget.emailErrorMessage);
+            : notifier.emailErrorMessage);
   }
 
-  CustomRaisedButton _createSubmitButton() {
-    bool canSave = widget.notifier.isEnable && !widget.notifier.model.isLoading;
+  CustomRaisedButton _createSubmitButton(BuildContext context) {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
     return CustomRaisedButton(
       text: "Register",
-      onPressed: canSave ? _submit : null,
+      onPressed: notifier.canSave ? () => _submit(context) : null,
       textColor: Colors.black,
       backgroundColor: Colors.white,
     );
   }
 
-  TextFormField _createPasswordTextFormField() {
+  TextFormField _createPasswordTextFormField(BuildContext context) {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
     return TextFormField(
       cursorColor: Colors.white,
       decoration: InputDecoration(
         labelText: "password",
         labelStyle: TextStyle(color: Colors.white),
       ),
-      onSaved: (password) =>
-          widget.notifier.updateModelWith(password: password),
-      validator: (value) => widget.passwordValidator.isValid(value)
+      onSaved: (password) => notifier.updateModelWith(password: password),
+      validator: (value) => notifier.passwordValidator.isValid(value)
           ? null
-          : widget.passwordErrorMessage,
-      obscureText: widget.notifier.model.secure,
+          : notifier.passwordErrorMessage,
+      obscureText: notifier.isSecure,
       textInputAction: TextInputAction.next,
     );
   }
 
-
-  Future<void> _submit() async {
+  Future<void> _submit(BuildContext context) async {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
     if (_validateForm()) {
-      widget.notifier.model.updateWith(isLoading: true);
-
       try {
-        final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-        final user = await auth.createUserWithEmail(
-          email: widget.notifier.model.email,
-          password: widget.notifier.model.password,
-        );
-        print("uid:${user.uid}");
-        user.sendEmailVerification();
-        // TODO: Add user to DB
-        Navigator.of(context).pop();
+        final flag = await notifier.submitForm();
+        if (flag) Navigator.of(context).pop();
       } on FirebaseException catch (e) {
         showAlertDialog(
           context,
@@ -145,7 +122,6 @@ class _RegisterFormState extends State<RegisterForm> {
           actionButtonString: "OK",
         );
       }
-      widget.notifier.model.updateWith(isLoading: false);
     }
   }
 
