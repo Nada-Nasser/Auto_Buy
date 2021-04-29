@@ -40,15 +40,10 @@ class FirebaseAuthService {
     }else{
       return null;
     }
-
-
-
   }
 
-  //TODO: same as signInWithgoogle() function but add the user to database
   Future<User> registerWithGoogle() async{
     User userDetails = await signInWithGoogle();
-    //TODO: add user information to database
     return userDetails;
   }
 
