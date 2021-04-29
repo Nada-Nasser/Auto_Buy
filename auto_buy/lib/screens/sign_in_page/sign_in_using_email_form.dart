@@ -1,31 +1,15 @@
-import 'package:auto_buy/services/firebase_auth_service.dart';
-import 'package:auto_buy/services/string_validation.dart';
+import 'package:auto_buy/blocs/sign_in_changes_notifier.dart';
 import 'package:auto_buy/widgets/custom_raised_button.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SignInForm extends StatefulWidget with EmailAndPasswordValidator {
-  final bool isEnabled;
-
-  SignInForm({Key key, this.isEnabled}) : super(key: key);
-
-  @override
-  _SignInFormState createState() => _SignInFormState();
-}
-
-class _SignInFormState extends State<SignInForm> {
+class SignInForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
-  String _email;
-  String _password;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    print("NEW FORM");
-    print(widget.isEnabled);
     return _buildForm(context);
   }
 
@@ -42,26 +26,33 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   List<Widget> _buildFormFields(BuildContext context) {
-    bool canSave = widget.isEnabled && !_isLoading;
+    final notifier = Provider.of<SignInChangeNotifier>(context, listen: false);
+    bool canSave = notifier.canSave;
     return [
-      _createEmailTextFormField(),
-      _createPasswordTextFormField(),
+      _createEmailTextFormField(context),
+      _createPasswordTextFormField(context),
       SizedBox(height: 15),
-      createSubmitButton(canSave),
+      createSubmitButton(context, canSave),
       if (!canSave) CircularProgressIndicator(backgroundColor: Colors.black)
     ];
   }
 
-  CustomRaisedButton createSubmitButton(bool canSave) {
+  CustomRaisedButton createSubmitButton(BuildContext context, bool canSave) {
+    final notifier = Provider.of<SignInChangeNotifier>(context, listen: false);
+
     return CustomRaisedButton(
       text: "Sign In",
-      onPressed: canSave ? _submit : null,
+      onPressed: notifier.canSave ? () => _submit(context) : null,
       textColor: Colors.black,
       backgroundColor: Colors.white,
     );
   }
 
-  TextFormField _createEmailTextFormField() {
+  TextFormField _createEmailTextFormField(
+    BuildContext context,
+  ) {
+    final notifier = Provider.of<SignInChangeNotifier>(context, listen: false);
+
     return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(
@@ -73,16 +64,20 @@ class _SignInFormState extends State<SignInForm> {
         labelStyle: TextStyle(color: Colors.white),
         hintText: "write your email here",
       ),
-      onSaved: (email) => _email = email,
+      onSaved: (email) => notifier.updateModelWith(email: email),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      validator: (value) => widget.emailValidator.isValid(value)
+      validator: (value) => notifier.emailValidator.isValid(value)
           ? null
-          : widget.emailErrorMessage,
+          : notifier.emailErrorMessage,
     );
   }
 
-  TextFormField _createPasswordTextFormField() {
+  TextFormField _createPasswordTextFormField(
+    BuildContext context,
+  ) {
+    final notifier = Provider.of<SignInChangeNotifier>(context, listen: false);
+
     return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(
@@ -93,26 +88,21 @@ class _SignInFormState extends State<SignInForm> {
         labelText: "password",
         labelStyle: TextStyle(color: Colors.white),
       ),
-      onSaved: (password) => _password = password,
-      validator: (value) => widget.passwordValidator.isValid(value)
+      onSaved: (password) => notifier.updateModelWith(password: password),
+      validator: (value) => notifier.passwordValidator.isValid(value)
           ? null
-          : widget.passwordErrorMessage,
+          : notifier.passwordErrorMessage,
       obscureText: true,
       textInputAction: TextInputAction.done,
     );
   }
 
-  Future<void> _submit() async {
+  Future<void> _submit(BuildContext context) async {
+    final notifier = Provider.of<SignInChangeNotifier>(context, listen: false);
     if (_validateForm()) {
-      setState(() {
-        _isLoading = true;
-      });
-
       try {
-        final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-        final user =
-            await auth.signInWithEmail(email: _email, password: _password);
-        Navigator.of(context).pop();
+        final flag = await notifier.submitForm();
+        if (flag) Navigator.of(context).pop();
       } on FirebaseException catch (e) {
         showAlertDialog(
           context,
@@ -121,10 +111,6 @@ class _SignInFormState extends State<SignInForm> {
           actionButtonString: "OK",
         );
       }
-
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 

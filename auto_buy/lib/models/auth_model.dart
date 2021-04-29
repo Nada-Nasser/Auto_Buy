@@ -1,4 +1,4 @@
-class RegisterScreenModel {
+class AuthenticationScreenModel {
   final bool isEnable;
   final String email;
   final String password;
@@ -6,7 +6,7 @@ class RegisterScreenModel {
   final bool isLoading;
   final String name;
 
-  RegisterScreenModel({
+  AuthenticationScreenModel({
     this.name,
     this.isEnable = true,
     this.email = "",
@@ -15,7 +15,7 @@ class RegisterScreenModel {
     this.isLoading = false,
   });
 
-  RegisterScreenModel updateWith({
+  AuthenticationScreenModel updateWith({
     bool isEnable,
     String email,
     String password,
@@ -23,7 +23,7 @@ class RegisterScreenModel {
     bool isLoading,
     String name,
   }) {
-    return RegisterScreenModel(
+    return AuthenticationScreenModel(
       isEnable: isEnable ?? this.isEnable,
       email: email ?? this.email,
       password: password ?? this.password,

@@ -3,11 +3,11 @@ import 'package:auto_buy/services/string_validation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
+class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
   final auth;
   AuthenticationScreenModel _model = AuthenticationScreenModel();
 
-  RegisterChangeNotifier({this.auth});
+  SignInChangeNotifier({this.auth});
 
   bool get isEnable => _model.isEnable;
 
@@ -42,9 +42,9 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
     notifyListeners();
   }
 
-  Future<bool> registerUsingGoogle() async {
+  Future<bool> enterUsingGoogle() async {
     updateModelWith(isEnable: false);
-    final user = await auth.registerWithGoogle();
+    final user = await auth.signInWithGoogle();
     updateModelWith(isEnable: true);
     if (user != null) {
       return true;
@@ -56,12 +56,10 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
   Future<bool> submitForm() async {
     updateModelWith(isLoading: true);
     try {
-      final user = await auth.createUserWithEmail(
+      final user = await auth.signInWithEmail(
         email: email,
         password: password,
       );
-      user.sendEmailVerification();
-      // TODO: Add user to DB
       updateModelWith(isLoading: false);
       return true;
     } on FirebaseException catch (e) {
