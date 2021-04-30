@@ -10,6 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'home_page_app_bar.dart';
+import 'home_page_catigories.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -19,45 +22,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        flexibleSpace: customSearchBar(),
-        actions: [
-        ],
-      ),
+      appBar: homePageAppBar(context),
       drawer: _drawer(context),
-      body: Container(
-        height: 100,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            Container(
-              color: Colors.red,
-              width: 100,
-              height: 30,
-            ),
-            Container(
-              color: Colors.blue,
-              width: 100,
-              height: 30,
-            ),
-            Container(
-              color: Colors.green,
-              width: 100,
-              height: 30,
-            ),
-            Container(
-              color: Colors.black,
-              width: 100,
-              height: 30,
-            ),
-            Container(
-              color: Colors.lightGreen,
-              width: 100,
-              height: 30,
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          homePageCatigories(context),
+
+        ],
       ),
     );
   }
@@ -225,22 +196,4 @@ Widget customTextStle(String text, Widget icon, VoidCallback onTap) {
   );
 }
 
-Widget customSearchBar() {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(50, 5, 20, 5),
-    child: TextFormField(
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(25.0),
-          ),
-        ),
-        hintText: 'type something',
-        fillColor: Colors.white,
-        filled: true,
-        //TODO: search button function
-        suffixIcon: IconButton(icon: Icon(Icons.tag_faces), onPressed: () {}),
-      ),
-    ),
-  );
-}
+
