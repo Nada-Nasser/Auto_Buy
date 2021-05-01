@@ -1,5 +1,6 @@
 import 'package:auto_buy/screens/expense_tracker/expense_tracker_screen.dart';
 import 'package:auto_buy/screens/friends/friends_screen.dart';
+import 'package:auto_buy/screens/home_page/trendingview/homepage_trendingview.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_supplies_screen.dart';
 import 'package:auto_buy/screens/my_orders/my_orders_screen.dart';
 import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           homePageCatigories(context),
-
+          HomePageProducts(),
         ],
       ),
     );

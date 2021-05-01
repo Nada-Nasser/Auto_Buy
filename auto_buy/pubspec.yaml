@@ -30,6 +30,8 @@ dependencies:
   cloud_firestore: ^1.0.3
   flutter_svg: ^0.21.0+1
 
+  flutter_card_swipper: ^0.4.0
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -53,11 +55,16 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/optioface.png
-     - assets/images/optiologo.png
-     - assets/images/optiologo.svg
-     - assets/images/google-logo.png
-     - assets/images/facebook-logo.png
+    - assets/images/optioface.png
+    - assets/images/optiologo.png
+    - assets/images/optiologo.svg
+    - assets/images/google-logo.png
+    - assets/images/facebook-logo.png
+    - assets/images/testing_ads/ad1.png
+    - assets/images/testing_ads/ad2.png
+    - assets/images/testing_ads/ad3.png
+    - assets/images/testing_ads/ad4.png
+    - assets/images/testing_ads/ad5.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

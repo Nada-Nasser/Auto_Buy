@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 Widget homePageAppBar(BuildContext context){
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.white),
-      flexibleSpace: customSearchBar(context),
-      actions: [
-      ],
-    );
+      title: Text(""),
+    iconTheme: IconThemeData(color: Colors.white),
+    flexibleSpace: Container(
+        margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
+        child: customSearchBar(context)),
+    actions: [],
+  );
 
 }
 
