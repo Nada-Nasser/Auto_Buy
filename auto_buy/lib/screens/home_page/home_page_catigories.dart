@@ -7,27 +7,27 @@ Widget homePageCatigories(BuildContext context){
       scrollDirection: Axis.horizontal,
       children: [
         Container(
-          color: Colors.orange,
+          color: Colors.red,
           width: 100,
           height: 30,
         ),
         Container(
-          color: Colors.orange,
+          color: Colors.green,
           width: 100,
           height: 30,
         ),
         Container(
-          color: Colors.orange,
+          color: Colors.blue,
           width: 100,
           height: 30,
         ),
         Container(
-          color: Colors.orange,
+          color: Colors.black,
           width: 100,
           height: 30,
         ),
         Container(
-          color: Colors.orange,
+          color: Colors.red,
           width: 100,
           height: 30,
         ),

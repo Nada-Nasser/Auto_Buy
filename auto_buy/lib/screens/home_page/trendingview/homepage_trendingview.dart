@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/home_page/home_page_catigories.dart';
+import 'package:auto_buy/screens/home_page/trendingview/widgets/home_page_products_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 
@@ -13,24 +14,25 @@ class HomePageProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            buildSectionHeader(context, "Top Sales"),
-            buildTopSalesAdSizedBox(context),
-            buildDivider(),
-            buildSectionHeader(context, "Most Trending"),
-            homePageCatigories(context),
-            buildSectionHeader(context, "Most Trending"),
-            homePageCatigories(context),
-          ],
-        ),
-      ),
+    List<Widget> content = [
+      homePageCatigories(context),
+      SizedBox(height: 10),
+      buildSectionHeader(context, "Top Sales"),
+      buildTopSalesAdSizedBox(context),
+      buildDivider(),
+      buildSectionHeader(context, "Most Trending"),
+      HomePageProductsListView(),
+      buildDivider(),
+      buildSectionHeader(context, "Most Trending"),
+      homePageCatigories(context),
+      buildDivider(),
+    ];
+
+    return ListView.builder(
+      itemCount: content.length,
+      itemBuilder: (BuildContext context, int index) {
+        return content[index];
+      },
     );
   }
 
@@ -44,6 +46,7 @@ class HomePageProducts extends StatelessWidget {
   Widget buildSectionHeader(BuildContext context, String text) {
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Text(
@@ -58,19 +61,22 @@ class HomePageProducts extends StatelessWidget {
   }
 
   Widget buildTopSalesAdSizedBox(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 0.35 * MediaQuery.of(context).size.height,
-      child: new Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          return new Image.asset(
-            imgList[index],
-            fit: BoxFit.fill,
-          );
-        },
-        itemCount: 5,
-        pagination: new SwiperPagination(),
-        control: new SwiperControl(),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: 0.35 * MediaQuery.of(context).size.height,
+        child: new Swiper(
+          itemBuilder: (BuildContext context, int index) {
+            return new Image.asset(
+              imgList[index],
+              fit: BoxFit.fill,
+            );
+          },
+          itemCount: 5,
+          pagination: new SwiperPagination(),
+          control: new SwiperControl(),
+        ),
       ),
     );
   }

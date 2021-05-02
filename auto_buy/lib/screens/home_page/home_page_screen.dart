@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page_app_bar.dart';
-import 'home_page_catigories.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,14 +22,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: homePageAppBar(context),
       drawer: _drawer(context),
-      body: Column(
-        children: [
-          homePageCatigories(context),
-          HomePageProducts(),
-        ],
-      ),
+      body: HomePageProducts(),
     );
   }
 }
