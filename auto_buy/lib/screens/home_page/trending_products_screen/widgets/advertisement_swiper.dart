@@ -1,10 +1,11 @@
+import 'package:auto_buy/models/advertisement_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 
 class AdvertisementSwiper extends StatelessWidget {
-  final List imgList;
+  final List<Advertisement> advertisementsList;
 
-  const AdvertisementSwiper({Key key, @required this.imgList})
+  const AdvertisementSwiper({Key key, @required this.advertisementsList})
       : super(key: key);
 
   @override
@@ -22,12 +23,19 @@ class AdvertisementSwiper extends StatelessWidget {
         //height: 200,
         child: new Swiper(
           itemBuilder: (BuildContext context, int index) {
-            return new Image.asset(
-              imgList[index],
-              fit: BoxFit.fill,
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                print("AD_MODEL_ON_TAP");
+                // TODO: Search using advertisementsList[index].searchQuery
+              },
+              child: new Image.asset(
+                advertisementsList[index].imagePath,
+                fit: BoxFit.fill,
+              ),
             );
           },
-          itemCount: imgList.length,
+          itemCount: advertisementsList.length,
           pagination: new SwiperPagination(),
           control: new SwiperControl(),
         ),

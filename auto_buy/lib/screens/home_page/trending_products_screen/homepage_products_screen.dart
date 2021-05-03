@@ -1,15 +1,27 @@
+import 'package:auto_buy/models/advertisement_model.dart';
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/home_page_catigories.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/advertisement_swiper.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_products_list_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePageProducts extends StatelessWidget {
-  final List imgList = [
-    "assets/images/testing_ads/ad2.png",
-    "assets/images/testing_ads/ad3.png",
-    "assets/images/testing_ads/ad4.png",
-    "assets/images/testing_ads/ad5.png",
+  final List<Advertisement> adList = [
+    Advertisement(
+        id: "",
+        imagePath: "assets/images/testing_ads/ad2.png",
+        searchQuery: ""),
+    Advertisement(
+        id: "",
+        imagePath: "assets/images/testing_ads/ad3.png",
+        searchQuery: ""),
+    Advertisement(
+        id: "",
+        imagePath: "assets/images/testing_ads/ad4.png",
+        searchQuery: ""),
+    Advertisement(
+        id: "",
+        imagePath: "assets/images/testing_ads/ad5.png",
+        searchQuery: ""),
   ];
 
   final List<Product> eventCollectionProductsList = [
@@ -68,7 +80,7 @@ class HomePageProducts extends StatelessWidget {
     Product(
         id: "id",
         name:
-            "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
+        "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
         numberInStock: 0,
         picturePath: "assets/images/testing_ads/5.jpg",
         price: 5666,
@@ -101,10 +113,10 @@ class HomePageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
-      homePageCatigories(context),
+      // homePageCatigories(context), // TODO : FARAH
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
-      AdvertisementSwiper(imgList: imgList),
+      AdvertisementSwiper(advertisementsList: adList),
       buildDivider(),
       buildSectionHeader(context, "Most Trending"),
       HomePageProductsListView(productsList: topSellingProductsList),
