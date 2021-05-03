@@ -1,30 +1,30 @@
+import 'package:auto_buy/models/product_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ProductListTile extends StatelessWidget {
   const ProductListTile({
     Key key,
-    @required this.imagePath,
-    @required this.title,
-    @required this.price,
-    this.hasDiscount = true,
-    this.priceBeforeDiscount = 100,
     this.onTap,
+    this.backgroundColor = Colors.white,
+    @required this.product,
   }) : super(key: key);
 
-  final String imagePath;
-  final String title;
-  final double price;
-  final bool hasDiscount;
-  final double priceBeforeDiscount;
+  final Product product;
   final VoidCallback onTap;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    final height = 250.0;
+    final height = 300.0;
     final width = 200.0;
     return GestureDetector(
-      onTap: onTap ?? () {},
+      behavior: HitTestBehavior.translucent,
+      onTap: onTap ??
+          () {
+            print("PRODUCT_MODEL_ON_TAP");
+          },
       child: _buildContent(height, width),
     );
   }
@@ -33,29 +33,45 @@ class ProductListTile extends StatelessWidget {
     return Container(
       height: height,
       width: width,
+      color: backgroundColor,
       child: Column(
         children: [
           _productImage(width, height),
           SizedBox(height: 5),
           _buildProductTitle(width),
           _buildProductPrice(width),
-          if (hasDiscount) _buildProductPriceBeforeDiscount(width),
+          if (product.hasDiscount) _buildProductPriceBeforeDiscount(width),
         ],
       ),
     );
   }
 
   Padding _buildProductPriceBeforeDiscount(double width) {
+    double percent = product.discountPercentage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: SizedBox(
         width: width,
-        child: Text(
-          "\$${priceBeforeDiscount.toStringAsFixed(2)}",
-          style: TextStyle(
-            decoration: TextDecoration.lineThrough,
-            fontWeight: FontWeight.w200,
-          ),
+        child: Row(
+          children: [
+            Text(
+              "EGP ${product.priceBeforeDiscount.toStringAsFixed(2)}",
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+                fontWeight: FontWeight.w200,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              "-${percent.toStringAsFixed(0)}%",
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -67,7 +83,7 @@ class ProductListTile extends StatelessWidget {
       child: SizedBox(
         width: width,
         child: Text(
-          "\$${price.toStringAsFixed(2)}",
+          "EGP ${product.price.toStringAsFixed(2)}",
           textAlign: TextAlign.start,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
@@ -81,7 +97,7 @@ class ProductListTile extends StatelessWidget {
       child: SizedBox(
         width: width,
         child: Text(
-          title,
+          product.name,
           softWrap: false,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.start,
@@ -95,9 +111,10 @@ class ProductListTile extends StatelessWidget {
 
   Image _productImage(double width, double height) {
     return Image.asset(
-      imagePath,
+      product.picturePath,
       width: width,
-      height: 0.6 * height,
+//      fit: BoxFit.fill,
+      height: 0.5 * height,
     );
   }
 }
