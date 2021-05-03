@@ -4,6 +4,8 @@ import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/adve
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_products_list_view.dart';
 import 'package:flutter/material.dart';
 
+import '../home_page_catigories.dart';
+
 class HomePageProducts extends StatelessWidget {
   final List<Advertisement> adList = [
     Advertisement(
@@ -80,7 +82,41 @@ class HomePageProducts extends StatelessWidget {
     Product(
         id: "id",
         name:
-        "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
+            "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
+        numberInStock: 0,
+        picturePath: "assets/images/testing_ads/5.jpg",
+        price: 5666,
+        hasDiscount: true,
+        priceBeforeDiscount: 7999,
+        categoryID: "categoryID"),
+    Product(
+        id: "id",
+        name: "Fresh Stand Fan With Remote Control - 18 Black",
+        numberInStock: 0,
+        picturePath: "assets/images/testing_ads/6.jpg",
+        price: 777,
+        categoryID: "categoryID"),
+    Product(
+        id: "id",
+        name: "product name",
+        numberInStock: 0,
+        picturePath: "assets/images/optioface.png",
+        price: 200,
+        categoryID: "categoryID"),
+    Product(
+        id: "id",
+        name: "product name",
+        numberInStock: 0,
+        picturePath: "assets/images/optioface.png",
+        price: 200,
+        categoryID: "categoryID"),
+  ];
+
+  final List<Product> recommendedForUserProductsList = [
+    Product(
+        id: "id",
+        name:
+            "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
         numberInStock: 0,
         picturePath: "assets/images/testing_ads/5.jpg",
         price: 5666,
@@ -113,7 +149,7 @@ class HomePageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
-      // homePageCatigories(context), // TODO : FARAH
+      homePageCatigories(context), // TODO : FARAH
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
       AdvertisementSwiper(advertisementsList: adList),
@@ -125,7 +161,7 @@ class HomePageProducts extends StatelessWidget {
       HomePageProductsListView(productsList: eventCollectionProductsList),
       buildDivider(),
       buildSectionHeader(context, "Recommended for you"),
-      HomePageProductsListView(productsList: eventCollectionProductsList),
+      HomePageProductsListView(productsList: recommendedForUserProductsList),
       buildDivider(),
     ];
 
