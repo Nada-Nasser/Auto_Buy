@@ -13,9 +13,10 @@ class HomePageProducts extends StatelessWidget {
         imagePath: "assets/images/testing_ads/ad2.png",
         searchQuery: ""),
     Advertisement(
-        id: "",
-        imagePath: "assets/images/testing_ads/ad3.png",
-        searchQuery: ""),
+      id: "",
+      imagePath: "assets/images/testing_ads/ad3.png",
+      searchQuery: "",
+    ),
     Advertisement(
         id: "",
         imagePath: "assets/images/testing_ads/ad4.png",
