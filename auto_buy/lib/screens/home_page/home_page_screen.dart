@@ -7,11 +7,11 @@ import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/screens/wishlist/wishlist_screen.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
+import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'home_page_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +23,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: homePageAppBar(context),
+      appBar: customAppBar(
+        context,
+        hasLeading: false,
+      ),
       drawer: _drawer(context),
       body: HomePageProducts(),
     );

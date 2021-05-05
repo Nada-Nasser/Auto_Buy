@@ -25,7 +25,7 @@ class HomePageProductsListView extends StatelessWidget {
           return ProductListTile(
             product: productsList[index],
             onTap: () {
-              //Navigator.pop(context);
+            //  Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,

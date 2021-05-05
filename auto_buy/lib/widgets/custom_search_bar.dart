@@ -1,19 +1,8 @@
 import 'package:auto_buy/screens/optio/optio_screen.dart';
 import 'package:flutter/material.dart';
 
-Widget homePageAppBar(BuildContext context){
-    return AppBar(
-      title: Text(""),
-    iconTheme: IconThemeData(color: Colors.white),
-    flexibleSpace: Container(
-        margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-        child: customSearchBar(context)),
-    actions: [],
-  );
-
-}
-
 Widget customSearchBar(BuildContext context) {
+  // TODO: FARAH
   return Padding(
     padding: EdgeInsets.fromLTRB(50, 5, 20, 5),
     child: TextFormField(
@@ -26,7 +15,6 @@ Widget customSearchBar(BuildContext context) {
         hintText: 'type something',
         fillColor: Colors.white,
         filled: true,
-        //TODO: search button function
         suffixIcon: IconButton(icon: Icon(Icons.tag_faces), onPressed: () {
           Navigator.pop(context);
           Navigator.of(context).push(
