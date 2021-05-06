@@ -89,11 +89,11 @@ class HomePageProducts extends StatelessWidget {
     ),
   ];
 
-  final List<Product> topSellingProductsList = [
+  final List<Product> mostTrendingProductsList = [
     Product(
       id: "id",
       name: "Lenovo V14 Laptop",
-      numberInStock: 0,
+      numberInStock: 10,
       picturePath: "assets/images/testing_ads/5.jpg",
       price: 5666,
       hasDiscount: true,
@@ -175,7 +175,7 @@ class HomePageProducts extends StatelessWidget {
       AdvertisementSwiper(advertisementsList: adList),
       buildDivider(),
       buildSectionHeader(context, "Most Trending"),
-      HomePageProductsListView(productsList: topSellingProductsList),
+      HomePageProductsListView(productsList: mostTrendingProductsList),
       buildDivider(),
       buildSectionHeader(context, "Event Collection"),
       HomePageProductsListView(productsList: eventCollectionProductsList),
