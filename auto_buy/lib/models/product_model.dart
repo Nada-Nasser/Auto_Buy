@@ -24,7 +24,7 @@ class Product {
     @required this.picturePath,
     @required this.price,
     @required this.categoryID,
-    this.brand = 'none',
+    this.brand = 'None',
     this.description = '',
     this.hasDiscount = false,
     this.priceBeforeDiscount,
