@@ -67,30 +67,9 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
       decoration: _boxDecoration(Colors.black),
       child: Column(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              "Product Description",
-              style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 0.055 * MediaQuery.of(context).size.width,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
-            ),
-          ),
+          _descriptionTitleWidget(context),
           SizedBox(height: 10),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              widget.product.description,
-              textAlign: TextAlign.start,
-              softWrap: true,
-              style: TextStyle(
-                color: Colors.grey[700],
-                fontSize: 0.0446 * MediaQuery.of(context).size.width,
-              ),
-            ),
-          ),
+          _descriptionContentWidget(context),
           SizedBox(height: 10),
           _buildDescriptionElementWidget(
               context, "Brand : ", widget.product.brand),
@@ -99,6 +78,35 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
               context, "Category : ", "Category Name"),
           SizedBox(height: 10),
         ],
+      ),
+    );
+  }
+
+  SizedBox _descriptionContentWidget(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Text(
+        widget.product.description,
+        textAlign: TextAlign.start,
+        softWrap: true,
+        style: TextStyle(
+          color: Colors.grey[700],
+          fontSize: 0.0446 * MediaQuery.of(context).size.width,
+        ),
+      ),
+    );
+  }
+
+  SizedBox _descriptionTitleWidget(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Text(
+        "Product Description",
+        style: TextStyle(
+            color: Colors.grey[800],
+            fontSize: 0.055 * MediaQuery.of(context).size.width,
+            fontWeight: FontWeight.bold),
+        textAlign: TextAlign.start,
       ),
     );
   }
