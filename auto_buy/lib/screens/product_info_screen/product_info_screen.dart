@@ -5,6 +5,7 @@ import 'package:auto_buy/widgets/custom_search_bar.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ProductInfoScreen extends StatefulWidget {
   final Product product;
@@ -384,21 +385,28 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
                 color: Colors.orange,
               ),
             ),
+            content: Container(
+              width: MediaQuery.of(context).size.width,
+              //height: 0.4 * MediaQuery.of(context).size.height,
+              child: PhotoView(
+                backgroundDecoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                initialScale: PhotoViewComputedScale.contained,
+                imageProvider: AssetImage(
+                  // NetworkImage
+                  widget.product.picturePath,
+                ),
+              ),
+            ),
             actions: <Widget>[
-              Container(
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        widget.product.picturePath,
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text("Close",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                      ),
-                    ],
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  "Close",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
               ),
