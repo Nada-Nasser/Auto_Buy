@@ -1,195 +1,40 @@
-import 'package:auto_buy/models/advertisement_model.dart';
-import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/advertisement_swiper.dart';
+import 'package:auto_buy/screens/home_page/trending_products_screen/backend/home_page_products_service.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_products_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/screens/home_page/trending_products_screen/widgets/advertisement_swiper/advertisement_swiper.dart';
 
 import '../home_page_catigories.dart';
 
 class HomePageProducts extends StatelessWidget {
-  final List<Advertisement> adList = [
-    Advertisement(
-      id: "",
-      imagePath: "assets/images/testing_ads/ad2.png",
-      searchQuery: "",
-    ),
-    Advertisement(
-      id: "",
-      imagePath: "assets/images/testing_ads/ad3.png",
-      searchQuery: "",
-    ),
-    Advertisement(
-      id: "",
-      imagePath: "assets/images/testing_ads/ad4.png",
-      searchQuery: "",
-    ),
-    Advertisement(
-      id: "",
-      imagePath: "assets/images/testing_ads/ad5.png",
-      searchQuery: "",
-    ),
-  ];
-
-  final List<Product> eventCollectionProductsList = [
-    Product(
-      id: "id",
-      name: "Aldoha Egyptian Rice - 5 Kg",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/2.jpg",
-      price: 74,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "Afia Plus Corn Oil – 1600ml",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/3.jpg",
-      price: 62,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "Finish Classic Powder Dishwasher Detergent",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/1.jpg",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-  ];
-
-  final List<Product> mostTrendingProductsList = [
-    Product(
-      id: "id",
-      name: "Lenovo V14 Laptop",
-      numberInStock: 10,
-      picturePath: "assets/images/testing_ads/5.jpg",
-      price: 5666,
-      hasDiscount: true,
-      priceBeforeDiscount: 7999,
-      description:
-          "Lenovo V14 Laptop- Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "Fresh Stand Fan With Remote Control - 18 Black",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/6.jpg",
-      price: 777,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-  ];
-
-  final List<Product> recommendedForUserProductsList = [
-    Product(
-      id: "id",
-      name:
-          "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/5.jpg",
-      price: 5666,
-      hasDiscount: true,
-      priceBeforeDiscount: 7999,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "Fresh Stand Fan With Remote Control - 18 Black",
-      numberInStock: 0,
-      picturePath: "assets/images/testing_ads/6.jpg",
-      price: 777,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-    Product(
-      id: "id",
-      name: "product name",
-      numberInStock: 0,
-      picturePath: "assets/images/optioface.png",
-      price: 200,
-      categoryID: "categoryID",
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
       homePageCatigories(context),
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
-      AdvertisementSwiper(advertisementsList: adList),
+      AdvertisementSwiper(),
       buildDivider(),
       buildSectionHeader(context, "Most Trending"),
-      HomePageProductsListView(productsList: mostTrendingProductsList),
+      HomePageProductsListView(productsList: []),
       buildDivider(),
       buildSectionHeader(context, "Event Collection"),
-      HomePageProductsListView(productsList: eventCollectionProductsList),
+      HomePageProductsListView(productsList: []),
       buildDivider(),
       buildSectionHeader(context, "Recommended for you"),
-      HomePageProductsListView(productsList: recommendedForUserProductsList),
+      HomePageProductsListView(productsList: []),
       buildDivider(),
     ];
 
-    return ListView.builder(
-      itemCount: content.length,
-      itemBuilder: (BuildContext context, int index) {
-        return content[index];
-      },
+    return Provider<HomePageProductsServices>(
+      create: (content) => HomePageProductsServices(),
+      child: ListView.builder(
+        itemCount: content.length,
+        itemBuilder: (BuildContext context, int index) {
+          return content[index];
+        },
+      ),
     );
   }
 

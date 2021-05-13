@@ -1,0 +1,161 @@
+  /*
+   List<Product> eventCollectionProductsList = [
+    Product(
+      id: "id",
+      name: "Aldoha Egyptian Rice - 5 Kg",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/2.jpg",
+      price: 74,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "Afia Plus Corn Oil – 1600ml",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/3.jpg",
+      price: 62,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "Finish Classic Powder Dishwasher Detergent",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/1.jpg",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+  ];
+
+   List<Product> mostTrendingProductsList = [
+    Product(
+      id: "id",
+      name: "Lenovo V14 Laptop",
+      numberInStock: 10,
+      picturePath: "assets/images/testing_ads/5.jpg",
+      price: 5666,
+      hasDiscount: true,
+      priceBeforeDiscount: 7999,
+      description:
+          "Lenovo V14 Laptop- Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "Fresh Stand Fan With Remote Control - 18 Black",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/6.jpg",
+      price: 777,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+  ];
+
+   List<Product> recommendedForUserProductsList = [
+    Product(
+      id: "id",
+      name:
+          "Lenovo V14 Laptop - Ryzen 3 3250U - 4GB RAM - 1 TB HDD - AMD Radeon GPU - 14 Inch FHD - Dos - Iron Grey",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/5.jpg",
+      price: 5666,
+      hasDiscount: true,
+      priceBeforeDiscount: 7999,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "Fresh Stand Fan With Remote Control - 18 Black",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/6.jpg",
+      price: 777,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+    Product(
+      id: "id",
+      name: "product name",
+      numberInStock: 0,
+      picturePath: "assets/images/optioface.png",
+      price: 200,
+      categoryID: "categoryID",
+    ),
+  ];
+
+   List<Advertisement> adList = [
+     Advertisement(
+       id: "",
+       imagePath: "assets/images/testing_ads/ad2.png",
+       searchQuery: "",
+     ),
+
+     Advertisement(
+       id: "",
+       imagePath: "assets/images/testing_ads/ad3.png",
+       searchQuery: "",
+     ),
+     Advertisement(
+       id: "",
+       imagePath: "assets/images/testing_ads/ad4.png",
+       searchQuery: "",
+     ),
+     Advertisement(
+       id: "",
+       imagePath: "assets/images/testing_ads/ad5.png",
+       searchQuery: "",
+     ),
+   ];
+*/

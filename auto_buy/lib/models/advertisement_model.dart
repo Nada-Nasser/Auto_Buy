@@ -13,7 +13,7 @@ class Advertisement {
   factory Advertisement.fromMap(Map<dynamic, dynamic> value, String id) {
     return Advertisement(
       id: id,
-      imagePath: value['image_path'],
+      imagePath: value['image_ref'],
       searchQuery: value['search_query'],
     );
   }
@@ -21,7 +21,7 @@ class Advertisement {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': this.id,
-      'image_path': this.imagePath,
+      'image_ref': this.imagePath,
       'search_query': this.searchQuery,
     };
   }
