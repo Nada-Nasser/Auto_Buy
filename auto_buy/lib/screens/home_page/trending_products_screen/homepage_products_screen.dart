@@ -1,12 +1,11 @@
-import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/backend/home_page_products_service.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/advertisement_swiper/advertisement_swiper.dart';
-import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/screens/home_page/trending_products_screen/widgets/home_page_list_views/home_page_products_list_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/home_page_products_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../home_page_catigories.dart';
+import 'widgets/home_page_list_views/list_type.dart';
 
 class HomePageProducts extends StatefulWidget {
 
@@ -39,13 +38,22 @@ class _HomePageProductsState extends State<HomePageProducts> {
       AdvertisementSwiper.create(context),
       buildDivider(),
       buildSectionHeader(context, "Most Trending"),
-      HomePageProductsListView(productsList: []),
+      HomePageProductsListView.create(
+        context,
+        ListType.MOST_TRENDING,
+      ),
       buildDivider(),
       buildSectionHeader(context, "Event Collection"),
-      HomePageProductsListView(productsList: []),
+      HomePageProductsListView.create(
+        context,
+        ListType.EVENT_COLLECTION,
+      ),
       buildDivider(),
       buildSectionHeader(context, "Recommended for you"),
-      HomePageProductsListView(productsList: []),
+      HomePageProductsListView.create(
+        context,
+        ListType.RECOMMENDED_FOR_USER,
+      ),
       buildDivider(),
     ];
 

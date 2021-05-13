@@ -10,4 +10,8 @@ class APIPath {
       "/products/$productID";
 
   static String productsPath() => "/products";
+
+  static String trendingProductsPath() => "/trending_products";
+
+  static String eventProductsPath() => "/event_products";
 }

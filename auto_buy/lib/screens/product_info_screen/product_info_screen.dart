@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/widgets/custom_search_bar.dart';
+import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -76,7 +78,7 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
               context, "Brand : ", widget.product.brand),
           SizedBox(height: 10),
           _buildDescriptionElementWidget(
-              context, "Category : ", "Category Name"),
+              context, "Category : ", widget.product.categoryID),
           SizedBox(height: 10),
         ],
       ),
@@ -311,10 +313,16 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: inform,
-      child: Image.asset(
-        widget.product.picturePath,
+      child: CachedNetworkImage(
+        imageUrl: widget.product.picturePath,
+        placeholder: (context, url) => LoadingImage(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
         height: 0.5 * MediaQuery.of(context).size.height,
       ),
+      /*child: Image.asset(
+        widget.product.picturePath,
+        height: 0.5 * MediaQuery.of(context).size.height,
+      ),*/
     );
   }
 
@@ -393,8 +401,7 @@ class _ProductInfoScreenState extends State<ProductInfoScreen> {
                   color: Colors.white,
                 ),
                 initialScale: PhotoViewComputedScale.contained,
-                imageProvider: AssetImage(
-                  // NetworkImage
+                imageProvider: NetworkImage(
                   widget.product.picturePath,
                 ),
               ),

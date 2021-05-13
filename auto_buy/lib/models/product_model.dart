@@ -8,7 +8,7 @@ class Product {
   final String categoryID;
   final String description;
   final int numberInStock;
-  final String picturePath;
+  String picturePath;
   final double price;
   final bool hasDiscount;
   final double priceBeforeDiscount;
@@ -16,10 +16,9 @@ class Product {
   final double size;
   final String sizeUnit;
 
-  double get discountPercentage =>
-      hasDiscount
-          ? ((priceBeforeDiscount - price) / priceBeforeDiscount) * 100
-          : 0;
+  double get discountPercentage => hasDiscount
+      ? ((priceBeforeDiscount - price) / priceBeforeDiscount) * 100
+      : 0;
 
   Product({
     @required this.id,

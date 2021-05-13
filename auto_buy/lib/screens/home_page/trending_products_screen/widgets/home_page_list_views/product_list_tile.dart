@@ -1,4 +1,6 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/widgets/loading_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -109,11 +111,18 @@ class ProductListTile extends StatelessWidget {
     );
   }
 
-  Image _productImage(double width, double height) {
-    return Image.asset(
+  Widget _productImage(double width, double height) {
+    /*return Image.asset(
       product.picturePath,
       width: width,
-//      fit: BoxFit.fill,
+      height: 0.5 * height,
+    );*/
+
+    return CachedNetworkImage(
+      imageUrl: this.product.picturePath,
+      placeholder: (context, url) => LoadingImage(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      width: width,
       height: 0.5 * height,
     );
   }

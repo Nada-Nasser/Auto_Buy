@@ -1,9 +1,10 @@
 import 'package:auto_buy/models/advertisement_model.dart';
+import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'ad_swiper.dart';
 import 'advertisement_bloc.dart';
-import 'package:auto_buy/widgets/loading_image.dart';
 
 class AdvertisementSwiper extends StatelessWidget {
 
@@ -23,7 +24,7 @@ class AdvertisementSwiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = calcSwiperHeight(context);
-    return StreamBuilder(
+    return StreamBuilder<List<Advertisement>>(
         stream: bloc.modelStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<Advertisement>> snapshot) {
