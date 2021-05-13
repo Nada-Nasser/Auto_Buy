@@ -159,3 +159,12 @@
      ),
    ];
 */
+
+Product(
+      id: "1",
+      name: "Aldoha Egyptian Rice - 5 Kg",
+      numberInStock: 0,
+      picturePath: "assets/images/testing_ads/2.jpg",
+      price: 74,
+      categoryID: "categoryID",
+    ),

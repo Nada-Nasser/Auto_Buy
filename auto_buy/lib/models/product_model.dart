@@ -8,14 +8,18 @@ class Product {
   final String categoryID;
   final String description;
   final int numberInStock;
-  String picturePath;
+  final String picturePath;
   final double price;
   final bool hasDiscount;
   final double priceBeforeDiscount;
+  final String subCategory;
+  final double size;
+  final String sizeUnit;
 
-  double get discountPercentage => hasDiscount
-      ? ((priceBeforeDiscount - price) / priceBeforeDiscount) * 100
-      : 0;
+  double get discountPercentage =>
+      hasDiscount
+          ? ((priceBeforeDiscount - price) / priceBeforeDiscount) * 100
+          : 0;
 
   Product({
     @required this.id,
@@ -28,20 +32,26 @@ class Product {
     this.description = '',
     this.hasDiscount = false,
     this.priceBeforeDiscount,
+    this.subCategory = "",
+    this.size = 0,
+    this.sizeUnit = "",
   }) : assert(priceBeforeDiscount != 0);
 
   factory Product.fromMap(Map<dynamic, dynamic> value, String id) {
     return Product(
-      name: value['name'],
-      categoryID: value['category_id'],
       id: id,
+      name: value['name'],
       numberInStock: value['number_in_stock'],
       picturePath: value['pic_path'],
       price: value['price'],
-      brand: value['brand'],
-      description: value['description'],
-      hasDiscount: value['has_discount'],
-      priceBeforeDiscount: value['price_before_discount'],
+      categoryID: value['category_id'],
+      brand: value['brand'] ?? "",
+      description: value['description'] ?? "",
+      hasDiscount: value['has_discount'] ?? false,
+      priceBeforeDiscount: value['price_before_discount'] ?? null,
+      size: value['size'] ?? 0,
+      sizeUnit: value['size_unit'] ?? "",
+      subCategory: value['sub_category'] ?? "",
     );
   }
 
@@ -57,6 +67,9 @@ class Product {
       'description': this.description,
       'has_discount': this.hasDiscount,
       'price_before_discount': this.priceBeforeDiscount,
+      'size': this.size,
+      'size_unit': this.sizeUnit,
+      'sub_category': this.subCategory,
     };
   }
 }
