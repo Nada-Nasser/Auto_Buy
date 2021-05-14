@@ -76,6 +76,7 @@ flutter:
     - assets/gifs/loading_2.gif
     - assets/gifs/top_sales.gif
     - assets/gifs/text.gif
+    - assets/gifs/most_trending.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

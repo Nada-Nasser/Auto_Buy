@@ -4,39 +4,31 @@ import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home_page_catigories.dart';
 import 'widgets/home_page_list_views/list_type.dart';
 
-class HomePageProducts extends StatefulWidget {
-
-
-  @override
-  _HomePageProductsState createState() => _HomePageProductsState();
-}
-
-class _HomePageProductsState extends State<HomePageProducts> {
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // writeProducts();
-  }
-
+class HomePageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
-      homePageCatigories(context),
+      //homePageCatigories(context),
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
       /*SizedBox(
        // width: MediaQuery.of(context).size.width,
         child: Image.asset(
           "assets/gifs/text.gif",
+          height: 0.07 * MediaQuery.of(context).size.height,
         ),
       ),*/
       AdvertisementSwiper.create(context),
       buildDivider(),
+      /*SizedBox(
+        // width: MediaQuery.of(context).size.width,
+        child: Image.asset(
+          "assets/gifs/most_trending.gif",
+          height: 0.07 * MediaQuery.of(context).size.height,
+        ),
+      ),*/
       buildSectionHeader(context, "Most Trending"),
       HomePageProductsListView.create(
         context,
@@ -84,7 +76,8 @@ class _HomePageProductsState extends State<HomePageProducts> {
           text,
           textAlign: TextAlign.start,
           style: TextStyle(
-            fontSize: 0.0555 * MediaQuery.of(context).size.width,
+            fontSize: 0.0655 * MediaQuery.of(context).size.width,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

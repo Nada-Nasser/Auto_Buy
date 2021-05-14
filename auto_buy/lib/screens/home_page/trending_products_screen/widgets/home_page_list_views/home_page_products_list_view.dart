@@ -1,6 +1,6 @@
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/peoducts_list.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/product_list_view.dart';
+import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/widgets/product_list_view.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

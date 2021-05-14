@@ -6,6 +6,16 @@ class CloudFirestoreService {
 
   static CloudFirestoreService instance = CloudFirestoreService._();
 
+  Future<T> readOnceDocumentData<T>({
+    @required String path,
+    @required documentId,
+    @required T Function(Map<String, dynamic> data, String documentId) builder,
+  }) async {
+    final ref = FirebaseFirestore.instance.collection(path);
+    DocumentSnapshot snapshot = await ref.doc(documentId).get();
+    return builder(snapshot.data(), documentId);
+  }
+
   Future<void> setDocument({
     @required String path,
     @required Map<String, dynamic> data,

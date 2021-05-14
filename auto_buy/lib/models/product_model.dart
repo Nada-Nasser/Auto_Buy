@@ -71,4 +71,9 @@ class Product {
       'sub_category': this.subCategory,
     };
   }
+
+  @override
+  String toString() {
+    return 'Product{id: $id, name: $name, brand: $brand, categoryID: $categoryID, description: $description, numberInStock: $numberInStock, picturePath: $picturePath, price: $price, hasDiscount: $hasDiscount, priceBeforeDiscount: $priceBeforeDiscount, subCategory: $subCategory, size: $size, sizeUnit: $sizeUnit}';
+  }
 }

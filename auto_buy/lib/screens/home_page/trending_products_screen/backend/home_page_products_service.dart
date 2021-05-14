@@ -4,7 +4,6 @@ import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home
 import 'package:auto_buy/services/api_paths.dart';
 import 'package:auto_buy/services/firestore_service.dart';
 import 'package:auto_buy/services/storage_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePageProductsServices {
   final _storageService = FirebaseStorageService.instance;
@@ -32,9 +31,11 @@ class HomePageProductsServices {
       );
 
   Future<Product> readProduct(String id) async {
-    final ref = FirebaseFirestore.instance.collection('products');
-    DocumentSnapshot snapshot = await ref.doc(id).get();
-    Product product = Product.fromMap(snapshot.data(), id);
+    Product product = await _firestoreService.readOnceDocumentData(
+      path: "products",
+      documentId: id,
+      builder: (data, documentID) => Product.fromMap(data, documentID),
+    );
 
     String url = await getImageURL(product.picturePath);
     product.picturePath = url;

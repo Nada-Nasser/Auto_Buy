@@ -112,12 +112,6 @@ class ProductListTile extends StatelessWidget {
   }
 
   Widget _productImage(double width, double height) {
-    /*return Image.asset(
-      product.picturePath,
-      width: width,
-      height: 0.5 * height,
-    );*/
-
     return CachedNetworkImage(
       imageUrl: this.product.picturePath,
       placeholder: (context, url) => LoadingImage(),
