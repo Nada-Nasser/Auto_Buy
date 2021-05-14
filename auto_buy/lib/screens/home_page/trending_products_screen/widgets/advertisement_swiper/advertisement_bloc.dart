@@ -21,8 +21,17 @@ class AdvertisementBloc {
     print("DONE LOADING");
     return urls;
   }
+/*
+  StreamController<List<Advertisement>> _modelStreamController =
+                                               StreamController();
 
+  List<Advertisement> advertisement = [];
 
+  Stream<List<Advertisement>> get advertisementStream =>
+      _modelStreamController.stream;
+
+  void dispose() => _modelStreamController.close();
+*/
 }
 
 

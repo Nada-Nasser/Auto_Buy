@@ -39,8 +39,7 @@ class AdvertisementSwiper extends StatelessWidget {
             }
             if (snapshot.hasData) {
               List<Advertisement> advertisements = snapshot.data;
-              return buildAdvertisementsFutureBuilder(
-                  context, snapshot, advertisements);
+              return buildAdvertisementsFutureBuilder(context, advertisements);
             } else
               return Text("no data");
           } on Exception catch (e) {
@@ -51,16 +50,18 @@ class AdvertisementSwiper extends StatelessWidget {
 
   FutureBuilder<List<String>> buildAdvertisementsFutureBuilder(
       BuildContext context,
-      AsyncSnapshot<List<Advertisement>> snapshot,
       List<Advertisement> advertisements,) {
     double height = calcSwiperHeight(context);
     return FutureBuilder<List<String>>(
-      future: bloc.getAdImagesURL(snapshot.data),
+      future: bloc.getAdImagesURL(advertisements),
       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return SizedBox(
-                height: height, child: LoadingImage(height: 0.5 * height,));
+                height: height,
+                child: LoadingImage(
+                  height: 0.5 * height,
+                ));
           default:
             if (snapshot.hasError)
               return Text('Error: ${snapshot.error}');
@@ -93,3 +94,29 @@ class AdvertisementSwiper extends StatelessWidget {
         .height;
   }
 }
+
+/*
+class AdvertisementSwiperBuilder extends StatefulWidget {
+  final List<Advertisement> advertisements;
+
+  const AdvertisementSwiperBuilder({Key key, this.advertisements}) : super(key: key);
+
+  @override
+  _AdvertisementSwiperBuilderState createState() => _AdvertisementSwiperBuilderState();
+}
+
+class _AdvertisementSwiperBuilderState extends State<AdvertisementSwiperBuilder> {
+
+  @override
+  void initState() {
+    final bloc = Provider.of<AdvertisementBloc>(context , listen: false);
+    bloc.getAdImagesURL(widget.advertisements);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+*/

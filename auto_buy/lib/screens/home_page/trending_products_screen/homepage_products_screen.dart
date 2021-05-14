@@ -1,16 +1,17 @@
 import 'package:auto_buy/screens/home_page/trending_products_screen/backend/home_page_products_service.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/advertisement_swiper/advertisement_swiper.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/home_page_products_list_view.dart';
+import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/home_page_products.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../home_page_catigories.dart';
 import 'widgets/home_page_list_views/list_type.dart';
 
 class HomePageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
-      //homePageCatigories(context),
+      homePageCatigories(context),
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
       /*SizedBox(
@@ -44,7 +45,7 @@ class HomePageProducts extends StatelessWidget {
       buildSectionHeader(context, "Recommended for you"),
       HomePageProductsListView.create(
         context,
-        ListType.RECOMMENDED_FOR_USER,
+        ListType.MOST_TRENDING,
       ),
       buildDivider(),
     ];

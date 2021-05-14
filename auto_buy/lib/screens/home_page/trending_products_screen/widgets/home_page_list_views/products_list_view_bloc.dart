@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/backend/home_page_products_service.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/list_type.dart';
@@ -25,11 +27,28 @@ class ProductsListViewBloc {
   }
 
   Future<List<Product>> fetchProducts(List<String> ids) async {
-    List<Product> products = [];
+    List<Product> items = [];
+
     for (int i = 0; i < ids.length; i++) {
       final product = await databaseServices.readProduct(ids[i]);
-      products.add(product);
+      items.add(product);
     }
-    return products;
+    _updateModelWith(items: items);
+    return items;
+  }
+
+  final StreamController<List<Product>> _modelStreamController =
+      StreamController.broadcast();
+
+  List<Product> products = [];
+
+  Stream<List<Product>> get productsStream => _modelStreamController.stream;
+
+  void dispose() => _modelStreamController.close();
+
+  void _updateModelWith({List<Product> items}) {
+    products.clear();
+    products.addAll(items);
+    _modelStreamController.sink.add(products);
   }
 }
