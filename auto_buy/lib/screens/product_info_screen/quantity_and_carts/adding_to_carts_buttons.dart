@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/product_info_screen/backend/product_quantity_and_price_model.dart';
+import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/wish_list_button.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class AddingToCartsButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _addingToWishListWidget(context),
+          WishListButton(),
+          // _addingToWishListWidget(context),
           _addingToShoppingCartWidget(context),
         ],
       ),
@@ -54,6 +56,7 @@ class AddingToCartsButtons extends StatelessWidget {
     );
   }
 
+/*
   Widget _addingToWishListWidget(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     return FutureBuilder(
@@ -75,12 +78,12 @@ class AddingToCartsButtons extends StatelessWidget {
             ),
           );
         });
-  }
+  }*/
 
   Future<void> onClickShoppingCartButton(BuildContext context) async {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
-    bloc.onClickShoppingCartButton();
-    showInSnackBar("Product added to your shopping cart", context);
+    String msg = await bloc.onClickShoppingCartButton();
+    showInSnackBar(msg, context);
   }
 
   Future<void> onClickWishListButton(BuildContext context) async {

@@ -16,6 +16,21 @@ class CloudFirestoreService {
     return builder(snapshot.data(), documentId);
   }
 
+  Future<bool> checkExist({@required String docPath}) async {
+    bool exists = false;
+    try {
+      await FirebaseFirestore.instance.doc(docPath).get().then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> setDocument({
     @required String path,
     @required Map<String, dynamic> data,

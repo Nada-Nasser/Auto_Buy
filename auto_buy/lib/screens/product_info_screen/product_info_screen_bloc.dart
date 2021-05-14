@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/models/shopping_cart_item.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'backend/product_info_screen_Services.dart';
@@ -36,20 +37,39 @@ class ProductInfoScreenBloc {
   double get totalPrice => _model.quantity * product.price;
 
   Future<void> checkProductInUserWishList() async {
-    // update _model with isProductInWishList
-    // TODO
+    bool exists = await _services.checkProductInWishList(uid, product.id);
+    print(exists);
+    _updateModelWith(isProductInWishList: exists);
   }
 
   Future<void> _addToWishList() async {
-    // TODO
+    await _services.addProductToUserWishList(uid, product.id);
+    _updateModelWith(isProductInWishList: true);
   }
 
   Future<void> _deleteFromWishList() async {
-    // TODO
+    await _services.deleteProductToUserWishList(uid, product.id);
+    _updateModelWith(isProductInWishList: false);
   }
 
-  Future<void> onClickShoppingCartButton() async {
-    // TODO
+  Future<String> onClickShoppingCartButton() async {
+    try {
+      if (quantity > 0) {
+        final cartItem = ShoppingCartItem(
+          productID: product.id,
+          totalPrice: totalPrice,
+          quantity: quantity,
+          lastModifiedDat: DateTime.now(),
+        );
+        await _services.addProductToUserShopping(uid, cartItem);
+
+        return "Product added to your shopping cart";
+      } else {
+        return "You can not add 0 items";
+      }
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 
   Future<String> onClickWishListButton() async {
@@ -62,7 +82,6 @@ class ProductInfoScreenBloc {
         await _addToWishList();
         message = "Product added to your wish list";
       }
-      _updateModelWith(isProductInWishList: !_model.isProductInWishList);
       return message;
     } on Exception catch (e) {
       throw e;

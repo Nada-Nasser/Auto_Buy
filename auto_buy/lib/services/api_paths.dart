@@ -14,4 +14,13 @@ class APIPath {
   static String trendingProductsPath() => "/trending_products";
 
   static String eventProductsPath() => "/event_products";
+
+  static String userShoppingCartItemPath(String uid, String itemID) =>
+      "/shopping_carts/$uid/shopping_cart_items/$itemID";
+
+  static String userWishListProductPath(String uid, String productID) =>
+      "/wish_lists/$uid/wish_list_products/$productID";
+
+  static String userWishList(String uid) =>
+      "/wish_lists/$uid/wish_list_products";
 }
