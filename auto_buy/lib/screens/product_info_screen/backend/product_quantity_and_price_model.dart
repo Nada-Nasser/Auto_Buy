@@ -1,0 +1,20 @@
+class ProductQuantityAndPriceModel {
+  final int quantity;
+  final bool isProductInWishList;
+  final bool isLoading;
+
+  ProductQuantityAndPriceModel({
+    this.isLoading = false,
+    this.quantity = 0,
+    this.isProductInWishList = false,
+  });
+
+  ProductQuantityAndPriceModel copyWith(
+      {int quantity, bool isProductInWishList, bool isLoading}) {
+    return ProductQuantityAndPriceModel(
+      quantity: quantity ?? this.quantity,
+      isProductInWishList: isProductInWishList ?? this.isProductInWishList,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+}

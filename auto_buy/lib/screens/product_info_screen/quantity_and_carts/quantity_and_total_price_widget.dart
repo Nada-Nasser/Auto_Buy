@@ -1,29 +1,22 @@
+import 'package:auto_buy/screens/product_info_screen/backend/product_quantity_and_price_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class QuantityAndTotalPrice extends StatefulWidget {
-  //final Product product;
-  final double productPrice;
-  final int productNumberInStock;
-
-  const QuantityAndTotalPrice({
-    Key key,
-    this.productPrice,
-    this.productNumberInStock,
-  }) : super(key: key);
-
-  @override
-  _QuantityAndTotalPriceState createState() => _QuantityAndTotalPriceState();
-}
-
-class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
-  int quantity = 0;
-
-  double get price => quantity * widget.productPrice;
-
+class QuantityAndTotalPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+    return StreamBuilder<ProductQuantityAndPriceModel>(
+        stream: bloc.modelStream,
+        builder: (context, snapshot) {
+          return _buildContent(context);
+        });
+  }
+
+  Row _buildContent(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -34,6 +27,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
   }
 
   Widget _buildTotalPriceWidget(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     return Container(
       width: 0.50 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
@@ -51,7 +45,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
           SizedBox(height: 5),
           Center(
             child: Text(
-              "EGP ${price.toStringAsFixed(2)}",
+              "EGP ${bloc.totalPrice.toStringAsFixed(2)}",
               style: TextStyle(
                 fontSize: 0.06 * MediaQuery.of(context).size.width,
               ),
@@ -64,6 +58,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
   }
 
   Widget _buildQuantityWidget(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     return Container(
       width: 0.40 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
@@ -73,14 +68,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
         children: [
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
-              setState(() {
-                if (quantity > 0)
-                  quantity--;
-                else
-                  showInSnackBar("You cannot buy less than 0 item", context);
-              });
-            },
+            onTap: () => decreaseQuantity(context),
             child: Container(
               //  color: Colors.grey,
               child: Text(
@@ -97,7 +85,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
             width: 10,
           ),
           Text(
-            "$quantity",
+            "${bloc.quantity}",
             style: TextStyle(
               fontSize: 0.08 * MediaQuery.of(context).size.width,
             ),
@@ -107,16 +95,7 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
-              setState(() {
-                if (quantity < widget.productNumberInStock)
-                  quantity++;
-                else
-                  showInSnackBar(
-                      "You cannot buy more than ${widget.productNumberInStock} items",
-                      context);
-              });
-            },
+            onTap: () => increaseQuantity(context),
             child: Text(
               "+",
               style: TextStyle(
@@ -129,5 +108,21 @@ class _QuantityAndTotalPriceState extends State<QuantityAndTotalPrice> {
         ],
       ),
     );
+  }
+
+  void increaseQuantity(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+    bool flag = bloc.increaseQuantity();
+    if (!flag) {
+      showInSnackBar(bloc.increasingQuantityErrorMessage, context);
+    }
+  }
+
+  void decreaseQuantity(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+    bool flag = bloc.decreaseQuantity();
+    if (!flag) {
+      showInSnackBar("You cannot buy less than 0 item", context);
+    }
   }
 }

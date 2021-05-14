@@ -1,10 +1,11 @@
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
-import 'package:auto_buy/screens/product_info_screen/widgets/adding_to_carts_buttons.dart';
+import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/adding_to_carts_buttons.dart';
+import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/quantity_and_total_price_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_description_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_image_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_name_and_price_widget.dart';
-import 'package:auto_buy/screens/product_info_screen/widgets/quantity_and_total_price_widget.dart';
+import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_search_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,12 @@ class ProductInfoScreen extends StatelessWidget {
   final String url;
 
   static Widget create(BuildContext context, Product product, String url) {
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return Provider<ProductInfoScreenBloc>(
-      create: (_) => ProductInfoScreenBloc(productID: product.id),
+      create: (_) => ProductInfoScreenBloc(
+        product: product,
+        uid: auth.uid,
+      ),
       child: Consumer<ProductInfoScreenBloc>(
         builder: (_, bloc, __) => ProductInfoScreen(bloc: bloc, url: url),
       ),
@@ -38,7 +43,7 @@ class ProductInfoScreen extends StatelessWidget {
         elevation: 10,
       ),
       body: StreamBuilder<Product>(
-          stream: bloc.modelStream,
+          stream: bloc.productOnChangeListener,
           builder: (context, snapshot) {
             try {
               if (snapshot.hasError) {
@@ -72,13 +77,8 @@ class ProductInfoScreen extends StatelessWidget {
         productName: product.name,
         productURL: url,
       ),
-      QuantityAndTotalPrice(
-        productPrice: product.price,
-        productNumberInStock: product.numberInStock,
-      ),
-      AddingToCartsButtons(
-        productID: product.id,
-      ),
+      QuantityAndTotalPrice(),
+      AddingToCartsButtons(),
       ProductDescription(
         productBrand: product.brand,
         productCategory: product.categoryID,

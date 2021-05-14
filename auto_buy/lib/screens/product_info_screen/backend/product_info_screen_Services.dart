@@ -10,4 +10,11 @@ class ProductInfoScreenServices {
         path: APIPath.productPath(productID: productID),
         builder: (data, documentId) => Product.fromMap(data, documentId),
       );
+
+  Future<void> addProductToUserWishList(String uid, String productID) async {}
+
+  Future<void> deleteProductToUserWishList(
+      String uid, String productID) async {}
+
+  Future<void> addProductToUserShopping(String uid, String productID) async {}
 }
