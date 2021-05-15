@@ -42,7 +42,6 @@ class _WishListButtonState extends State<WishListButton> {
       String message = await bloc.onClickWishListButton();
       showInSnackBar(message, context);
     } on Exception catch (e) {
-      // TODO
       rethrow;
     }
   }

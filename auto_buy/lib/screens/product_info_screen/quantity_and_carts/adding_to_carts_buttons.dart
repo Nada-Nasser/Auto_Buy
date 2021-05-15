@@ -56,44 +56,9 @@ class AddingToCartsButtons extends StatelessWidget {
     );
   }
 
-/*
-  Widget _addingToWishListWidget(BuildContext context) {
-    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
-    return FutureBuilder(
-        future: bloc.checkProductInUserWishList(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          return Container(
-            height: 0.15 * MediaQuery.of(context).size.width,
-            width: 0.15 * MediaQuery.of(context).size.width,
-            decoration: boxDecorationWithBordersAndShadow(Colors.black),
-            child: IconButton(
-              iconSize: 0.1 * MediaQuery.of(context).size.width,
-              onPressed: () => onClickWishListButton(context),
-              icon: Icon(
-                bloc.isProductInWishList
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: bloc.isProductInWishList ? Colors.red : Colors.red,
-              ),
-            ),
-          );
-        });
-  }*/
-
   Future<void> onClickShoppingCartButton(BuildContext context) async {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     String msg = await bloc.onClickShoppingCartButton();
     showInSnackBar(msg, context);
-  }
-
-  Future<void> onClickWishListButton(BuildContext context) async {
-    try {
-      final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
-      String message = await bloc.onClickWishListButton();
-      showInSnackBar(message, context);
-    } on Exception catch (e) {
-      // TODO
-      rethrow;
-    }
   }
 }

@@ -5,9 +5,11 @@ import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/quantity
 import 'package:auto_buy/screens/product_info_screen/widgets/product_description_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_image_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_name_and_price_widget.dart';
+import 'package:auto_buy/screens/product_info_screen/widgets/product_number_in_stock_widget.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_search_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +57,9 @@ class ProductInfoScreen extends StatelessWidget {
                 return SizedBox(child: LoadingImage());
               }
               if (snapshot.hasData) {
+                print("Product updated");
                 final product = snapshot.data;
+                bloc.updateProduct(product);
                 //     print('${product.toString()}');
                 return _buildContent(context, product);
               } else
@@ -77,6 +81,7 @@ class ProductInfoScreen extends StatelessWidget {
         productName: product.name,
         productURL: url,
       ),
+      ProductNumberInStockWidget(numberInStock: product.numberInStock),
       QuantityAndTotalPrice(),
       AddingToCartsButtons(),
       ProductDescription(

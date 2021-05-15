@@ -25,12 +25,27 @@ class ProductInfoScreenServices {
       );
 
   Future<void> addProductToUserShopping(
-          String uid, ShoppingCartItem cartItem) async =>
+      String uid, ShoppingCartItem cartItem, int numberInStock) async {
+    try {
+      /// add product to shopping cart
       await _firestoreService.setDocument(
         path: APIPath.userShoppingCartItemPath(
             uid, DateTime.now().toIso8601String()),
         data: cartItem.toMap(),
       );
+
+      /// decrease product.numberInStock
+      print('$numberInStock - ${cartItem.quantity}');
+      await _firestoreService.updateDocumentField(
+        collectionPath: APIPath.productsPath(),
+        documentID: cartItem.productID,
+        fieldName: Product.numberInStockFieldName,
+        updatedValue: numberInStock - cartItem.quantity,
+      );
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
 
   Future<bool> checkProductInWishList(String uid, String productID) async =>
       await _firestoreService.checkExist(

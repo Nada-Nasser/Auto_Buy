@@ -22,7 +22,7 @@ class ProductDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(5, 30, 5, 20),
+      margin: EdgeInsets.fromLTRB(5, 20, 5, 20),
       padding: const EdgeInsets.all(8.0),
       width: MediaQuery.of(context).size.width,
       decoration: boxDecorationWithBordersAndShadow(Colors.black),

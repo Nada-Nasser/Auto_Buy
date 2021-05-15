@@ -6,6 +6,23 @@ class CloudFirestoreService {
 
   static CloudFirestoreService instance = CloudFirestoreService._();
 
+  Future<void> updateDocumentField(
+      {@required String collectionPath,
+      @required String documentID,
+      @required String fieldName,
+      @required dynamic updatedValue}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collectionPath)
+          .doc(documentID)
+          .update({'$fieldName': updatedValue});
+      print(
+          "$collectionPath/$documentID : $fieldName UPDATED with $updatedValue");
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
   Future<T> readOnceDocumentData<T>({
     @required String path,
     @required documentId,

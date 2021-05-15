@@ -9,13 +9,17 @@ import 'backend/product_quantity_and_price_model.dart';
 
 class ProductInfoScreenBloc {
   ProductInfoScreenServices _services = ProductInfoScreenServices();
-  final Product product;
+  Product product;
   final String uid;
 
   ProductInfoScreenBloc({@required this.product, @required this.uid});
 
   Stream<Product> get productOnChangeListener =>
       _services.getProductStream(product.id);
+
+  void updateProduct(Product updatedProduct) {
+    product = updatedProduct;
+  }
 
   final StreamController<ProductQuantityAndPriceModel> _modelStreamController =
       StreamController.broadcast();
@@ -27,8 +31,9 @@ class ProductInfoScreenBloc {
 
   int get quantity => _model.quantity;
 
-  String get increasingQuantityErrorMessage =>
-      "You cannot buy more than ${product.numberInStock} items";
+  String get increasingQuantityErrorMessage => product.numberInStock > 0
+      ? "You cannot buy more than ${product.numberInStock} items"
+      : "The product is out of stock for now";
 
   bool get isProductInWishList => _model.isProductInWishList;
 
@@ -53,19 +58,27 @@ class ProductInfoScreenBloc {
   }
 
   Future<String> onClickShoppingCartButton() async {
+    if (product.numberInStock == 0) return "The product is out of stock";
     try {
-      if (quantity > 0) {
+      if (quantity > 0 && quantity <= product.numberInStock) {
         final cartItem = ShoppingCartItem(
           productID: product.id,
           totalPrice: totalPrice,
           quantity: quantity,
           lastModifiedDat: DateTime.now(),
         );
-        await _services.addProductToUserShopping(uid, cartItem);
+
+        await _services.addProductToUserShopping(
+            uid, cartItem, product.numberInStock);
+
+        _updateModelWith(quantity: 0);
 
         return "Product added to your shopping cart";
       } else {
-        return "You can not add 0 items";
+        if (quantity == 0)
+          return "You can not add 0 items";
+        else
+          return "You can't buy more than ${product.numberInStock}";
       }
     } on Exception catch (e) {
       throw e;
