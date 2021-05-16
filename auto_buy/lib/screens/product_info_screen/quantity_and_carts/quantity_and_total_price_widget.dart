@@ -10,11 +10,13 @@ class QuantityAndTotalPrice extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     return StreamBuilder<ProductQuantityAndPriceModel>(
-        stream: bloc.modelStream,
+        stream: bloc.productQuantityAndPriceModelStream,
         builder: (context, snapshot) {
           return _buildContent(context);
         });
   }
+
+// TODO : Dispose stream ?
 
   Row _buildContent(BuildContext context) {
     return Row(

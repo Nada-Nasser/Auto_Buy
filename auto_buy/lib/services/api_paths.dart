@@ -4,6 +4,9 @@ class APIPath {
   static String advertisementImageRef(String adID) =>
       "/images/advertises/$adID";
 
+  static String productImageRef(String productID) =>
+      "images/products/$productID";
+
   static String advertisementsPath() => "/advertisements";
 
   static String productPath({@required String productID}) =>
@@ -23,4 +26,11 @@ class APIPath {
 
   static String userWishList(String uid) =>
       "/wish_lists/$uid/wish_list_products";
+
+  static String nStarsProductRatesCollectionPath(int n, String productID) =>
+      "/products/$productID/rates/$n/rates";
+
+  static String nStarsProductRatesDocumentPath(
+          int n, String productID, String uid) =>
+      "/products/$productID/rates/$n/rates/$uid";
 }

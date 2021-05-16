@@ -1,5 +1,6 @@
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
+import 'package:auto_buy/screens/product_info_screen/product_rates/rates_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/adding_to_carts_buttons.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/quantity_and_total_price_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_description_widget.dart';
@@ -45,7 +46,7 @@ class ProductInfoScreen extends StatelessWidget {
         elevation: 10,
       ),
       body: StreamBuilder<Product>(
-          stream: bloc.productOnChangeListener,
+          stream: bloc.productOnChangeStream,
           builder: (context, snapshot) {
             try {
               if (snapshot.hasError) {
@@ -77,6 +78,9 @@ class ProductInfoScreen extends StatelessWidget {
         productName: product.name,
         productPrice: product.price,
       ),
+      SizedBox(
+        height: 5,
+      ),
       ProductImage(
         productName: product.name,
         productURL: url,
@@ -92,6 +96,8 @@ class ProductInfoScreen extends StatelessWidget {
         productSizeUnit: product.sizeUnit,
         productSubCategory: product.subCategory,
       ),
+      RatesSection(),
+      SizedBox(height: 10),
     ];
 
     return Padding(

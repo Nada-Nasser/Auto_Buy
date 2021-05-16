@@ -12,7 +12,7 @@ class AddingToCartsButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     return StreamBuilder<ProductQuantityAndPriceModel>(
-        stream: bloc.modelStream,
+        stream: bloc.productQuantityAndPriceModelStream,
         builder: (context, snapshot) {
           return _buildContent(context);
         });

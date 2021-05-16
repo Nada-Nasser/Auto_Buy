@@ -6,6 +6,24 @@ class CloudFirestoreService {
 
   static CloudFirestoreService instance = CloudFirestoreService._();
 
+  Future<List<T>> getCollectionData<T>({
+    @required String path,
+    @required T Function(Map<String, dynamic> data, String documentId) builder,
+    Query Function(Query query) queryBuilder,
+    int Function(T lhs, T rhs) sort,
+  }) async {
+    Query query = FirebaseFirestore.instance.collection(path);
+    if (queryBuilder != null) {
+      query = queryBuilder(query);
+    }
+    final result = query.get().then((value) => value.docs
+        .map((snapshot) => builder(snapshot.data(), snapshot.id))
+        .where((value) => value != null)
+        .toList());
+
+    return result;
+  }
+
   Future<void> updateDocumentField(
       {@required String collectionPath,
       @required String documentID,

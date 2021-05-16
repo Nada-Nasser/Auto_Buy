@@ -12,34 +12,42 @@ class ProductInfoScreenBloc {
   Product product;
   final String uid;
 
+  // List<int> _productCostumerRatesModel = [];
+
   ProductInfoScreenBloc({@required this.product, @required this.uid});
 
-  Stream<Product> get productOnChangeListener =>
+  Stream<Product> get productOnChangeStream =>
       _services.getProductStream(product.id);
-
-  void updateProduct(Product updatedProduct) {
-    product = updatedProduct;
-  }
 
   final StreamController<ProductQuantityAndPriceModel> _modelStreamController =
       StreamController.broadcast();
 
-  ProductQuantityAndPriceModel _model = ProductQuantityAndPriceModel();
+  ProductQuantityAndPriceModel _productQuantityAndPriceModel =
+      ProductQuantityAndPriceModel();
 
-  Stream<ProductQuantityAndPriceModel> get modelStream =>
+  Stream<ProductQuantityAndPriceModel> get productQuantityAndPriceModelStream =>
       _modelStreamController.stream;
 
-  int get quantity => _model.quantity;
+  final StreamController<List<int>> _ratesStreamController =
+      StreamController.broadcast();
+
+  Stream<List<int>> get ratesStream => _ratesStreamController.stream;
+
+  int get quantity => _productQuantityAndPriceModel.quantity;
 
   String get increasingQuantityErrorMessage => product.numberInStock > 0
       ? "You cannot buy more than ${product.numberInStock} items"
       : "The product is out of stock for now";
 
-  bool get isProductInWishList => _model.isProductInWishList;
+  bool get isProductInWishList =>
+      _productQuantityAndPriceModel.isProductInWishList;
 
-  void dispose() => _modelStreamController.close();
+  void disposeQuantityAndPriceModelStream() => _modelStreamController.close();
 
-  double get totalPrice => _model.quantity * product.price;
+  void disposeRatesStream() => _ratesStreamController.close();
+
+  double get totalPrice =>
+      _productQuantityAndPriceModel.quantity * product.price;
 
   Future<void> checkProductInUserWishList() async {
     bool exists = await _services.checkProductInWishList(uid, product.id);
@@ -88,7 +96,7 @@ class ProductInfoScreenBloc {
   Future<String> onClickWishListButton() async {
     try {
       String message = "Something Went Wrong";
-      if (_model.isProductInWishList) {
+      if (_productQuantityAndPriceModel.isProductInWishList) {
         await _deleteFromWishList();
         message = "Product deleted from your wish list";
       } else {
@@ -102,19 +110,30 @@ class ProductInfoScreenBloc {
   }
 
   bool increaseQuantity() {
-    if (_model.quantity < product.numberInStock) {
-      _updateModelWith(quantity: _model.quantity + 1);
+    if (_productQuantityAndPriceModel.quantity < product.numberInStock) {
+      _updateModelWith(quantity: _productQuantityAndPriceModel.quantity + 1);
       return true;
     }
     return false;
   }
 
   bool decreaseQuantity() {
-    if (_model.quantity > 0) {
-      _updateModelWith(quantity: _model.quantity - 1);
+    if (_productQuantityAndPriceModel.quantity > 0) {
+      _updateModelWith(quantity: _productQuantityAndPriceModel.quantity - 1);
       return true;
     }
     return false;
+  }
+
+  Future<void> rateTheProductByNStars(int n) async {
+    try {
+      await _services.rateProductWithNStars(n, uid, product.id);
+    } on Exception catch (e) {
+      throw e;
+    }
+    fetchProductCustomerRates();
+    // _ratesModel[n-1]++;
+    // _updateCostumerRatesModel(rates : _ratesModel);
   }
 
   void _updateModelWith({
@@ -122,11 +141,33 @@ class ProductInfoScreenBloc {
     bool isProductInWishList,
     bool isLoading,
   }) {
-    _model = _model.copyWith(
+    _productQuantityAndPriceModel = _productQuantityAndPriceModel.copyWith(
       quantity: quantity,
       isProductInWishList: isProductInWishList,
       isLoading: isLoading,
     );
-    _modelStreamController.sink.add(_model);
+    _modelStreamController.sink.add(_productQuantityAndPriceModel);
   }
+
+  void updateProduct(Product updatedProduct) {
+    product = updatedProduct;
+  }
+
+  void _updateCostumerRatesModel({List<int> rates,}) {
+    _ratesModel = rates;
+    _ratesStreamController.sink.add(rates);
+  }
+
+  Future<List<int>> fetchProductCustomerRates() async {
+    List<int> rates = [];
+    for (int i = 5; i > 0; i--) {
+      int n = await _services.readProductNumberOfRatesForNStars(i, product.id);
+      rates.add(n);
+    }
+    _ratesModel = rates;
+    _updateCostumerRatesModel(rates: rates);
+    return rates;
+  }
+
+  List<int> _ratesModel = [];
 }
