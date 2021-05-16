@@ -32,7 +32,7 @@ class HomePageProductsServices {
 
   Future<Product> readProduct(String id) async {
     Product product = await _firestoreService.readOnceDocumentData(
-      path: "products",
+      collectionPath: "products",
       documentId: id,
       builder: (data, documentID) => Product.fromMap(data, documentID),
     );

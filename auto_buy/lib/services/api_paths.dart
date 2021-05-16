@@ -27,10 +27,9 @@ class APIPath {
   static String userWishList(String uid) =>
       "/wish_lists/$uid/wish_list_products";
 
-  static String nStarsProductRatesCollectionPath(int n, String productID) =>
-      "/products/$productID/rates/$n/rates";
+  static String productRatesCollectionPath(String productId) =>
+      "/products/$productId/rates";
 
-  static String nStarsProductRatesDocumentPath(
-          int n, String productID, String uid) =>
-      "/products/$productID/rates/$n/rates/$uid";
+  static String userRateOnProductDocumentPath(String productId, String uid) =>
+      "/products/$productId/rates/$uid";
 }

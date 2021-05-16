@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
+import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,21 +9,32 @@ class RatingStars extends StatefulWidget {
 }
 
 class _RatingStarsState extends State<RatingStars> {
-  bool starPressed = false;
-  int starPressedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+    return StreamBuilder<UserRatingStarsModel>(
+        stream: bloc.ratingStarsModelStream,
+        initialData: bloc.ratingStarsModel,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildContent(context, snapshot.data);
+          } else
+            return LoadingImage();
+        });
+  }
+
+  Widget _buildContent(BuildContext context, UserRatingStarsModel data) {
     return Column(
       children: [
-        _buildStars(),
+        _buildStars(data),
         SizedBox(
           height: 5,
         ),
         ElevatedButton(
           child: Text('Rate'),
           onPressed: () async {
-            await _onClickStar(starPressedIndex);
+            await _onClickRateButton(data.starPressedIndex);
           },
           style: ElevatedButton.styleFrom(
               elevation: 10,
@@ -36,7 +48,9 @@ class _RatingStarsState extends State<RatingStars> {
     );
   }
 
-  Row _buildStars() {
+  Row _buildStars(UserRatingStarsModel data) {
+    final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -44,18 +58,14 @@ class _RatingStarsState extends State<RatingStars> {
           Container(
             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: GestureDetector(
-              onTap: () async {
-                setState(() {
-                  //  print(i+1);
-                  starPressed = true;
-                  starPressedIndex = i; // TODO refactor this code
-                });
+              onTap: () {
+                bloc.starPressed(i);
               },
               child: Icon(
-                (starPressed && i <= starPressedIndex)
+                (data.starPressed && i <= data.starPressedIndex)
                     ? Icons.star
                     : Icons.star_border_purple500_outlined,
-                color: (starPressed && i <= starPressedIndex)
+                color: (data.starPressed && i <= data.starPressedIndex)
                     ? Colors.yellowAccent[700]
                     : Colors.grey[600],
                 size: 40,
@@ -66,7 +76,7 @@ class _RatingStarsState extends State<RatingStars> {
     );
   }
 
-  Future<void> _onClickStar(int i) async {
+  Future<void> _onClickRateButton(int i) async {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     await bloc.rateTheProductByNStars(i + 1);
   }

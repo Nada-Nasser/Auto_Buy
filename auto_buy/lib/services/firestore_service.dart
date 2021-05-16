@@ -6,13 +6,15 @@ class CloudFirestoreService {
 
   static CloudFirestoreService instance = CloudFirestoreService._();
 
+  /// This function Read all document in a collection and return it in a list
+  /// The function uses [collectionPath] to reach the collection in firestore
+  /// and uses [builder] to convert the map fetched from the firestore to the desired dataType [T]
   Future<List<T>> getCollectionData<T>({
-    @required String path,
+    @required String collectionPath,
     @required T Function(Map<String, dynamic> data, String documentId) builder,
     Query Function(Query query) queryBuilder,
-    int Function(T lhs, T rhs) sort,
   }) async {
-    Query query = FirebaseFirestore.instance.collection(path);
+    Query query = FirebaseFirestore.instance.collection(collectionPath);
     if (queryBuilder != null) {
       query = queryBuilder(query);
     }
@@ -24,6 +26,11 @@ class CloudFirestoreService {
     return result;
   }
 
+  /// This function update a specific field value in a document in firestore
+  /// it uses [collectionPath] to reach the collection that contains the document
+  /// , [documentID] to reach the needed document only,
+  /// [fieldName] which is the name of the field ew need to change its value
+  /// and the [updatedValue] that contain the new value we want to write in firestore.
   Future<void> updateDocumentField(
       {@required String collectionPath,
       @required String documentID,
@@ -41,16 +48,23 @@ class CloudFirestoreService {
     }
   }
 
+  /// This function Read only one document in a collection and return it in a object with data type [T}.
+  /// The function uses [collectionPath] to reach the collection in firestore
+  /// , [documentId] to reach the needed document only,
+  /// and uses [builder] to convert the map fetched from the firestore to the desired dataType [T]
   Future<T> readOnceDocumentData<T>({
-    @required String path,
+    @required String collectionPath,
     @required documentId,
     @required T Function(Map<String, dynamic> data, String documentId) builder,
   }) async {
-    final ref = FirebaseFirestore.instance.collection(path);
+    final ref = FirebaseFirestore.instance.collection(collectionPath);
     DocumentSnapshot snapshot = await ref.doc(documentId).get();
     return builder(snapshot.data(), documentId);
   }
 
+  /// This function used to checks if a specific document exists in firestore or not
+  /// it uses [docPath] to reach the needed document
+  /// and returns [True] if it exists of [False] if not.
   Future<bool> checkExist({@required String docPath}) async {
     bool exists = false;
     try {
@@ -66,21 +80,31 @@ class CloudFirestoreService {
     }
   }
 
+  /// This function used to write new document in firestore
+  /// it uses [documentPath] to reach the needed document,
+  /// and [data] Map contains the document fields
   Future<void> setDocument({
-    @required String path,
+    @required String documentPath,
     @required Map<String, dynamic> data,
   }) async {
-    final reference = FirebaseFirestore.instance.doc(path);
-    print('$path: $data');
+    final reference = FirebaseFirestore.instance.doc(documentPath);
+    print('$documentPath: $data');
     await reference.set(data);
   }
 
+  /// This function used to delete document from firestore
+  /// it uses [documentPath] to reach the needed document,
   Future<void> deleteDocument({@required String path}) async {
     final reference = FirebaseFirestore.instance.doc(path);
     print('delete: $path');
     await reference.delete();
   }
 
+  /// This function returns a [Stream] on a collection in firestore
+  /// that can be used to listen any event occur in this collection.
+  /// it uses [path] to reach the collection in firestore
+  /// , [builder] that convert any document in this collection into an object of type [T]
+  /// , [queryBuilder] can be used to filter the received snapshots
   Stream<List<T>> collectionStream<T>({
     @required String path,
     @required T Function(Map<String, dynamic> data, String documentId) builder,
@@ -104,6 +128,10 @@ class CloudFirestoreService {
     });
   }
 
+  /// This function returns a [Stream] on a specific document in firestore
+  /// that can be used to listen any event occur in this document.
+  /// it uses [path] to reach the document in firestore
+  /// [builder] that convert that document fields into an object of type [T]
   Stream<T> documentStream<T>({
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentID),

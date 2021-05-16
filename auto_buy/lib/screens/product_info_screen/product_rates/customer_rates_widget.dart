@@ -16,14 +16,6 @@ class _CustomerRatesSectionState extends State<CustomerRatesSection> {
     super.initState();
   }
 
-  /**
-      @override
-      void dispose() {
-      final bloc = Provider.of<ProductInfoScreenBloc>(context,listen: false);
-      bloc.disposeRatesStream();
-      super.dispose();
-      }*/
-
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
@@ -72,7 +64,7 @@ class _CustomerRatesSectionState extends State<CustomerRatesSection> {
                 SizedBox(
                   height: 5,
                 ),
-                Text("${rates[i - 1]} rate(s)")
+                Text("${rates[i]} rate(s)")
               ],
             ),
         ],

@@ -1,8 +1,8 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/models/product_rate.dart';
 import 'package:auto_buy/models/shopping_cart_item.dart';
 import 'package:auto_buy/services/api_paths.dart';
 import 'package:auto_buy/services/firestore_service.dart';
-import 'package:flutter/cupertino.dart';
 
 class ProductInfoScreenServices {
   final _firestoreService = CloudFirestoreService.instance;
@@ -15,7 +15,7 @@ class ProductInfoScreenServices {
 
   Future<void> addProductToUserWishList(String uid, String productID) async =>
       await _firestoreService.setDocument(
-        path: APIPath.userWishListProductPath(uid, productID),
+        documentPath: APIPath.userWishListProductPath(uid, productID),
         data: {},
       );
 
@@ -30,7 +30,7 @@ class ProductInfoScreenServices {
     try {
       /// add product to shopping cart
       await _firestoreService.setDocument(
-        path: APIPath.userShoppingCartItemPath(
+        documentPath: APIPath.userShoppingCartItemPath(
             uid, DateTime.now().toIso8601String()),
         data: cartItem.toMap(),
       );
@@ -56,38 +56,39 @@ class ProductInfoScreenServices {
         ),
       );
 
+  /*
   Future<int> readProductNumberOfRatesForNStars(int n, String productID) async {
     List<Rate> rates = await _firestoreService.getCollectionData(
         path: APIPath.nStarsProductRatesCollectionPath(n, productID),
         builder: (data, documentId) => Rate.fromMap(data, documentId));
     return rates.length;
+  }*/
+
+  Future<List<Rate>> readProductRates(String productId) async {
+    List<Rate> rates = await _firestoreService.getCollectionData(
+        collectionPath: APIPath.productRatesCollectionPath(productId),
+        builder: (data, documentId) => Rate.fromMap(data, documentId));
+
+    return rates;
   }
 
   Future<void> rateProductWithNStars(
       int n, String uid, String productID) async {
     try {
+      Rate rate = Rate(nStars: n, id: uid);
+      await _firestoreService.setDocument(
+        documentPath: APIPath.userRateOnProductDocumentPath(productID, uid),
+        data: rate.toMap(),
+      );
+
+      /*
       await _firestoreService.setDocument(
         path: APIPath.nStarsProductRatesDocumentPath(n, productID, uid),
         data: {},
-      );
+      );*/
     } on Exception catch (e) {
       throw e;
     }
   }
 }
 
-class Rate {
-  final String id;
-
-  Rate({@required this.id});
-
-  factory Rate.fromMap(Map<String, dynamic> values, String id) {
-    return Rate(
-      id: id,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {};
-  }
-}
