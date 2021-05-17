@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/product_info_screen/product_info_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/product_info_screen/product_info_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_app_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_search_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_search_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1sfSlTVKxYefiSxYu4AS8x5K8Eh" />
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/auto_buy/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flutter.main.dart" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="" />
+      <created>1621262301859</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1621262301859</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="572" y="217" key="#Notifications" timestamp="1621291206881">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="572" y="217" key="#Notifications/63.0.1303.768@63.0.1303.768" timestamp="1621291206881" />
+    <state width="1246" height="30" key="GridCell.Tab.0.bottom" timestamp="1621286579332">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state width="1246" height="30" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
+    <state width="1246" height="30" key="GridCell.Tab.0.center" timestamp="1621286579332">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state width="1246" height="30" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
+    <state width="1246" height="30" key="GridCell.Tab.0.left" timestamp="1621286579332">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state width="1246" height="30" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
+    <state width="1246" height="30" key="GridCell.Tab.0.right" timestamp="1621286579332">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state width="1246" height="30" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
+    <state x="106" y="0" key="SettingsEditor" timestamp="1621211106979">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="106" y="0" key="SettingsEditor/63.0.1303.768@63.0.1303.768" timestamp="1621211106979" />
+    <state x="287" y="168" key="run.anything.popup" timestamp="1621291273507">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="287" y="168" key="run.anything.popup/63.0.1303.768@63.0.1303.768" timestamp="1621291273507" />
+  </component>
+</project>

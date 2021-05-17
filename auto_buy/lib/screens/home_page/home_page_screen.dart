@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+
 }
 
 class _HomePageState extends State<HomePage> {
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         hasLeading: false,
       ),
       drawer: _drawer(context),
-      body: HomePageProducts(),
+      body:HomePageProducts(),
     );
   }
 }

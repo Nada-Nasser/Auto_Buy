@@ -40,8 +40,8 @@ class ProductInfoScreen extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         flexibleSpace: Container(
-            margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-            child: customSearchBar(context)),
+          margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
+        ),
         title: Text(""),
         elevation: 10,
       ),
