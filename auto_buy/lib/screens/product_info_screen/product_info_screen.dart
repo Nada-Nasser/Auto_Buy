@@ -1,11 +1,11 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
 import 'package:auto_buy/screens/product_info_screen/product_rates/rates_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/adding_to_carts_buttons.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/quantity_and_total_price_widget.dart';
+import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/wish_list_button.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_description_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_image_widget.dart';
-import 'package:auto_buy/screens/product_info_screen/widgets/product_name_and_price_widget.dart';
+import 'package:auto_buy/screens/product_info_screen/widgets/product_name_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_number_in_stock_widget.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_search_bar.dart';
@@ -13,6 +13,8 @@ import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'backend/product_info_screen_bloc.dart';
 
 class ProductInfoScreen extends StatelessWidget {
   ProductInfoScreen({Key key, this.bloc, this.url}) : super(key: key);
@@ -74,13 +76,16 @@ class ProductInfoScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, Product product) {
     List<Widget> content = [
-      ProductNameAndPrice(
-        productName: product.name,
-        productPrice: product.price,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ProductName(
+            productName: product.name,
+          ),
+          WishListButton(),
+        ],
       ),
-      SizedBox(
-        height: 5,
-      ),
+      SizedBox(height: 5),
       ProductImage(
         productName: product.name,
         productURL: url,

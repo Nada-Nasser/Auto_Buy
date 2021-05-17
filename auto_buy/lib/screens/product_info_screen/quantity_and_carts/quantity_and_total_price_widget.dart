@@ -1,5 +1,5 @@
+import 'package:auto_buy/screens/product_info_screen/backend/product_info_screen_bloc.dart';
 import 'package:auto_buy/screens/product_info_screen/backend/product_quantity_and_price_model.dart';
-import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +33,8 @@ class QuantityAndTotalPrice extends StatelessWidget {
     return Container(
       width: 0.50 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
-      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-      //decoration: _boxDecoration(Colors.black),
+      //margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+      decoration: boxDecorationWithBordersAndShadow(Colors.black),
       child: Column(
         children: [
           Text(
@@ -68,46 +68,51 @@ class QuantityAndTotalPrice extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => decreaseQuantity(context),
-            child: Container(
-              //  color: Colors.grey,
-              child: Text(
-                "-",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 0.12 * MediaQuery.of(context).size.width,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            "${bloc.quantity}",
-            style: TextStyle(
-              fontSize: 0.08 * MediaQuery.of(context).size.width,
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => increaseQuantity(context),
-            child: Text(
-              "+",
-              style: TextStyle(
-                color: Colors.green[800],
-                fontWeight: FontWeight.bold,
-                fontSize: 0.12 * MediaQuery.of(context).size.width,
-              ),
-            ),
-          ),
+          _decreasingButton(context),
+          SizedBox(width: 10),
+          _quantityWidget(bloc, context),
+          SizedBox(width: 10),
+          _increasingButton(context),
         ],
+      ),
+    );
+  }
+
+  GestureDetector _decreasingButton(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => decreaseQuantity(context),
+      child: Text(
+        "-",
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+          fontSize: 0.12 * MediaQuery.of(context).size.width,
+        ),
+      ),
+    );
+  }
+
+  Text _quantityWidget(ProductInfoScreenBloc bloc, BuildContext context) {
+    return Text(
+      "${bloc.quantity}",
+      style: TextStyle(
+        fontSize: 0.08 * MediaQuery.of(context).size.width,
+      ),
+    );
+  }
+
+  GestureDetector _increasingButton(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => increaseQuantity(context),
+      child: Text(
+        "+",
+        style: TextStyle(
+          color: Colors.green[800],
+          fontWeight: FontWeight.bold,
+          fontSize: 0.12 * MediaQuery.of(context).size.width,
+        ),
       ),
     );
   }

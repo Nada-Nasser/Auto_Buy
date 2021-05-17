@@ -6,7 +6,7 @@ class CloudFirestoreService {
 
   static CloudFirestoreService instance = CloudFirestoreService._();
 
-  /// This function Read all document in a collection and return it in a list
+  /// This function Read all documents in a collection and return it in a list
   /// The function uses [collectionPath] to reach the collection in firestore
   /// and uses [builder] to convert the map fetched from the firestore to the desired dataType [T]
   Future<List<T>> getCollectionData<T>({

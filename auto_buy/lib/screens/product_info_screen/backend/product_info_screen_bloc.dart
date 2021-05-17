@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:auto_buy/models/monthly_cart_product_item.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/models/product_rate.dart';
 import 'package:auto_buy/models/shopping_cart_item.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'backend/product_info_screen_Services.dart';
-import 'backend/product_quantity_and_price_model.dart';
+import 'product_info_screen_Services.dart';
+import 'product_quantity_and_price_model.dart';
+import 'user_rates_model.dart';
 
 class ProductInfoScreenBloc {
   ProductInfoScreenServices _services = ProductInfoScreenServices();
+
   Product product;
   final String uid;
 
@@ -17,6 +20,17 @@ class ProductInfoScreenBloc {
 
   Stream<Product> get productOnChangeStream =>
       _services.getProductStream(product.id);
+
+  WishListButtonServices _wishListBloc = WishListButtonServices();
+
+  Future<void> checkProductInUserWishList() async =>
+      await _wishListBloc.checkProductInUserWishList(uid, product.id);
+
+  Future<String> onClickWishListButton() async =>
+      await _wishListBloc.onClickWishListButton(uid, product.id);
+
+  Stream<bool> get productInWishListStream =>
+      _wishListBloc.productInWishListStream;
 
   void updateProduct(Product updatedProduct) {
     product = updatedProduct;
@@ -40,27 +54,8 @@ class ProductInfoScreenBloc {
       ? "You cannot buy more than ${product.numberInStock} items"
       : "The product is out of stock for now";
 
-  bool get isProductInWishList =>
-      _productQuantityAndPriceModel.isProductInWishList;
-
   double get totalPrice =>
       _productQuantityAndPriceModel.quantity * product.price;
-
-  Future<void> checkProductInUserWishList() async {
-    bool exists = await _services.checkProductInWishList(uid, product.id);
-    print(exists);
-    _updateQuantityAndPriceModelWith(isProductInWishList: exists);
-  }
-
-  Future<void> _addToWishList() async {
-    await _services.addProductToUserWishList(uid, product.id);
-    _updateQuantityAndPriceModelWith(isProductInWishList: true);
-  }
-
-  Future<void> _deleteFromWishList() async {
-    await _services.deleteProductToUserWishList(uid, product.id);
-    _updateQuantityAndPriceModelWith(isProductInWishList: false);
-  }
 
   Future<String> onClickShoppingCartButton() async {
     if (product.numberInStock == 0) return "The product is out of stock";
@@ -73,7 +68,7 @@ class ProductInfoScreenBloc {
           lastModifiedDat: DateTime.now(),
         );
 
-        await _services.addProductToUserShopping(
+        await _services.addProductToUserShoppingCart(
             uid, cartItem, product.numberInStock);
 
         _updateQuantityAndPriceModelWith(quantity: 0);
@@ -85,22 +80,6 @@ class ProductInfoScreenBloc {
         else
           return "You can't buy more than ${product.numberInStock}";
       }
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
-
-  Future<String> onClickWishListButton() async {
-    try {
-      String message = "Something Went Wrong";
-      if (_productQuantityAndPriceModel.isProductInWishList) {
-        await _deleteFromWishList();
-        message = "Product deleted from your wish list";
-      } else {
-        await _addToWishList();
-        message = "Product added to your wish list";
-      }
-      return message;
     } on Exception catch (e) {
       throw e;
     }
@@ -124,15 +103,12 @@ class ProductInfoScreenBloc {
     return false;
   }
 
-
   void _updateQuantityAndPriceModelWith({
     int quantity,
-    bool isProductInWishList,
     bool isLoading,
   }) {
     _productQuantityAndPriceModel = _productQuantityAndPriceModel.copyWith(
       quantity: quantity,
-      isProductInWishList: isProductInWishList,
       isLoading: isLoading,
     );
     _quantityAndPriceModelStreamController.sink
@@ -208,23 +184,100 @@ class ProductInfoScreenBloc {
     _ratingStarsStreamController.sink.add(ratingStarsModel);
   }
 
+  Future<List<String>> getMonthlyCartsNames() async =>
+      await _services.readUserMonthlyCartsNames(uid);
+
+  Future<String> onClickMonthlyCartButton(String monthlyCartName) async {
+    try {
+      MonthlyCartItem item = MonthlyCartItem(
+        productId: product.id,
+        quantity: quantity,
+      );
+
+      if (quantity < 1) return "You can not add 0 items to your monthly carts";
+
+      await _services.addProductToMonthlyCart(uid, monthlyCartName, item);
+
+      return "Product added to $monthlyCartName monthly cart";
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
   ///*************************************************************************
 }
 
-class UserRatingStarsModel {
-  final bool starPressed;
-  final int starPressedIndex;
+class MonthlyCartButtonServices {
+  ProductInfoScreenServices _services = ProductInfoScreenServices();
 
-  UserRatingStarsModel({this.starPressed = false, this.starPressedIndex = 0});
+  Future<List<String>> getMonthlyCartsNames(String uid) async =>
+      await _services.readUserMonthlyCartsNames(uid);
 
-  UserRatingStarsModel copyWith({
-    bool starPressed,
-    int starPressedIndex,
-  }) {
-    return UserRatingStarsModel(
-      starPressed: starPressed ?? this.starPressed,
-      starPressedIndex: starPressedIndex ?? this.starPressedIndex,
-    );
+  Future<String> onClickMonthlyCartButton(String monthlyCartName, String uid,
+      int quantity, String productId) async {
+    try {
+      MonthlyCartItem item = MonthlyCartItem(
+        productId: productId,
+        quantity: quantity,
+      );
+
+      if (quantity < 1) return "You can not add 0 items to your monthly carts";
+
+      await _services.addProductToMonthlyCart(uid, monthlyCartName, item);
+
+      return "Product added to $monthlyCartName monthly cart";
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 }
-//**************
+
+class WishListButtonServices {
+  ProductInfoScreenServices _services = ProductInfoScreenServices();
+  bool _isProductInWishList = false;
+  StreamController<bool> _productInWishListStreamController =
+      StreamController.broadcast();
+
+  void disposeProductInWishListStreamController() =>
+      _productInWishListStreamController.close();
+
+  Stream<bool> get productInWishListStream =>
+      _productInWishListStreamController.stream;
+
+  void updateProductInWishListStream(bool productInWishList) {
+    _isProductInWishList = productInWishList;
+    _productInWishListStreamController.sink.add(productInWishList);
+  }
+
+  Future<void> checkProductInUserWishList(String uid, String productID) async {
+    bool exists = await _services.checkProductInWishList(uid, productID);
+    print(exists);
+    updateProductInWishListStream(exists);
+  }
+
+  Future<void> _addToWishList(String uid, String productID) async {
+    await _services.addProductToUserWishList(uid, productID);
+    updateProductInWishListStream(true);
+  }
+
+  Future<void> _deleteFromWishList(String uid, String productID) async {
+    await _services.deleteProductToUserWishList(uid, productID);
+    updateProductInWishListStream(false);
+  }
+
+  Future<String> onClickWishListButton(String uid, String productID) async {
+    try {
+      String message = "Something Went Wrong";
+      if (_isProductInWishList) {
+        await _deleteFromWishList(uid, productID);
+        message = "Product deleted from your wish list";
+      } else {
+        await _addToWishList(uid, productID);
+        message = "Product added to your wish list";
+      }
+      return message;
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+}
