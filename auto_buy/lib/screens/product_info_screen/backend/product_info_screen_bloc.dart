@@ -15,11 +15,18 @@ class ProductInfoScreenBloc {
 
   Product product;
   final String uid;
+  List<Product> sameCategoryProducts = [];
 
   ProductInfoScreenBloc({@required this.product, @required this.uid});
 
   Stream<Product> get productOnChangeStream =>
       _services.getProductStream(product.id);
+
+  Future<void> getProductSameCategory() async {
+    sameCategoryProducts =
+        await _services.readCategoryProducts(product.categoryID);
+    // print(sameCategoryProducts);
+  }
 
   WishListButtonServices _wishListBloc = WishListButtonServices();
 

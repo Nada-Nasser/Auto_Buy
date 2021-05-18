@@ -36,7 +36,7 @@ class Product {
     this.sizeUnit = "",
   }) : assert(priceBeforeDiscount != 0);
 
-  factory Product.fromMap(Map<dynamic, dynamic> value, String id) {
+  factory Product.fromMap(Map<String, dynamic> value, String id) {
     return Product(
       id: id,
       name: value['name'],

@@ -6,7 +6,7 @@ import 'package:auto_buy/screens/my_orders/my_orders_screen.dart';
 import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/screens/wishlist/wishlist_screen.dart';
-import 'package:auto_buy/services/firebase_auth_service.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

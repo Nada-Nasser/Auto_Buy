@@ -1,7 +1,7 @@
 import 'package:auto_buy/screens/home_page/home_page_screen.dart';
 import 'package:auto_buy/screens/register_page/verification_needed_screen.dart';
 import 'package:auto_buy/screens/welcome_page/welcome_screen.dart';
-import 'package:auto_buy/services/firebase_auth_service.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

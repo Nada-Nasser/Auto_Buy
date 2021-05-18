@@ -1,4 +1,4 @@
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/peoducts_list.dart';
+import 'package:auto_buy/models/peoducts_list.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/widgets/home_page_products_list.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';

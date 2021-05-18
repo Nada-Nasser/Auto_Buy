@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:auto_buy/models/peoducts_list.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/backend/home_page_products_service.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/list_type.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/peoducts_list.dart';
-import 'package:auto_buy/services/api_paths.dart';
+import 'package:auto_buy/services/firebase_backend/api_paths.dart';
 
 class ProductsListViewBloc {
   final HomePageProductsServices databaseServices = HomePageProductsServices();

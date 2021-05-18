@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/services/firebase_backend/firebase_auth_service.dart';
 
 class VerificationNeeded extends StatefulWidget {
   @override

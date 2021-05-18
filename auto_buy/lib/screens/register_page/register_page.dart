@@ -1,10 +1,11 @@
 import 'package:auto_buy/blocs/register_screen_change_notifier.dart';
 import 'package:auto_buy/screens/register_page/register_using_email_form.dart';
-import 'package:auto_buy/services/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/services/firebase_backend/firebase_auth_service.dart';
 
 class RegisterScreen extends StatelessWidget {
   @override

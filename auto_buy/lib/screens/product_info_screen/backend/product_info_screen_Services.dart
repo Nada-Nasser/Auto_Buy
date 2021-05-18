@@ -2,105 +2,54 @@ import 'package:auto_buy/models/monthly_cart_product_item.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/models/product_rate.dart';
 import 'package:auto_buy/models/shopping_cart_item.dart';
-import 'package:auto_buy/services/api_paths.dart';
-import 'package:auto_buy/services/firestore_service.dart';
+import 'package:auto_buy/services/monthly_cart_services.dart';
+import 'package:auto_buy/services/products_services.dart';
+import 'package:auto_buy/services/shopping_cart_services.dart';
+import 'package:auto_buy/services/wish_list_backend_services.dart';
 
 class ProductInfoScreenServices {
-  final _firestoreService = CloudFirestoreService.instance;
+  final _shoppingCartServices = ShoppingCartServices();
+  final _wishListServices = WishListServices();
+  final _monthlyCartServices = MonthlyCartServices();
+  final _productServices = ProductsBackendServices();
 
   Stream<Product> getProductStream(String productID) =>
-      _firestoreService.documentStream(
-        path: APIPath.productPath(productID: productID),
-        builder: (data, documentId) => Product.fromMap(data, documentId),
-      );
+      _productServices.getProductStream(productID);
+
+  Future<List<Rate>> readProductRates(String productId) async =>
+      await _productServices.readProductRates(productId);
+
+  Future<void> rateProductWithNStars(
+          int n, String uid, String productID) async =>
+      await _productServices.rateProductWithNStars(n, uid, productID);
 
   Future<void> addProductToUserWishList(String uid, String productID) async =>
-      await _firestoreService.setDocument(
-        documentPath: APIPath.userWishListProductPath(uid, productID),
-        data: {},
-      );
+      await _wishListServices.addProductToUserWishList(uid, productID);
 
-  Future<void> deleteProductToUserWishList(String uid, String productID) async =>
-      await _firestoreService.deleteDocument(
-        path: APIPath.userWishListProductPath(uid, productID),
-      );
-
-  Future<void> addProductToUserShoppingCart(
-      String uid, ShoppingCartItem cartItem, int numberInStock) async {
-    try {
-      /// add product to shopping cart
-      await _firestoreService.setDocument(
-        documentPath: APIPath.userShoppingCartItemPath(
-            uid, DateTime.now().toIso8601String()),
-        data: cartItem.toMap(),
-      );
-
-      /// decrease product.numberInStock
-      print('$numberInStock - ${cartItem.quantity}');
-      await _firestoreService.updateDocumentField(
-        collectionPath: APIPath.productsPath(),
-        documentID: cartItem.productID,
-        fieldName: Product.numberInStockFieldName,
-        updatedValue: numberInStock - cartItem.quantity,
-      );
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
+  Future<void> deleteProductToUserWishList(
+          String uid, String productID) async =>
+      await _wishListServices.deleteProductToUserWishList(uid, productID);
 
   Future<bool> checkProductInWishList(String uid, String productID) async =>
-      await _firestoreService.checkExist(
-        docPath: APIPath.userWishListProductPath(
-          uid,
-          productID,
-        ),
-      );
+      await _wishListServices.checkProductInWishList(uid, productID);
 
-  Future<List<Rate>> readProductRates(String productId) async {
-    List<Rate> rates = await _firestoreService.getCollectionData(
-        collectionPath: APIPath.productRatesCollectionPath(productId),
-        builder: (data, documentId) => Rate.fromMap(data, documentId));
-
-    return rates;
-  }
-
-  Future<void> rateProductWithNStars(int n, String uid, String productID) async {
-    try {
-      Rate rate = Rate(nStars: n, id: uid);
-      await _firestoreService.setDocument(
-        documentPath: APIPath.userRateOnProductDocumentPath(productID, uid),
-        data: rate.toMap(),
-      );
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
+  Future<void> addProductToUserShoppingCart(
+          String uid, ShoppingCartItem cartItem, int numberInStock) async =>
+      await _shoppingCartServices.addProductToUserShoppingCart(
+          uid, cartItem, numberInStock);
 
   Future<List<String>> readUserMonthlyCartsNames(String uid) async =>
-      _firestoreService.getCollectionData(
-        collectionPath: APIPath.userMonthlyCartsPath(uid),
-        builder: (data, documentId) => documentIdBuilder(data, documentId),
-      );
+      await _monthlyCartServices.readUserMonthlyCartsNames(uid);
 
   Future<List<MonthlyCartItem>> readMonthlyCartProducts(
           String uid, String cartName) async =>
-      _firestoreService.getCollectionData(
-          collectionPath:
-              APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
-          builder: (values, id) => MonthlyCartItem.fromMap(values, id));
+      await _monthlyCartServices.readMonthlyCartProducts(uid, cartName);
 
   Future<void> addProductToMonthlyCart(
           String uid, String cartName, MonthlyCartItem product) async =>
-      _firestoreService.setDocument(
-        documentPath: APIPath.userMonthlyCartProductDocumentPath(
-          uid,
-          cartName,
-          product.productId,
-        ),
-        data: product.toMap(),
-      );
-}
+      await _monthlyCartServices.addProductToMonthlyCart(
+          uid, cartName, product);
 
-String documentIdBuilder(Map<String, dynamic> data, String documentId) {
-  return documentId;
+  Future<List<Product>> readCategoryProducts(String categoryID) async =>
+      await _productServices.readCategoryProducts(categoryID);
 }

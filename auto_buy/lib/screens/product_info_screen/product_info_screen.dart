@@ -1,4 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_in_same_category_widget/product_in_same_category_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/product_rates/rates_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/adding_to_carts_buttons.dart';
 import 'package:auto_buy/screens/product_info_screen/quantity_and_carts/quantity_and_total_price_widget.dart';
@@ -7,7 +8,7 @@ import 'package:auto_buy/screens/product_info_screen/widgets/product_description
 import 'package:auto_buy/screens/product_info_screen/widgets/product_image_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_name_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_number_in_stock_widget.dart';
-import 'package:auto_buy/services/firebase_auth_service.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +114,7 @@ class ProductInfoScreen extends StatelessWidget {
           )),
       _buildContainer(context, RatesSection()),
       SizedBox(height: 10),
+      _buildContainer(context, ProductInSameCategoryWidget()),
     ];
 
     return Padding(

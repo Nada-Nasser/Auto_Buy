@@ -11,7 +11,7 @@ class LoadingImage extends StatelessWidget {
       height: height,
       child: Image.asset(
         "assets/gifs/loading_2.gif",
-        fit: BoxFit.fill,
+        //fit: BoxFit.fill,
       ),
     );
   }
