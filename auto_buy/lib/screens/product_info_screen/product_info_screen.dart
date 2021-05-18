@@ -8,7 +8,6 @@ import 'package:auto_buy/screens/product_info_screen/widgets/product_image_widge
 import 'package:auto_buy/screens/product_info_screen/widgets/product_name_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/widgets/product_number_in_stock_widget.dart';
 import 'package:auto_buy/services/firebase_auth_service.dart';
-import 'package:auto_buy/widgets/custom_search_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,40 +37,40 @@ class ProductInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-            margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-            child: customSearchBar(context)),
         title: Text(""),
         elevation: 10,
       ),
-      body: StreamBuilder<Product>(
-          stream: bloc.productOnChangeStream,
-          builder: (context, snapshot) {
-            try {
-              if (snapshot.hasError) {
-                print(snapshot.error.toString());
-                return Text(
-                    'Something went wrong , ${snapshot.error.toString()}');
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(child: LoadingImage());
-              }
-              if (snapshot.hasData) {
-                print("Product updated");
-                final product = snapshot.data;
-                bloc.updateProduct(product);
-                //     print('${product.toString()}');
-                return _buildContent(context, product);
-              } else
-                return Text("no data");
-            } on Exception catch (e) {
-              throw e;
-            }
-          }),
+      body: _buildStreamBuilder(),
     );
+  }
+
+  StreamBuilder<Product> _buildStreamBuilder() {
+    return StreamBuilder<Product>(
+        stream: bloc.productOnChangeStream,
+        builder: (context, snapshot) {
+          try {
+            if (snapshot.hasError) {
+              print(snapshot.error.toString());
+              return Text(
+                  'Something went wrong , ${snapshot.error.toString()}');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(child: LoadingImage());
+            }
+            if (snapshot.hasData) {
+              print("Product updated");
+              final product = snapshot.data;
+              bloc.updateProduct(product);
+              return _buildContent(context, product);
+            } else
+              return Text("no data");
+          } on Exception catch (e) {
+            throw e;
+          }
+        });
   }
 
   Widget _buildContent(BuildContext context, Product product) {
@@ -79,40 +78,75 @@ class ProductInfoScreen extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ProductName(
-            productName: product.name,
-          ),
+          ProductName(productName: product.name),
           WishListButton(),
         ],
       ),
-      SizedBox(height: 5),
-      ProductImage(
-        productName: product.name,
-        productURL: url,
-      ),
-      ProductNumberInStockWidget(numberInStock: product.numberInStock),
-      QuantityAndTotalPrice(),
-      AddingToCartsButtons(),
-      ProductDescription(
-        productBrand: product.brand,
-        productCategory: product.categoryID,
-        productDescription: product.description,
-        productSize: product.size,
-        productSizeUnit: product.sizeUnit,
-        productSubCategory: product.subCategory,
-      ),
-      RatesSection(),
+      _buildContainer(
+          context,
+          Column(
+            children: [
+              ProductImage(
+                productName: product.name,
+                productURL: url,
+              ),
+              ProductNumberInStockWidget(numberInStock: product.numberInStock),
+            ],
+          )),
+      _buildContainer(
+          context,
+          Column(
+            children: [
+              QuantityAndTotalPrice(),
+              AddingToCartsButtons(),
+            ],
+          )),
+      _buildContainer(
+          context,
+          ProductDescription(
+            productBrand: product.brand,
+            productCategory: product.categoryID,
+            productDescription: product.description,
+            productSize: product.size,
+            productSizeUnit: product.sizeUnit,
+            productSubCategory: product.subCategory,
+          )),
+      _buildContainer(context, RatesSection()),
       SizedBox(height: 10),
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: ListView.builder(
         itemCount: content.length,
         itemBuilder: (BuildContext context, int index) {
           return content[index];
         },
       ),
+    );
+  }
+
+  BoxDecoration _boxDecorationNoBorders() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(5.0),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey,
+          offset: Offset(0.0, 1.0), //(x,y)
+          blurRadius: 1.0,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContainer(BuildContext context, Widget child) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+      decoration: _boxDecorationNoBorders(),
+      padding: EdgeInsets.fromLTRB(5, 15, 5, 20),
+      child: child,
     );
   }
 }

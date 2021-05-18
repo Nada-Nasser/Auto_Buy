@@ -26,6 +26,9 @@ class _HomePageState extends State<HomePage> {
       appBar: customAppBar(
         context,
         hasLeading: false,
+        /* flexibleSpace: Container(
+            margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
+            child: customSearchBar(context)),*/
       ),
       drawer: _drawer(context),
       body: HomePageProducts(),

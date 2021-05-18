@@ -32,7 +32,6 @@ class _WishListButtonState extends State<WishListButton> {
   Container buildWishListButton(
       BuildContext context, bool isProductInWishList) {
     return Container(
-      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
       height: 0.15 * MediaQuery.of(context).size.width,
       width: 0.15 * MediaQuery.of(context).size.width,
 

@@ -1,4 +1,3 @@
-import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,63 +13,64 @@ class AddingToCartsButtons extends StatelessWidget {
 
   Container _buildContent(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(4, 30, 4, 0),
+      margin: const EdgeInsets.fromLTRB(4, 5, 4, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _addToCartButton(
-              context,
-              "Add To Shopping Cart",
-              Icons.shopping_cart_outlined,
-              (context) => onClickShoppingCartButton(context)),
+            context: context,
+            text: "Add To Shopping Cart",
+            icon: Icons.shopping_cart_sharp,
+            onTap: (context) => onClickShoppingCartButton(context),
+            backgroundColor: Colors.indigoAccent[100],
+            textColor: Colors.white,
+            iconColor: Colors.amber,
+          ),
           SizedBox(
             height: 20,
           ),
-          _addToCartButton(context, "Add To Monthly Cart", Icons.calendar_today,
-              (context) => onClickMonthlyCartButton(context)),
+          _addToCartButton(
+              context: context,
+              text: "Add To Monthly Cart",
+              icon: Icons.calendar_today_sharp,
+              onTap: (context) => _onClickMonthlyCartButton(context),
+              backgroundColor: Colors.yellow[700],
+              textColor: Colors.white,
+              iconColor: Colors.black54),
         ],
       ),
     );
   }
 
-  Widget _addToCartButton(
+  Widget _addToCartButton({
     BuildContext context,
     String text,
     IconData icon,
     Future<void> Function(BuildContext context) onTap,
-  ) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(8.0),
-      decoration: boxDecorationWithBordersAndShadow(Colors.black),
-      child: ElevatedButton.icon(
-        icon: Icon(
-          icon,
-          size: 0.1 * MediaQuery.of(context).size.width,
-          color: Colors.deepOrangeAccent,
+    Color backgroundColor = Colors.white,
+    Color textColor = Colors.black45,
+    Color iconColor,
+  }) {
+    return ElevatedButton.icon(
+      icon: Icon(
+        icon,
+        size: 0.07 * MediaQuery.of(context).size.width,
+        color: iconColor,
+      ),
+      label: Text(
+        text,
+        style: TextStyle(
+          color: textColor,
+          fontSize: 0.045 * MediaQuery.of(context).size.width,
+          fontWeight: FontWeight.w500,
         ),
-        label: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.grey[800],
-              fontSize: 0.054 * MediaQuery.of(context).size.width,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        onPressed: () => onTap(context),
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          primary: Colors.white,
-          textStyle: TextStyle(
-            color: Colors.grey[800],
-            fontSize: 0.055 * MediaQuery.of(context).size.width,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      ),
+      onPressed: () => onTap(context),
+      style: ElevatedButton.styleFrom(
+        elevation: 5,
+        primary: backgroundColor,
+        padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
       ),
     );
   }
@@ -81,7 +81,7 @@ class AddingToCartsButtons extends StatelessWidget {
     showInSnackBar(msg, context);
   }
 
-  onClickMonthlyCartButton(BuildContext context) async {
+  Future<void> _onClickMonthlyCartButton(BuildContext context) async {
     //TODO : Select Monthly Cart name from Dialog?
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     List<String> names = await bloc.getMonthlyCartsNames();

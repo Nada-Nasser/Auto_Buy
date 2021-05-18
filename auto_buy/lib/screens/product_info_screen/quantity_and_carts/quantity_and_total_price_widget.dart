@@ -1,6 +1,5 @@
 import 'package:auto_buy/screens/product_info_screen/backend/product_info_screen_bloc.dart';
 import 'package:auto_buy/screens/product_info_screen/backend/product_quantity_and_price_model.dart';
-import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,14 +33,14 @@ class QuantityAndTotalPrice extends StatelessWidget {
       width: 0.50 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
       //margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-      decoration: boxDecorationWithBordersAndShadow(Colors.black),
+      // decoration: boxDecorationWithBordersAndShadow(Colors.black),
       child: Column(
         children: [
           Text(
             "Total Price : ",
             style: TextStyle(
               color: Colors.grey[700],
-              fontSize: 0.0446 * MediaQuery.of(context).size.width,
+              fontSize: 0.040 * MediaQuery.of(context).size.width,
             ),
           ),
           SizedBox(height: 5),
@@ -49,7 +48,7 @@ class QuantityAndTotalPrice extends StatelessWidget {
             child: Text(
               "EGP ${bloc.totalPrice.toStringAsFixed(2)}",
               style: TextStyle(
-                fontSize: 0.06 * MediaQuery.of(context).size.width,
+                fontSize: 0.05 * MediaQuery.of(context).size.width,
               ),
               softWrap: true,
             ),
@@ -64,7 +63,7 @@ class QuantityAndTotalPrice extends StatelessWidget {
     return Container(
       width: 0.40 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
-      decoration: boxDecorationWithBordersAndShadow(Colors.black),
+      // decoration: boxDecorationWithBordersAndShadow(Colors.black),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -81,13 +80,13 @@ class QuantityAndTotalPrice extends StatelessWidget {
   GestureDetector _decreasingButton(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => decreaseQuantity(context),
+      onTap: () => _decreaseQuantity(context),
       child: Text(
         "-",
         style: TextStyle(
           color: Colors.red,
           fontWeight: FontWeight.bold,
-          fontSize: 0.12 * MediaQuery.of(context).size.width,
+          fontSize: 0.10 * MediaQuery.of(context).size.width,
         ),
       ),
     );
@@ -97,7 +96,7 @@ class QuantityAndTotalPrice extends StatelessWidget {
     return Text(
       "${bloc.quantity}",
       style: TextStyle(
-        fontSize: 0.08 * MediaQuery.of(context).size.width,
+        fontSize: 0.06 * MediaQuery.of(context).size.width,
       ),
     );
   }
@@ -105,19 +104,19 @@ class QuantityAndTotalPrice extends StatelessWidget {
   GestureDetector _increasingButton(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => increaseQuantity(context),
+      onTap: () => _increaseQuantity(context),
       child: Text(
         "+",
         style: TextStyle(
           color: Colors.green[800],
           fontWeight: FontWeight.bold,
-          fontSize: 0.12 * MediaQuery.of(context).size.width,
+          fontSize: 0.09 * MediaQuery.of(context).size.width,
         ),
       ),
     );
   }
 
-  void increaseQuantity(BuildContext context) {
+  void _increaseQuantity(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     bool flag = bloc.increaseQuantity();
     if (!flag) {
@@ -125,7 +124,7 @@ class QuantityAndTotalPrice extends StatelessWidget {
     }
   }
 
-  void decreaseQuantity(BuildContext context) {
+  void _decreaseQuantity(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     bool flag = bloc.decreaseQuantity();
     if (!flag) {
