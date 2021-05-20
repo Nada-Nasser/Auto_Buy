@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+    <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="custom_app_bar.dart">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/product_info_screen/product_info_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/product_info_screen/product_info_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/trending_products_screen/homepage_products_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/trending_products_screen/homepage_products_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_app_bar.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_search_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/widgets/custom_search_bar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,7 +55,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunManager">
@@ -56,31 +82,55 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="572" y="217" key="#Notifications" timestamp="1621291206881">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
     <state x="572" y="217" key="#Notifications/63.0.1303.768@63.0.1303.768" timestamp="1621291206881" />
-    <state width="1246" height="30" key="GridCell.Tab.0.bottom" timestamp="1621286579332">
+    <state x="291" y="129" key="AndroidCreateResourceDirectoryDialog" timestamp="1621363151011">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1246" height="30" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
-    <state width="1246" height="30" key="GridCell.Tab.0.center" timestamp="1621286579332">
+    <state x="291" y="129" key="AndroidCreateResourceDirectoryDialog/63.0.1303.768@63.0.1303.768" timestamp="1621363151011" />
+    <state width="1258" height="10" key="GridCell.Tab.0.bottom" timestamp="1621459340002">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1246" height="30" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
-    <state width="1246" height="30" key="GridCell.Tab.0.left" timestamp="1621286579332">
+    <state width="1258" height="10" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1621459340002" />
+    <state width="1258" height="10" key="GridCell.Tab.0.center" timestamp="1621459340002">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1246" height="30" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
-    <state width="1246" height="30" key="GridCell.Tab.0.right" timestamp="1621286579332">
+    <state width="1258" height="10" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1621459340002" />
+    <state width="1258" height="10" key="GridCell.Tab.0.left" timestamp="1621459340002">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1246" height="30" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1621286579332" />
-    <state x="106" y="0" key="SettingsEditor" timestamp="1621211106979">
+    <state width="1258" height="10" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1621459340002" />
+    <state width="1258" height="10" key="GridCell.Tab.0.right" timestamp="1621459340002">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state x="106" y="0" key="SettingsEditor/63.0.1303.768@63.0.1303.768" timestamp="1621211106979" />
+    <state width="1258" height="10" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1621459340002" />
+    <state x="251" y="0" key="SettingsEditor" timestamp="1621372775655">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="251" y="0" key="SettingsEditor/63.0.1303.768@63.0.1303.768" timestamp="1621372775655" />
+    <state x="354" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1621364803690">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="354" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/63.0.1303.768@63.0.1303.768" timestamp="1621364803690" />
+    <state x="489" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1621365578370">
+      <screen x="63" y="0" width="1303" height="768" />
+    </state>
+    <state x="489" y="277" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/63.0.1303.768@63.0.1303.768" timestamp="1621365578370" />
     <state x="287" y="168" key="run.anything.popup" timestamp="1621291273507">
       <screen x="63" y="0" width="1303" height="768" />
     </state>

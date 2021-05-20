@@ -5,10 +5,10 @@ import 'custom_search_bar.dart';
 
 Widget customAppBar(BuildContext context, {hasLeading = true}) {
   return AppBar(
-    iconTheme: IconThemeData(color: Colors.white), //the drawer icon
+    iconTheme: IconThemeData(color: Colors.white),
     flexibleSpace: Container(
       margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-      // child: customSearchBar(context)
+      child: customSearchBar(context),
     ),
     leading: hasLeading
         ? IconButton(
