@@ -6,6 +6,8 @@ import 'package:auto_buy/screens/home_page/home_page_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
+import 'BackEnd/QueryFromFireStore.dart';
+
 class SearchBar extends StatefulWidget {
   @override
   _SearchBarState createState() => _SearchBarState();
@@ -98,7 +100,7 @@ class _SearchBarState extends State<SearchBar> {
                 if (_filteredSearchHistory.isEmpty &&
                     controller.query.isEmpty) {
                   return Container(
-                    height: 56,
+                    height: 57,
                     width: double.infinity,
                     alignment: Alignment.center,
                     child: Text(
@@ -185,6 +187,7 @@ class _SearchBarState extends State<SearchBar> {
         elevation: 4.0,
       ),
 
+      body: GetUserName(),
     );
   }
 }

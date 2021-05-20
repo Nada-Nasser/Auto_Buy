@@ -1,4 +1,4 @@
-import 'package:auto_buy/screens/SearchBar/searhBar.dart';
+import 'package:auto_buy/screens/home_page/SearchBar/searhBar.dart';
 import 'package:auto_buy/screens/optio/optio_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
