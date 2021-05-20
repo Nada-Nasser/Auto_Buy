@@ -15,22 +15,8 @@ class HomePageProducts extends StatelessWidget {
       homePageCatigories(context),
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
-      /*SizedBox(
-       // width: MediaQuery.of(context).size.width,
-        child: Image.asset(
-          "assets/gifs/text.gif",
-          height: 0.07 * MediaQuery.of(context).size.height,
-        ),
-      ),*/
       AdvertisementSwiper.create(context),
       buildDivider(),
-      /*SizedBox(
-        // width: MediaQuery.of(context).size.width,
-        child: Image.asset(
-          "assets/gifs/most_trending.gif",
-          height: 0.07 * MediaQuery.of(context).size.height,
-        ),
-      ),*/
       buildSectionHeader(context, "Most Trending"),
       HomePageProductsListView.create(
         context,

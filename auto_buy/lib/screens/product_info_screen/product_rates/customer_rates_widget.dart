@@ -1,4 +1,4 @@
-import 'package:auto_buy/screens/product_info_screen/product_info_screen_bloc.dart';
+import 'package:auto_buy/screens/product_info_screen/backend/product_info_screen_bloc.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

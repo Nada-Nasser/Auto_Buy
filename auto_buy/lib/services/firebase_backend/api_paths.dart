@@ -32,4 +32,15 @@ class APIPath {
 
   static String userRateOnProductDocumentPath(String productId, String uid) =>
       "/products/$productId/rates/$uid";
+
+  static String userMonthlyCartsPath(String uid) =>
+      "/monthly_carts/$uid/monthly_carts";
+
+  static String userMonthlyCartProductsCollectionPath(
+          String uid, String cartName) =>
+      "/monthly_carts/$uid/monthly_carts/$cartName/cart_products";
+
+  static String userMonthlyCartProductDocumentPath(
+          String uid, String cartName, String productId) =>
+      "/monthly_carts/$uid/monthly_carts/$cartName/cart_products/$productId";
 }

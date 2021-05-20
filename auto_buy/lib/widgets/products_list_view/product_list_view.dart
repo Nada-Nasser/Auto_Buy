@@ -1,7 +1,8 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/widgets/product_list_tile.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/widgets/products_list_view/product_list_tile.dart';
 
 class ProductsListView extends StatelessWidget {
   final double height;

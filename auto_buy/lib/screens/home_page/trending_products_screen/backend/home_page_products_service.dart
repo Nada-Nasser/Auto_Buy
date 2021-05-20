@@ -1,9 +1,9 @@
 import 'package:auto_buy/models/advertisement_model.dart';
+import 'package:auto_buy/models/peoducts_list.dart';
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/peoducts_list.dart';
-import 'package:auto_buy/services/api_paths.dart';
-import 'package:auto_buy/services/firestore_service.dart';
-import 'package:auto_buy/services/storage_service.dart';
+import 'package:auto_buy/services/firebase_backend/api_paths.dart';
+import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 
 class HomePageProductsServices {
   final _storageService = FirebaseStorageService.instance;
@@ -30,10 +30,10 @@ class HomePageProductsServices {
         builder: (data, documentId) => ProductsList.fromMap(data, documentId),
       );
 
-  Future<Product> readProduct(String id) async {
+  Future<Product> readProduct(String productID) async {
     Product product = await _firestoreService.readOnceDocumentData(
-      collectionPath: "products",
-      documentId: id,
+      collectionPath: APIPath.productsPath(),
+      documentId: productID,
       builder: (data, documentID) => Product.fromMap(data, documentID),
     );
 

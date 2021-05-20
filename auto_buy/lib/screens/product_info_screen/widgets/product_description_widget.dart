@@ -1,4 +1,3 @@
-import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:flutter/material.dart';
 
 class ProductDescription extends StatelessWidget {
@@ -22,10 +21,7 @@ class ProductDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(5, 20, 5, 20),
-      padding: const EdgeInsets.all(8.0),
-      width: MediaQuery.of(context).size.width,
-      decoration: boxDecorationWithBordersAndShadow(Colors.black),
+      padding: const EdgeInsets.all(5.0),
       child: _buildContent(context),
     );
   }
@@ -37,13 +33,16 @@ class ProductDescription extends StatelessWidget {
         SizedBox(height: 10),
         _descriptionContentWidget(context),
         SizedBox(height: 10),
+        Divider(
+          height: 10,
+        ),
+        SizedBox(height: 10),
         _buildDescriptionElementWidget(context, "Brand : ", productBrand),
         SizedBox(height: 10),
         _buildDescriptionElementWidget(context, "Category : ", productCategory),
         SizedBox(height: 10),
         _buildDescriptionElementWidget(
             context, "Size : ", '$productSize $productSizeUnit'),
-        SizedBox(height: 10),
       ],
     );
   }
@@ -53,7 +52,7 @@ class ProductDescription extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Text(
         productDescription,
-        textAlign: TextAlign.start,
+        textAlign: TextAlign.justify,
         softWrap: true,
         style: TextStyle(
           color: Colors.grey[700],

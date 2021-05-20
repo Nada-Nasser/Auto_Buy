@@ -8,9 +8,10 @@ class ProductNumberInStockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: Center(
         child: Text(
           "$numberInStock piece(s) left in stock",
           style: TextStyle(

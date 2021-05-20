@@ -35,8 +35,7 @@ Widget customSearchBar(BuildContext context) {
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) {
                   return SearchBar();
-                }
-            ),
+                }),
           );
         }),
   );

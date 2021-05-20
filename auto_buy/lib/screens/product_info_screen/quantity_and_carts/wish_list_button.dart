@@ -1,9 +1,8 @@
-import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../product_info_screen_bloc.dart';
+import '../backend/product_info_screen_bloc.dart';
 
 class WishListButton extends StatefulWidget {
   @override
@@ -21,16 +20,28 @@ class _WishListButtonState extends State<WishListButton> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
+    return StreamBuilder<bool>(
+        stream: bloc.productInWishListStream,
+        initialData: false,
+        builder: (context, snapshot) {
+          final isProductInWishList = snapshot.data;
+          return buildWishListButton(context, isProductInWishList);
+        });
+  }
+
+  Container buildWishListButton(
+      BuildContext context, bool isProductInWishList) {
     return Container(
       height: 0.15 * MediaQuery.of(context).size.width,
       width: 0.15 * MediaQuery.of(context).size.width,
-      decoration: boxDecorationWithBordersAndShadow(Colors.black),
+
+      ///decoration: boxDecorationWithBordersAndShadow(Colors.black),
       child: IconButton(
         iconSize: 0.1 * MediaQuery.of(context).size.width,
         onPressed: () => onClickWishListButton(context),
         icon: Icon(
-          bloc.isProductInWishList ? Icons.favorite : Icons.favorite_border,
-          color: bloc.isProductInWishList ? Colors.red : Colors.red,
+          isProductInWishList ? Icons.favorite : Icons.favorite_border,
+          color: isProductInWishList ? Colors.red[900] : Colors.grey[700],
         ),
       ),
     );
