@@ -13,18 +13,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       //the drawer icon
+      //the drawer icon
       backgroundColor: Colors.white,
       appBar: customAppBar(
         context,
@@ -34,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             child: customSearchBar(context)),*/
       ),
       drawer: _drawer(context),
-      body:HomePageProducts(),
+      body: HomePageProducts(),
     );
   }
 }
@@ -79,115 +77,100 @@ Widget _drawer(BuildContext context) {
               Icons.analytics_sharp,
               color: Colors.green,
               size: 30,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => ExpenseTrackerScreen(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => ExpenseTrackerScreen(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'Monthly Supplies',
             Icon(
               Icons.calendar_today_outlined,
               color: Colors.orange,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => MonthlySuppliesScreen(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => MonthlySuppliesScreen(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'My WishList',
             Icon(
               Icons.favorite,
               color: Colors.red,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => WishListScreen(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => WishListScreen(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'Shopping Cart',
             Icon(
               Icons.add_shopping_cart_outlined,
               color: Colors.blue,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => ShoppingCartScreen(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => ShoppingCartScreen(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'User Account',
             Icon(
               Icons.person,
               color: Colors.black,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => Profile(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => Profile(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'Friends',
             Icon(
               Icons.people,
               color: Colors.black,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => AllScreens(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => AllScreens(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'My Orders',
             Icon(
               Icons.list_alt,
               color: Colors.purpleAccent,
+            ), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => MyOrdersScreen(),
             ),
-            () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => MyOrdersScreen(),
-                ),
-              );
-            }),
+          );
+        }),
         customTextStle(
             'LogOut',
             Icon(
               Icons.logout,
               color: Colors.redAccent,
-            ),
-                () {
-                auth.signOut();
-                }),
+            ), () {
+          auth.signOut();
+        }),
       ],
     ),
   );
@@ -200,5 +183,3 @@ Widget customTextStle(String text, Widget icon, VoidCallback onTap) {
     onTap: onTap,
   );
 }
-
-

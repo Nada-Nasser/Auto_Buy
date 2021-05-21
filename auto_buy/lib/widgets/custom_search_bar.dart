@@ -5,37 +5,43 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 Widget customSearchBar(BuildContext context) {
   // TODO: FARAH
-  return Padding(
-    padding: EdgeInsets.fromLTRB(50, 5, 12, 5),
-    child: TextFormField(
-        decoration: InputDecoration(
-          border: UnderlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(10.0),
-            ),
-          ),
-          hintText: 'type something',
-          fillColor: Colors.white,
-          filled: true,
-          suffixIcon: IconButton(
-              icon: Icon(Icons.tag_faces),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => OptioScreen(),
+  return Container(
+    padding: EdgeInsets.fromLTRB(50, 5, 0, 5),
+    child: Row(
+      children: [
+        Flexible(
+          child: TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(10.0),
                   ),
+                ),
+                hintText: 'type something',
+                fillColor: Colors.white,
+                filled: true,
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                      opaque: false,
+                      pageBuilder: (BuildContext context, _, __) {
+                        return SearchBar();
+                      }),
                 );
               }),
         ),
-        onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-                opaque: false,
-                pageBuilder: (BuildContext context, _, __) {
-                  return SearchBar();
-                }),
-          );
-        }),
+        IconButton(
+            icon: Icon(Icons.tag_faces),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => OptioScreen(),
+                ),
+              );
+            }),
+      ],
+    ),
   );
 }

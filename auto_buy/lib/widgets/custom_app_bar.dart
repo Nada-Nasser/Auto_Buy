@@ -6,7 +6,7 @@ import 'custom_search_bar.dart';
 Widget customAppBar(BuildContext context, {hasLeading = true}) {
   return AppBar(
     iconTheme: IconThemeData(color: Colors.white),
-    flexibleSpace: Container(child: SafeArea(child: customSearchBar(context))),
+    flexibleSpace: SafeArea(child: customSearchBar(context)),
     leading: hasLeading
         ? IconButton(
             icon: Icon(Icons.home),
