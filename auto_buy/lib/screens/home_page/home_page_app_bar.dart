@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 Widget homePageAppBar(BuildContext context){
     return AppBar(
       iconTheme: IconThemeData(color: Colors.white),
-      flexibleSpace: customSearchBar(context),
+      flexibleSpace: SafeArea(child: customSearchBar(context)),
       actions: [
       ],
     );

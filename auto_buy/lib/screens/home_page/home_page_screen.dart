@@ -140,7 +140,7 @@ Widget _drawer(BuildContext context) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,
-                  builder: (context) => UserAccountScreen(),
+                  builder: (context) => Profile(),
                 ),
               );
             }),
@@ -155,7 +155,7 @@ Widget _drawer(BuildContext context) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,
-                  builder: (context) => FriendsScreen(),
+                  builder: (context) => AllScreens(),
                 ),
               );
             }),
