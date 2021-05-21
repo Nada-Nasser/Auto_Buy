@@ -41,6 +41,12 @@ class ProductInfoScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
+
+        flexibleSpace: Container(
+          margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
+        ),
+
+// homepage-trendingView
         title: Text(""),
         elevation: 10,
       ),

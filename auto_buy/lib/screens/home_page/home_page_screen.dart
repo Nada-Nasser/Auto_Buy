@@ -8,6 +8,7 @@ import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/screens/wishlist/wishlist_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
+import 'package:auto_buy/widgets/custom_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,12 +17,14 @@ import 'package:provider/provider.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+
 }
 
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       //the drawer icon
       backgroundColor: Colors.white,
       appBar: customAppBar(
         context,
@@ -31,7 +34,7 @@ class _HomePageState extends State<HomePage> {
             child: customSearchBar(context)),*/
       ),
       drawer: _drawer(context),
-      body: HomePageProducts(),
+      body:HomePageProducts(),
     );
   }
 }
