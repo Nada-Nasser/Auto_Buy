@@ -1,11 +1,11 @@
 import 'package:auto_buy/blocs/sign_in_changes_notifier.dart';
 import 'package:auto_buy/screens/sign_in_page/sign_in_using_email_form.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/services/firebase_backend/firebase_auth_service.dart';
 
 class SignInPage extends StatelessWidget {
   @override
