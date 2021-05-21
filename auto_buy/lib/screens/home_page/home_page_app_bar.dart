@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 Widget homePageAppBar(BuildContext context){
     return AppBar(
       iconTheme: IconThemeData(color: Colors.white),
-      flexibleSpace: customSearchBar(context),
+      flexibleSpace: SafeArea(child: customSearchBar(context)),
       actions: [
       ],
     );
@@ -26,7 +26,7 @@ Widget customSearchBar(BuildContext context) {
         filled: true,
         //TODO: search button function
         suffixIcon: IconButton(icon: Icon(Icons.tag_faces), onPressed: () {
-          Navigator.pop(context);
+          // Navigator.pop(context);
           Navigator.of(context).push(
             MaterialPageRoute(
               fullscreenDialog: true,

@@ -29,6 +29,7 @@ dependencies:
   provider: ^5.0.0
   cloud_firestore: ^1.0.3
   flutter_svg: ^0.21.0+1
+  http: ^0.13.3
 
 
 
@@ -58,6 +59,11 @@ flutter:
      - assets/images/optiologo.svg
      - assets/images/google-logo.png
      - assets/images/facebook-logo.png
+     - assets/images/Optio_body_happy.svg
+     - assets/images/optioface.svg
+     - assets/images/optiobodyhi.svg
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
