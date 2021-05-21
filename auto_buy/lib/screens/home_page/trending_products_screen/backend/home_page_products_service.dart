@@ -26,7 +26,7 @@ class HomePageProductsServices {
 
   Stream<List<ProductsList>> eventProductsStream() =>
       _firestoreService.collectionStream(
-        path: APIPath.productsPath(),
+        path: APIPath.eventProductsPath(),
         builder: (data, documentId) => ProductsList.fromMap(data, documentId),
       );
 

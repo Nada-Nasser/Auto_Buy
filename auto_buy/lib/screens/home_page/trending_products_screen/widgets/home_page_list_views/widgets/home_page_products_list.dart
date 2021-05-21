@@ -34,7 +34,7 @@ class _HomePageProductsListState extends State<HomePageProductsList> {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
               return Text(
-                  'Something went wrong , ${snapshot.error.toString()}');
+                  'Something went wrong2 , ${snapshot.error.toString()}');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(
