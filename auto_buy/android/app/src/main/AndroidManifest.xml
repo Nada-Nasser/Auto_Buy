@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.me.auto_buy">
+   <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="auto_buy"
         android:icon="@mipmap/ic_launcher">
+		android:usesCleartextTraffic="true"
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

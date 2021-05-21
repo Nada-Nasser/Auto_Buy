@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 class ProductsListView extends StatelessWidget {
   final double height;
   final List<Product> productsList;
+  final bool isHorizontal;
 
-  ProductsListView({Key key, this.height, @required this.productsList})
+  ProductsListView(
+      {Key key,
+      this.height,
+      @required this.productsList,
+      this.isHorizontal = true})
       : super(key: key);
 
   @override
@@ -16,7 +21,7 @@ class ProductsListView extends StatelessWidget {
       height: height ?? calcHeight(context),
       child: ListView.builder(
         itemCount: productsList.length,
-        scrollDirection: Axis.horizontal,
+        scrollDirection: isHorizontal ? Axis.horizontal : Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
           return ProductListTile(
             product: productsList[index],
