@@ -26,46 +26,55 @@ class _GetUserNameState extends State<GetUserName> {
   final _firestoreService = CloudFirestoreService.instance;
   final _storageService = FirebaseStorageService.instance;
 
-  Future<List<Product>> readCategoryProducts() async {
+  Future<List<Product>> ReadProducts() async {
     List<Product> products = await _firestoreService.getCollectionData(
-      collectionPath: '/products',
+      collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),
-      queryBuilder: (query) =>
-          query.where('name', isGreaterThanOrEqualTo: 'Rice'),
+      queryBuilder: (query) => query.where('name', isNotEqualTo: ""),
     );
-
     for (int i = 0; i < products.length; i++) {
       String url = await _storageService.downloadURL(products[i].picturePath);
       products[i].picturePath = url;
     }
-
     return products;
   }
 
-  List<Product> productsList = [];
-
-
   @override
   Widget build(BuildContext context) {
-      return FutureBuilder(
-        future: readCategoryProducts(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    return FutureBuilder(
+      future: ReadProducts(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        try {
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
+            return Text('Something went wrong , ${snapshot.error.toString()}');
+          }
           if (snapshot.connectionState != ConnectionState.done) {
             return Column(
               children: [
                 Container(width: 50, child: LoadingImage()),
               ],
             );
+          }
+          List<Product> ListOfProducts = [];
+          if (snapshot.hasData) {
+            snapshot.data.forEach((element) {
+              if (element.name.contains("Elmatbakh")) {
+                ListOfProducts.add(element);
+              }
+            });
+
+            return ProductsListView(
+              height: MediaQuery.of(context).size.height,
+              productsList: ListOfProducts,
+              isHorizontal: false,
+            );
           } else
-            return ProductsListView(height: MediaQuery.of(context).size.height
-              ,productsList: snapshot.data,isHorizontal: false,);
-        },
-      );
+            return Text("no data");
+        } on Exception catch (e) {
+          throw e;
+        }
+      },
+    );
   }
 }
-/*  Stream<List<Product>> eventProductsStream() =>
-      _firestoreService.collectionStream(
-        path: APIPath.productsPath(),
-        builder: (data, documentId) => Product.fromMap(data, documentId),
-        // queryBuilder: (query) => query.where('name', isEqualTo: 'Elmatbakh Egyptian Rice')
-      );*/

@@ -2,7 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/home_page_screen.dart';
+import 'package:auto_buy/services/firebase_backend/api_paths.dart';
+import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
@@ -15,9 +19,26 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   static const HistoryLenght = 5;
-  List<String> _searchHistory = ["help me plz"];
+  List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
+  List<Product> Products = [];
   String selectedTerm;
+  final _firestoreService = CloudFirestoreService.instance;
+  final _storageService = FirebaseStorageService.instance;
+
+  Future<List<Product>> ReadProducts() async {
+    List<Product> products = await _firestoreService.getCollectionData(
+      collectionPath: APIPath.productsPath(),
+      builder: (value, id) => Product.fromMap(value, id),
+      queryBuilder: (query) => query.where('name', isNotEqualTo: ""),
+    );
+    for (int i = 0; i < products.length; i++) {
+      String url = await _storageService.downloadURL(products[i].picturePath);
+      products[i].picturePath = url;
+    }
+    Products = products;
+    return products;
+  }
 
   List<String> filterSearchTerms({
     @required String filter,
@@ -25,7 +46,7 @@ class _SearchBarState extends State<SearchBar> {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
       return _searchHistory.reversed
-          .where((term) => term.startsWith(filter))
+          .where((term) => term.contains(filter))
           .toList();
     } else {
       return _searchHistory.reversed.toList();
@@ -163,10 +184,12 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   @override
-  void initState() {
+  Future<void> initState() {
     super.initState();
     controller = FloatingSearchBarController();
     _filteredSearchHistory = filterSearchTerms(filter: null);
+    ReadProducts();
+    print("done?");
   }
 
   @override
@@ -186,7 +209,6 @@ class _SearchBarState extends State<SearchBar> {
         backgroundColor: Colors.orange,
         elevation: 4.0,
       ),
-
       body: GetUserName(),
     );
   }
