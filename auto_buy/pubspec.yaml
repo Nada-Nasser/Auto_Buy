@@ -31,7 +31,12 @@ dependencies:
   flutter_svg: ^0.21.0+1
   http: ^0.13.3
 
-
+  flutter_card_swipper: ^0.4.0
+  photo_view: ^0.11.1
+  firebase_storage: ^8.0.6
+  path_provider: ^2.0.1
+  cached_network_image: ^3.0.0
+  material_floating_search_bar: ^0.2.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,16 +59,29 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/optioface.png
-     - assets/images/optiologo.png
-     - assets/images/optiologo.svg
-     - assets/images/google-logo.png
-     - assets/images/facebook-logo.png
-     - assets/images/Optio_body_happy.svg
-     - assets/images/optioface.svg
-     - assets/images/optiobodyhi.svg
-
-
+    - assets/images/optioface.png
+    - assets/images/optiologo.png
+    - assets/images/optiologo.svg
+    - assets/images/google-logo.png
+    - assets/images/facebook-logo.png
+    - assets/images/Optio_body_happy.svg
+    - assets/images/optioface.svg
+    - assets/images/optiobodyhi.svg
+    - assets/images/testing_ads/ad1.png
+    - assets/images/testing_ads/ad2.png
+    - assets/images/testing_ads/ad3.png
+    - assets/images/testing_ads/ad4.png
+    - assets/images/testing_ads/ad5.png
+    - assets/images/testing_ads/1.jpg
+    - assets/images/testing_ads/2.jpg
+    - assets/images/testing_ads/3.jpg
+    - assets/images/testing_ads/5.jpg
+    - assets/images/testing_ads/6.jpg
+    - assets/gifs/loading.gif
+    - assets/gifs/loading_2.gif
+    - assets/gifs/top_sales.gif
+    - assets/gifs/text.gif
+    - assets/gifs/most_trending.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
