@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a852cc70-1fec-4a40-8016-693e6bdb642c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Implementation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Implementation.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[LHTDU17113010051]" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1r4fupV3lNrjhqiv4LV4pPhUho3" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$PROJECT_DIR$/../../../../../AppData/Android/SDK" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/auto_buy/assets/images" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\FCI\Y4T2\Graduation Project\Implementation\auto_buy\assets\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\FCI\Y4T2\Graduation Project\Implementation\auto_buy\lib\screens\register_page" />
+      <recent name="D:\Documents\FCI\Y4T2\Graduation Project\Implementation\auto_buy\assets\images" />
+      <recent name="D:\Documents\FCI\Y4T2\Graduation Project\Implementation\assets\images" />
+      <recent name="D:\Documents\FCI\Y4T2\Graduation Project\Implementation\auto_buy\lib\screens\home_page" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/auto_buy/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flutter.main.dart" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a852cc70-1fec-4a40-8016-693e6bdb642c" name="Default Changelist" comment="" />
+      <created>1618240507536</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1618240507536</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Sign in and register UI">
+      <created>1618266108232</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1618266108232</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Sign in and register UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sign in and register UI" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="130" y="38" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1618243052239">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="130" y="38" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1618243052239" />
+    <state x="413" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1618252481497">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="413" y="111" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1618252481497" />
+    <state x="502" y="110" key="AndroidProcessChooserDialog" timestamp="1618251569386">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="502" y="110" key="AndroidProcessChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1618251569386" />
+    <state x="280" y="33" key="CommitChangelistDialog2" timestamp="1618266103343">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="280" y="33" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1618266103343" />
+    <state x="445" y="180" key="FileChooserDialogImpl" timestamp="1618240806993">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="445" y="180" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1618240806993" />
+    <state width="1323" height="197" key="GridCell.Tab.0.bottom" timestamp="1618266285521">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="197" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1618266285521" />
+    <state width="1323" height="197" key="GridCell.Tab.0.center" timestamp="1618266285521">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="197" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1618266285521" />
+    <state width="1323" height="197" key="GridCell.Tab.0.left" timestamp="1618266285521">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="197" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1618266285521" />
+    <state width="1323" height="197" key="GridCell.Tab.0.right" timestamp="1618266285521">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="197" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1618266285521" />
+    <state x="143" y="18" key="SettingsEditor" timestamp="1618240819974">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="143" y="18" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1618240819974" />
+    <state x="275" y="84" key="Vcs.Push.Dialog.v2" timestamp="1618266114979">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="84" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1618266114979" />
+    <state x="339" y="162" key="run.anything.popup" timestamp="1618261496932">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1618261496932" />
+  </component>
+</project>
