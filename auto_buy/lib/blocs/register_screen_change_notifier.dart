@@ -1,10 +1,12 @@
 import 'package:auto_buy/models/auth_model.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
+import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/string_validation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
-  final auth;
+  final FirebaseAuthService auth;
   AuthenticationScreenModel _model = AuthenticationScreenModel();
 
   RegisterChangeNotifier({this.auth});
@@ -45,6 +47,17 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
   Future<bool> registerUsingGoogle() async {
     updateModelWith(isEnable: false);
     final user = await auth.registerWithGoogle();
+    Map <String, dynamic> data = {
+      "name" : auth.user.displayName == "" ? "" : auth.user.displayName,
+      "friends" : {},
+      "adress" : {"building_number" : "", "city" : "", "street" : ""},
+      "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
+    };
+    try {
+      await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
+    } catch (e){
+      print(e);
+    }
     updateModelWith(isEnable: true);
     if (user != null) {
       return true;
@@ -62,6 +75,15 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       );
       user.sendEmailVerification();
       // TODO: Add user to DB
+      print(name);
+      Map <String, dynamic> data = {
+        "name" : name == "" ? "" : name,
+        "friends" : {},
+        "adress" : {"building_number" : "", "city" : "", "street" : ""},
+        "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
+      };
+      await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
+
       updateModelWith(isLoading: false);
       return true;
     } on FirebaseException catch (e) {
