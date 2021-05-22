@@ -122,6 +122,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                           Text(
                                             snapshot.data['name'],
                                             textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -150,9 +153,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     }),
               ),
               Container(
+                color: Colors.white.withOpacity(0),
                 child: ElevatedButton(
                   onPressed: (){},
-                  child: Text("CheckOut"),
+                  child: Text("Check Out",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),),
                 ),
               )
             ],
