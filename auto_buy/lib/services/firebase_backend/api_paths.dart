@@ -43,4 +43,7 @@ class APIPath {
   static String userMonthlyCartProductDocumentPath(
           String uid, String cartName, String productId) =>
       "/monthly_carts/$uid/monthly_carts/$cartName/cart_products/$productId";
+
+  static String userMonthlyCartDocument(String uid, String cartName) =>
+      "/monthly_carts/$uid/monthly_carts/$cartName";
 }
