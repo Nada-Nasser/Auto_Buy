@@ -3,14 +3,14 @@
 // found in the LICENSE file.
 
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/home_page_screen.dart';
 import 'package:auto_buy/services/firebase_backend/api_paths.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-import 'BackEnd/QueryFromFireStore.dart';
+import 'BackEnd/UI_for_search_results.dart';
 
 class SearchBar extends StatefulWidget {
   @override
@@ -21,12 +21,38 @@ class _SearchBarState extends State<SearchBar> {
   static const HistoryLenght = 5;
   List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
+  List<String> _productNamesList = [];
+
   List<Product> Products = [];
+  List<Product> chosenProduct = [];
   String selectedTerm;
   final _firestoreService = CloudFirestoreService.instance;
   final _storageService = FirebaseStorageService.instance;
+  final Map<String, Product> fromNameToProduct = {};
+  bool FirstSearch = true;
+
+  void search(selectedTerm) {
+    chosenProduct.clear();
+    if (fromNameToProduct.containsKey(selectedTerm))
+      chosenProduct.add(fromNameToProduct[selectedTerm]);
+    else {
+      List<String> temp = filterSearchTerms(filter: selectedTerm);
+      for (String s in temp) {
+        chosenProduct.add(fromNameToProduct[s]);
+      }
+    }
+  }
 
   Future<List<Product>> ReadProducts() async {
+    Products = await ReadProductsFromFirestore();
+    for (Product prod in Products) {
+      fromNameToProduct[prod.name.toLowerCase()] = prod;
+      _productNamesList.add(prod.name.toLowerCase());
+    }
+    print(fromNameToProduct);
+  }
+
+  Future<List<Product>> ReadProductsFromFirestore() async {
     List<Product> products = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),
@@ -36,7 +62,6 @@ class _SearchBarState extends State<SearchBar> {
       String url = await _storageService.downloadURL(products[i].picturePath);
       products[i].picturePath = url;
     }
-    Products = products;
     return products;
   }
 
@@ -45,9 +70,8 @@ class _SearchBarState extends State<SearchBar> {
   }) {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
-      return _searchHistory.reversed
-          .where((term) => term.contains(filter))
-          .toList();
+      filter = filter.toLowerCase();
+      return _productNamesList.where((term) => term.contains(filter)).toList();
     } else {
       return _searchHistory.reversed.toList();
     }
@@ -90,7 +114,10 @@ class _SearchBarState extends State<SearchBar> {
       // Title is displayed on an unopened (inactive) search bar
       title: Text(
         selectedTerm ?? 'what are you looking for?',
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme
+            .of(context)
+            .textTheme
+            .bodyText1,
       ),
       // Hint gets displayed once the search bar is tapped and opened
       hint: 'Search and find out...',
@@ -105,9 +132,15 @@ class _SearchBarState extends State<SearchBar> {
       },
       onSubmitted: (query) {
         setState(() {
-          addSearchTerm(query);
-          selectedTerm = query;
+          if (selectedTerm != "") {
+            addSearchTerm(query);
+            selectedTerm = query;
+
+            /// dah lama 7d ydoos zorar el search 3la klma msh zahralo f el list
+            search(selectedTerm);
+          }
         });
+
         controller.close();
       },
       builder: (context, transition) {
@@ -128,7 +161,10 @@ class _SearchBarState extends State<SearchBar> {
                       'Start searching',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .caption,
                     ),
                   );
                 } else if (_filteredSearchHistory.isEmpty) {
@@ -148,7 +184,8 @@ class _SearchBarState extends State<SearchBar> {
                     mainAxisSize: MainAxisSize.min,
                     children: _filteredSearchHistory
                         .map(
-                          (term) => ListTile(
+                          (term) =>
+                          ListTile(
                             title: Text(
                               term,
                               maxLines: 1,
@@ -167,11 +204,12 @@ class _SearchBarState extends State<SearchBar> {
                               setState(() {
                                 putSearchTermFirst(term);
                                 selectedTerm = term;
+                                search(selectedTerm);
                               });
                               controller.close();
                             },
                           ),
-                        )
+                    )
                         .toList(),
                   );
                 }
@@ -183,9 +221,40 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 
+  Container ErrorMsg() {
+    return Container(
+        height: 500,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+          child: Column(
+            children: [
+              Text(
+                'Oops! No results for $selectedTerm',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(height: 1, fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'check your spelling for typing errors.',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(height: 2, fontSize: 20),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  ProductPrettyListView gridList(List<Product> productsList) {
+    return ProductPrettyListView(productsList: productsList);
+  }
+
   @override
   Future<void> initState() {
     super.initState();
+    FirstSearch = false;
     controller = FloatingSearchBarController();
     _filteredSearchHistory = filterSearchTerms(filter: null);
     ReadProducts();
@@ -200,6 +269,14 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    ProductsListView PLV = ProductsListView(
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
+      productsList: chosenProduct,
+      isHorizontal: false,
+    );
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FSB(),
@@ -209,7 +286,6 @@ class _SearchBarState extends State<SearchBar> {
         backgroundColor: Colors.orange,
         elevation: 4.0,
       ),
-      body: GetUserName(),
-    );
+      body: ((chosenProduct.isEmpty && selectedTerm != null)) ? ErrorMsg() : gridList(chosenProduct));
   }
 }

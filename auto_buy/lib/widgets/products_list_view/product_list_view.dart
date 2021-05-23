@@ -21,24 +21,24 @@ class ProductsListView extends StatelessWidget {
       height: height ?? calcHeight(context),
       child: ListView.builder(
         itemCount: productsList.length,
-        scrollDirection: isHorizontal?Axis.horizontal:Axis.vertical,
+        scrollDirection: isHorizontal ? Axis.horizontal : Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
-          return ProductListTile(
-            product: productsList[index],
-            onTap: () {
-              //  Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => ProductInfoScreen.create(
-                    context,
-                    productsList[index],
-                    productsList[index].picturePath,
+            return ProductListTile(
+              product: productsList[index],
+              onTap: () {
+                //  Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => ProductInfoScreen.create(
+                      context,
+                      productsList[index],
+                      productsList[index].picturePath,
+                    ),
                   ),
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
         },
       ),
     );

@@ -11,16 +11,19 @@ class ProductListTile extends StatelessWidget {
     this.onTap,
     this.backgroundColor = Colors.white,
     @required this.product,
+    this.height = 300.0, this.width = 200.0
   }) : super(key: key);
 
   final Product product;
   final VoidCallback onTap;
   final Color backgroundColor;
 
+  final height ;
+  final width ;
+
   @override
   Widget build(BuildContext context) {
-    final height = 300.0;
-    final width = 200.0;
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap ??
