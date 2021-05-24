@@ -54,4 +54,11 @@ class MonthlyCartServices {
         documentPath: APIPath.userMonthlyCartDocument(uid, name),
         data: monthlyCartModel.toMap());
   }
+
+  Future<void> deleteProductFromMonthlyCart(
+      String uid, String selectedCartName, String productId) async {
+    await _firestoreService.deleteDocument(
+        path: APIPath.userMonthlyCartProductDocumentPath(
+            uid, selectedCartName, productId));
+  }
 }

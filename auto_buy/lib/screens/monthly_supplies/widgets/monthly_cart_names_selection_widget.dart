@@ -24,7 +24,10 @@ class _CartNameDropDownButtonState extends State<CartNameDropDownButton> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: new DropdownButton<String>(
-                      hint: Text("Select item"),
+                      hint: Text(
+                        "Select Cart Name",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       value: selectedName,
                       onChanged: (String name) {
                         setState(() {

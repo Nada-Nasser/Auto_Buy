@@ -14,8 +14,11 @@ class MonthlyCartsScreenBloc {
   final ProductsBackendServices _productsBackendServices =
       ProductsBackendServices();
 
+  String selectedCartName;
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
+
+  Stream<String> get selectedCartNameStream => _cartNameStreamController.stream;
 
   Stream<List<String>> get cartNamesStream =>
       _monthlyCartServices.userMonthlyCartsNamesStream(uid);
@@ -24,16 +27,15 @@ class MonthlyCartsScreenBloc {
 
   void dispose() => _cartNameStreamController.close();
 
-  Stream<String> get selectedCartNameStream => _cartNameStreamController.stream;
-  String selectedCartName;
-
   Future<void> changeSelectedCart(String selectedName) async {
     selectedCartName = selectedName;
     List<MonthlyCartItem> items =
         await _monthlyCartServices.readMonthlyCartProducts(uid, selectedName);
 
     monthlyCartProducts.clear();
+    quantities.clear();
     for (int i = 0; i < items.length; i++) {
+      quantities.add(items[i].quantity);
       final product =
           await _productsBackendServices.readProduct(items[i].productId);
       monthlyCartProducts.add(product);
@@ -47,4 +49,14 @@ class MonthlyCartsScreenBloc {
 
   Future<void> addNewMonthlyCart(String name, DateTime selectedDate) async =>
       await _monthlyCartServices.addNewMonthlyCart(uid, name, selectedDate);
+
+  Future<void> deleteProduct(String productId) async {
+    try {
+      await _monthlyCartServices.deleteProductFromMonthlyCart(
+          uid, selectedCartName, productId);
+      changeSelectedCart(selectedCartName);
+    } on Exception catch (e) {
+      // TODO
+    }
+  }
 }
