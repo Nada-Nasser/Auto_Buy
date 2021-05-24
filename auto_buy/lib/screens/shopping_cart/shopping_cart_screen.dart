@@ -1,6 +1,9 @@
+import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:auto_buy/services/product_map_to_product.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -75,7 +78,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         builder: (data, documentId) => data),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    print(snapshot.data);
                                     return Container(
                                       padding: EdgeInsets.all(10),
                                       margin: EdgeInsets.all(10),
@@ -103,17 +105,38 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                   .downloadURL(snapshot
                                                       .data['pic_path']),
                                               builder: (context, image) {
+                                                Product product =
+                                                    createProductFromSnapShot(
+                                                        snapshot.data);
                                                 if (image.hasData) {
-                                                  return CachedNetworkImage(
-                                                    imageUrl: image.data,
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            LoadingImage(),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                    width: double.infinity,
-                                                    height: 0.5 * 200,
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          fullscreenDialog:
+                                                              true,
+                                                          builder: (context) =>
+                                                              ProductInfoScreen
+                                                                  .create(
+                                                            context,
+                                                            product,
+                                                            image.data,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: image.data,
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              LoadingImage(),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
+                                                      width: double.infinity,
+                                                      height: 0.5 * 200,
+                                                    ),
                                                   );
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -153,13 +176,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     }),
               ),
               Container(
-                color: Colors.white.withOpacity(0),
+                padding: EdgeInsets.all(10),
                 child: ElevatedButton(
-                  onPressed: (){},
-                  child: Text("Check Out",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.orange,
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Check Out",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               )
             ],
