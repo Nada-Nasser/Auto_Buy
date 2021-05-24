@@ -21,6 +21,11 @@ class APIPath {
   static String userShoppingCartItemPath(String uid, String itemID) =>
       "/shopping_carts/$uid/shopping_cart_items/$itemID";
 
+  static String userShoppingCartProductsCollectionPath(
+    String uid,
+  ) =>
+      "/shopping_carts/$uid/shopping_cart_items";
+
   static String userWishListProductPath(String uid, String productID) =>
       "/wish_lists/$uid/wish_list_products/$productID";
 
