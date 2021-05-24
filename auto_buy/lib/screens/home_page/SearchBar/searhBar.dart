@@ -1,6 +1,3 @@
-// Copyright 2018 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/firebase_backend/api_paths.dart';
@@ -9,6 +6,7 @@ import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BackEnd/UI_for_search_results.dart';
 
@@ -18,7 +16,7 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  static const HistoryLenght = 5;
+  static const HistoryLenght = 10;
   List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
   List<String> _productNamesList = [];
@@ -31,14 +29,31 @@ class _SearchBarState extends State<SearchBar> {
   final Map<String, Product> fromNameToProduct = {};
   bool FirstSearch = true;
 
+  Future<void> _readHistorySharedPrefrence() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'searchHistory';
+    setState(() {
+      _searchHistory = prefs.getStringList(key) ?? [];
+    });
+    _filteredSearchHistory = filterSearchTerms(filter: null);
+
+  }
+  _saveHistorySharedPrefrence() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'searchHistory';
+    prefs.setStringList(key, _searchHistory);
+  }
   void search(selectedTerm) {
     chosenProduct.clear();
-    if (fromNameToProduct.containsKey(selectedTerm))
-      chosenProduct.add(fromNameToProduct[selectedTerm]);
-    else {
-      List<String> temp = filterSearchTerms(filter: selectedTerm);
-      for (String s in temp) {
-        chosenProduct.add(fromNameToProduct[s]);
+    if(selectedTerm != "" && selectedTerm != Null) {
+      if (fromNameToProduct.containsKey(selectedTerm)) {
+        chosenProduct.add(fromNameToProduct[selectedTerm]);
+      }
+      else {
+        List<String> temp = filterSearchTerms(filter: selectedTerm);
+        for (String s in temp) {
+          chosenProduct.add(fromNameToProduct[s]);
+        }
       }
     }
   }
@@ -253,18 +268,20 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Future<void> initState() {
-    super.initState();
     FirstSearch = false;
     controller = FloatingSearchBarController();
-    _filteredSearchHistory = filterSearchTerms(filter: null);
     ReadProducts();
-    print("done?");
+    _readHistorySharedPrefrence();
+    super.initState();
+
   }
 
   @override
   void dispose() {
     controller.dispose();
+    _saveHistorySharedPrefrence();
     super.dispose();
+
   }
 
   @override

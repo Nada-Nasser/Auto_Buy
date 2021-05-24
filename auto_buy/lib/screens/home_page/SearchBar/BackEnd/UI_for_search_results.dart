@@ -15,13 +15,12 @@ import 'package:flutter/material.dart';
 class ProductPrettyListView extends StatelessWidget {
   final double height;
   final List<Product> productsList;
-  final bool isHorizontal;
 
   ProductPrettyListView(
       {Key key,
       this.height,
       @required this.productsList,
-      this.isHorizontal = true})
+      })
       : super(key: key);
 
   @override
