@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'order_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
+  ///testing data
   List<Map<String, dynamic>> testData = [
     {
       "address": {
@@ -72,7 +73,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         data),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    dynamic orderIds = snapshot.data['orders_ids'];
+                    List<dynamic> orderIds = snapshot.data['orders_ids'];
                     return Container(
                       padding: EdgeInsets.only(top: 20),
                       child: ListView.builder(
@@ -152,7 +153,13 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.remove_circle, color: Colors.red,),
-                                          onPressed: (){},
+                                          onPressed: () {
+                                            var toBeRemoved = orderIds.indexOf(orderIds[index]);
+                                            orderIds.removeAt(toBeRemoved);
+                                            print(orderIds);
+                                            CloudFirestoreService.instance.updateDocumentField(collectionPath: "users_orders", documentID: auth.uid, fieldName: "orders_ids", updatedValue: orderIds);
+                                            setState(() {});
+                                          },
                                         ),
                                       ],
                                     ),

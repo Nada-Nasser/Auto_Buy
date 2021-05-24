@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
@@ -48,12 +50,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               ),
               SizedBox(height: 20),
               Expanded(
-                ///this stream builder gets an array of all products purchased by the use
+                ///this stream builder gets an array of all products inside the user's cart
                 child: StreamBuilder(
                     stream: CloudFirestoreService.instance.collectionStream(
                       path: "/shopping_carts/${auth.uid}/shopping_cart_items/",
                       builder: (Map<String, dynamic> data, String documentId) {
-                        return data;
+                        Map<String,dynamic> output={"data":data,"id":documentId};
+                        return output;
                       },
                     ),
                     builder: (context, alldata) {
@@ -68,13 +71,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     (MediaQuery.of(context).size.height / 2),
                           ),
                           itemBuilder: (context, index) {
+                            print(alldata.data[index]['data']);
                             ///this feature builder goes through each item in the user cart
                             return FutureBuilder(
                                 future: CloudFirestoreService.instance
                                     .readOnceDocumentData(
                                         collectionPath: "/products/",
                                         documentId:
-                                            "${alldata.data[index]['product_id']}",
+                                            "${alldata.data[index]['data']['product_id']}",
                                         builder: (data, documentId) => data),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -94,7 +98,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                 MainAxisAlignment.end,
                                             children: [
                                               Text(
-                                                "pcs ${alldata.data[index]['quantity']}",
+                                                "pcs ${alldata.data[index]['data']['quantity']}",
                                                 textAlign: TextAlign.end,
                                               ),
                                             ],
@@ -110,6 +114,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                         snapshot.data);
                                                 if (image.hasData) {
                                                   return GestureDetector(
+                                                    onLongPress: () {
+                                                      showdeleteDialog(context,product.name,"/shopping_carts/${auth.uid}/shopping_cart_items/${alldata.data[index]['id']}");
+                                                    },
                                                     onTap: () {
                                                       Navigator.of(context)
                                                           .push(
@@ -196,4 +203,32 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ));
   }
+}
+
+///delete the all data[index]
+void showdeleteDialog(BuildContext context,String name,String path) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        actionsPadding: EdgeInsets.all(5),
+        title: new Text("Do you want to delete ${name} ?"),
+        actions: <Widget>[
+          new TextButton(
+            child: new Text("Yes", style: TextStyle(color: Colors.red, fontSize: 20),),
+            onPressed: () async{
+              await CloudFirestoreService.instance.deleteDocument(path: path);
+              Navigator.of(context).pop();
+            },
+          ),
+          new TextButton(
+            child: new Text("No", style: TextStyle(color: Colors.green, fontSize: 20),),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
