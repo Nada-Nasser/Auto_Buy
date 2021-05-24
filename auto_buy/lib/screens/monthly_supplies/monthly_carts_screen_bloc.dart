@@ -44,6 +44,14 @@ class MonthlyCartsScreenBloc {
     _cartNameStreamController.add(selectedName);
   }
 
+  int getProductQuantityInTheCart(String productID) {
+    int i;
+    for (i = 0; i < monthlyCartProducts.length; i++)
+      if (monthlyCartProducts[i].id == productID) break;
+
+    return quantities[i];
+  }
+
   Future<bool> checkIfMonthlyCartExist(String name) async =>
       await _monthlyCartServices.checkIfMonthlyCartExist(uid, name);
 
@@ -56,7 +64,18 @@ class MonthlyCartsScreenBloc {
           uid, selectedCartName, productId);
       changeSelectedCart(selectedCartName);
     } on Exception catch (e) {
-      // TODO
+      rethrow;
+    }
+  }
+
+  Future<void> updateProductQuantityInSelectedMonthlyCart(
+      String productId, int q) async {
+    try {
+      await _monthlyCartServices.updateProductQuantityInMonthlyCart(
+          uid, selectedCartName, productId, q);
+      await changeSelectedCart(selectedCartName);
+    } on Exception catch (e) {
+      rethrow;
     }
   }
 }

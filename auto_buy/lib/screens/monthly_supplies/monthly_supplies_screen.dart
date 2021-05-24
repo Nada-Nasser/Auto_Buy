@@ -5,6 +5,7 @@ import 'package:auto_buy/screens/monthly_supplies/widgets/products_grid_view.dar
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
+import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,8 +43,8 @@ class MonthlySuppliesScreen extends StatelessWidget {
                     child: ProductsGridView(
                       products: bloc.monthlyCartProducts,
                       quantities: bloc.quantities,
-                      onTap: onTapProduct,
-                      onLongPress: onLongPressProduct,
+                      onTap: _onTapProduct,
+                      onLongPress: _onLongPressProduct,
                     ),
                   );
                 }),
@@ -87,7 +88,7 @@ class MonthlySuppliesScreen extends StatelessWidget {
     );
   }
 
-  onTapProduct(BuildContext context, Product product) {
+  _onTapProduct(BuildContext context, Product product) {
     //  Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -101,28 +102,110 @@ class MonthlySuppliesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> onLongPressProduct(BuildContext context, Product product) async {
+  Future<void> _onLongPressProduct(
+      BuildContext context, Product product) async {
+    int q = bloc.getProductQuantityInTheCart(product.id);
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deleting Product"),
-            content: Text(
-                "Are you sure you want to delete this product from your ${bloc.selectedCartName} monthly cart"),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text("cancel"),
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text("${product.name}"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "You can delete this product from your ${bloc.selectedCartName} monthly cart",
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(height: 5),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await bloc.deleteProduct(product.id);
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text("Delete"),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    "or",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    "update the quantity you want from this product",
+                    textAlign: TextAlign.justify,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => {
+                          setState(() {
+                            if (q > 0)
+                              q--;
+                            else {
+                              showInSnackBar(
+                                  "Quantity can not be less than zero",
+                                  context);
+                            }
+                          })
+                        },
+                        child: Text(
+                          "-",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 0.10 * MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                      ),
+                      Text("$q"),
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => setState(() {
+                          q++;
+                        }),
+                        child: Text(
+                          "+",
+                          style: TextStyle(
+                            color: Colors.green[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 0.09 * MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (q == 0) {
+                        await bloc.deleteProduct(product.id);
+                        Navigator.of(context).pop(true);
+                      } else {
+                        await bloc.updateProductQuantityInSelectedMonthlyCart(
+                            product.id, q);
+                        Navigator.of(context).pop(true);
+                      }
+                    },
+                    child: Text("update"),
+                  ),
+                ],
               ),
-              FlatButton(
-                onPressed: () async {
-                  await bloc.deleteProduct(product.id);
-                  Navigator.of(context).pop(true);
-                },
-                child: Text("Yes, delete"),
-              ),
-            ],
-          );
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text("cancel"),
+                ),
+              ],
+            );
+          });
         });
   }
 }

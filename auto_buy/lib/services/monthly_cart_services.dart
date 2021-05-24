@@ -26,6 +26,7 @@ class MonthlyCartServices {
           APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
           builder: (values, id) => MonthlyCartItem.fromMap(values, id));
 
+  // TODO: check if exists: edit the quantity, else: set new Document
   Future<void> addProductToMonthlyCart(String uid, String cartName, MonthlyCartItem product) async =>
       _firestoreService.setDocument(
         documentPath: APIPath.userMonthlyCartProductDocumentPath(
@@ -60,5 +61,16 @@ class MonthlyCartServices {
     await _firestoreService.deleteDocument(
         path: APIPath.userMonthlyCartProductDocumentPath(
             uid, selectedCartName, productId));
+  }
+
+  Future<void> updateProductQuantityInMonthlyCart(
+      String uid, String cartName, String productId, int quantity) async {
+    await _firestoreService.updateDocumentField(
+      collectionPath:
+          APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
+      documentID: productId,
+      fieldName: "quantity",
+      updatedValue: quantity,
+    );
   }
 }
