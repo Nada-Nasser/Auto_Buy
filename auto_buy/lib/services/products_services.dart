@@ -64,4 +64,16 @@ class ProductsBackendServices {
 
     return products;
   }
+  Future<List<Product>> ReadProductsFromFirestore() async {
+    List<Product> products = await _firestoreService.getCollectionData(
+      collectionPath: APIPath.productsPath(),
+      builder: (value, id) => Product.fromMap(value, id),
+      queryBuilder: (query) => query.where('name', isNotEqualTo: ""),
+    );
+    for (int i = 0; i < products.length; i++) {
+      String url = await _storageService.downloadURL(products[i].picturePath);
+      products[i].picturePath = url;
+    }
+    return products;
+  }
 }

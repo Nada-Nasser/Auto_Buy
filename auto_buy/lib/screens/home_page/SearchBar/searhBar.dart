@@ -1,8 +1,8 @@
-
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/firebase_backend/api_paths.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
@@ -16,6 +16,8 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  // _SearchBarState({@required this.Products});TODO get already fetched products
+
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
@@ -36,20 +38,20 @@ class _SearchBarState extends State<SearchBar> {
       _searchHistory = prefs.getStringList(key) ?? [];
     });
     _filteredSearchHistory = filterSearchTerms(filter: null);
-
   }
+
   _saveHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'searchHistory';
     prefs.setStringList(key, _searchHistory);
   }
+
   void search(selectedTerm) {
     chosenProduct.clear();
-    if(selectedTerm != "" && selectedTerm != Null) {
+    if (selectedTerm != "" && selectedTerm != Null) {
       if (fromNameToProduct.containsKey(selectedTerm)) {
         chosenProduct.add(fromNameToProduct[selectedTerm]);
-      }
-      else {
+      } else {
         List<String> temp = filterSearchTerms(filter: selectedTerm);
         for (String s in temp) {
           chosenProduct.add(fromNameToProduct[s]);
@@ -59,25 +61,17 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   Future<List<Product>> ReadProducts() async {
-    Products = await ReadProductsFromFirestore();
+    //TODO get already fitched products
+    Products = await ProductsBackendServices().ReadProductsFromFirestore();
+    CreateFromNameToProductMap();
+  }
+
+  CreateFromNameToProductMap() {
     for (Product prod in Products) {
       fromNameToProduct[prod.name.toLowerCase()] = prod;
       _productNamesList.add(prod.name.toLowerCase());
     }
     print(fromNameToProduct);
-  }
-
-  Future<List<Product>> ReadProductsFromFirestore() async {
-    List<Product> products = await _firestoreService.getCollectionData(
-      collectionPath: APIPath.productsPath(),
-      builder: (value, id) => Product.fromMap(value, id),
-      queryBuilder: (query) => query.where('name', isNotEqualTo: ""),
-    );
-    for (int i = 0; i < products.length; i++) {
-      String url = await _storageService.downloadURL(products[i].picturePath);
-      products[i].picturePath = url;
-    }
-    return products;
   }
 
   List<String> filterSearchTerms({
@@ -129,10 +123,7 @@ class _SearchBarState extends State<SearchBar> {
       // Title is displayed on an unopened (inactive) search bar
       title: Text(
         selectedTerm ?? 'what are you looking for?',
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodyText1,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
       // Hint gets displayed once the search bar is tapped and opened
       hint: 'Search and find out...',
@@ -176,10 +167,7 @@ class _SearchBarState extends State<SearchBar> {
                       'Start searching',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .caption,
+                      style: Theme.of(context).textTheme.caption,
                     ),
                   );
                 } else if (_filteredSearchHistory.isEmpty) {
@@ -199,8 +187,7 @@ class _SearchBarState extends State<SearchBar> {
                     mainAxisSize: MainAxisSize.min,
                     children: _filteredSearchHistory
                         .map(
-                          (term) =>
-                          ListTile(
+                          (term) => ListTile(
                             title: Text(
                               term,
                               maxLines: 1,
@@ -224,7 +211,7 @@ class _SearchBarState extends State<SearchBar> {
                               controller.close();
                             },
                           ),
-                    )
+                        )
                         .toList(),
                   );
                 }
@@ -244,6 +231,14 @@ class _SearchBarState extends State<SearchBar> {
           padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
           child: Column(
             children: [
+              Icon(
+                Icons.search_off_rounded,
+                color: Colors.black,
+                size: 70,
+              ),
+              SizedBox(
+                height: 30,
+              ),
               Text(
                 'Oops! No results for $selectedTerm',
                 maxLines: 3,
@@ -273,7 +268,6 @@ class _SearchBarState extends State<SearchBar> {
     ReadProducts();
     _readHistorySharedPrefrence();
     super.initState();
-
   }
 
   @override
@@ -281,28 +275,26 @@ class _SearchBarState extends State<SearchBar> {
     controller.dispose();
     _saveHistorySharedPrefrence();
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
     ProductsListView PLV = ProductsListView(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
+      height: MediaQuery.of(context).size.height,
       productsList: chosenProduct,
       isHorizontal: false,
     );
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: FSB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.orange,
-        elevation: 4.0,
-      ),
-      body: ((chosenProduct.isEmpty && selectedTerm != null)) ? ErrorMsg() : gridList(chosenProduct));
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: FSB(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.orange,
+          elevation: 4.0,
+        ),
+        body: ((chosenProduct.isEmpty && selectedTerm != null))
+            ? ErrorMsg()
+            : gridList(chosenProduct));
   }
 }
