@@ -112,7 +112,7 @@ class _SearchBarState extends State<SearchBar> {
 
   FloatingSearchBar FSB() {
     return FloatingSearchBar(
-      margins: EdgeInsets.fromLTRB(5, 45, 5, 0),
+      margins: EdgeInsets.fromLTRB(5, 50, 5, 0),
       borderRadius: const BorderRadius.all(
         const Radius.circular(8.0),
       ),

@@ -14,6 +14,8 @@ class APIPath {
 
   static String productsPath() => "/products";
 
+  static String Categories()=> "/categories";
+
   static String trendingProductsPath() => "/trending_products";
 
   static String eventProductsPath() => "/event_products";
@@ -43,4 +45,5 @@ class APIPath {
   static String userMonthlyCartProductDocumentPath(
           String uid, String cartName, String productId) =>
       "/monthly_carts/$uid/monthly_carts/$cartName/cart_products/$productId";
+
 }

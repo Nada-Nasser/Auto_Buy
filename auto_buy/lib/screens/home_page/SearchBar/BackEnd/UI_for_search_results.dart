@@ -42,7 +42,7 @@ class ProductPrettyListView extends StatelessWidget {
                 return Card(
                   elevation: 10,
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.orangeAccent, width: 2),
+                      side: BorderSide(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(10)),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
