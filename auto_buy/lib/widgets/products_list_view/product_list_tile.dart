@@ -57,7 +57,7 @@ class ProductListTile extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "EGP ${product.priceBeforeDiscount.toStringAsFixed(2)}",
+              "EGP ${product.priceAfterDiscount.toStringAsFixed(2)}",
               style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 fontWeight: FontWeight.w200,

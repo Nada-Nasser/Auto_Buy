@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
-import 'package:auto_buy/services/product_map_to_product.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -79,7 +76,10 @@ class _WishListScreenState extends State<WishListScreen> {
                                     collectionPath: "/products/",
                                     documentId:
                                     "${alldata.data[index]}",
-                                    builder: (data, documentId) => data),
+                                    builder: (data, documentId) {
+                                      Map<String,dynamic> output={"data":data,"id":documentId};
+                                      return output;
+                                    }),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
                                     // print(snapshot.data);
@@ -98,9 +98,9 @@ class _WishListScreenState extends State<WishListScreen> {
                                               future: FirebaseStorageService
                                                   .instance
                                                   .downloadURL(snapshot
-                                                  .data['pic_path']),
+                                                  .data['data']['pic_path']),
                                               builder: (context, image) {
-                                                Product product = createProductFromSnapShot(snapshot.data);
+                                                Product product = Product.fromMap(snapshot.data['data'], snapshot.data['id']);
                                                 if (image.hasData) {
                                                   return GestureDetector(
                                                     onTap: (){
@@ -132,7 +132,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                                 }
                                               }),
                                           Text(
-                                            snapshot.data['name'],
+                                            snapshot.data['data']['name'],
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,

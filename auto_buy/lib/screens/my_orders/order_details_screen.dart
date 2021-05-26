@@ -1,8 +1,5 @@
-import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
-import 'package:auto_buy/services/product_map_to_product.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +49,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             future: FirebaseStorageService.instance
                                 .downloadURL(snapshot.data['pic_path']),
                             builder: (context, image) {
-                              Product product =
-                                  createProductFromSnapShot(snapshot.data);
                               if (image.hasData) {
                                 return CachedNetworkImage(
                                   imageUrl: image.data,

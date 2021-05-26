@@ -5,7 +5,6 @@ import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
-import 'package:auto_buy/services/product_map_to_product.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,7 +70,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     (MediaQuery.of(context).size.height / 2),
                           ),
                           itemBuilder: (context, index) {
-                            print(alldata.data[index]['data']);
                             ///this feature builder goes through each item in the user cart
                             return FutureBuilder(
                                 future: CloudFirestoreService.instance
@@ -79,7 +77,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         collectionPath: "/products/",
                                         documentId:
                                             "${alldata.data[index]['data']['product_id']}",
-                                        builder: (data, documentId) => data),
+                                        builder: (data, documentId) {
+                                          Map<String,dynamic> output={"data":data,"id":documentId};
+                                          return output;
+                                        }),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
                                     return Container(
@@ -107,17 +108,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                               future: FirebaseStorageService
                                                   .instance
                                                   .downloadURL(snapshot
-                                                      .data['pic_path']),
+                                                      .data['data']['pic_path']),
                                               builder: (context, image) {
-                                                Product product =
-                                                    createProductFromSnapShot(
-                                                        snapshot.data);
+                                                // Product product =
+                                                //     createProductFromSnapShot(
+                                                //         snapshot.data);
+                                                Product product = Product.fromMap(snapshot.data['data'], snapshot.data['id']);
                                                 if (image.hasData) {
                                                   return GestureDetector(
                                                     onLongPress: () {
                                                       showdeleteDialog(context,product.name,"/shopping_carts/${auth.uid}/shopping_cart_items/${alldata.data[index]['id']}");
                                                     },
                                                     onTap: () {
+                                                      print(alldata.data[index]['id']);
+                                                      print(product);
                                                       Navigator.of(context)
                                                           .push(
                                                         MaterialPageRoute(
@@ -150,7 +154,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                 }
                                               }),
                                           Text(
-                                            snapshot.data['name'],
+                                            snapshot.data['data']['name'],
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
