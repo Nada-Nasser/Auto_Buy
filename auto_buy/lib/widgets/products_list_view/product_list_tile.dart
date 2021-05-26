@@ -53,6 +53,8 @@ class ProductListTile extends StatelessWidget {
   }
 
   Padding _buildProductPriceBeforeDiscount(double width) {
+    String price = "${product.price.toStringAsFixed(2)}";
+
     double percent = product.discountPercentage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -61,7 +63,7 @@ class ProductListTile extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "EGP ${product.priceBeforeDiscount.toStringAsFixed(2)}",
+              "EGP $price",
               style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 fontWeight: FontWeight.w200,
@@ -84,12 +86,15 @@ class ProductListTile extends StatelessWidget {
   }
 
   Padding _buildProductPrice(double width) {
+    double price =
+        product.hasDiscount ? product.priceAfterDiscount : product.price;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: SizedBox(
         width: width,
         child: Text(
-          "EGP ${product.price.toStringAsFixed(2)}",
+          "EGP ${price.toStringAsFixed(2)}",
           textAlign: TextAlign.start,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
