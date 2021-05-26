@@ -96,6 +96,7 @@ class ProductListTile extends StatelessWidget {
         child: Text(
           "EGP ${price.toStringAsFixed(2)}",
           textAlign: TextAlign.start,
+      //    softWrap: true,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
       ),
