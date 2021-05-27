@@ -155,10 +155,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                           icon: Icon(Icons.remove_circle, color: Colors.red,),
                                           onPressed: () {
                                             var toBeRemoved = orderIds.indexOf(orderIds[index]);
-                                            orderIds.removeAt(toBeRemoved);
                                             print(orderIds);
-                                            CloudFirestoreService.instance.updateDocumentField(collectionPath: "users_orders", documentID: auth.uid, fieldName: "orders_ids", updatedValue: orderIds);
-                                            setState(() {});
+                                            showOrderdeleteDialog(context,auth.uid,orderIds,toBeRemoved);
                                           },
                                         ),
                                       ],
@@ -182,4 +180,33 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       ),
     );
   }
+}
+
+///delete the all data[index]
+void showOrderdeleteDialog(BuildContext context,String docId, var updatedValue,int toBeRemoved) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        actionsPadding: EdgeInsets.all(5),
+        title: new Text("Do you want to delete this order?"),
+        actions: <Widget>[
+          new TextButton(
+            child: new Text("Yes", style: TextStyle(color: Colors.red, fontSize: 20),),
+            onPressed: () async{
+              updatedValue.removeAt(toBeRemoved);
+              await CloudFirestoreService.instance.updateDocumentField(collectionPath: "users_orders", documentID: docId, fieldName: "orders_ids", updatedValue: updatedValue);
+              Navigator.of(context).pop();
+            },
+          ),
+          new TextButton(
+            child: new Text("No", style: TextStyle(color: Colors.green, fontSize: 20),),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
