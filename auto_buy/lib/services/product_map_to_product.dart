@@ -13,7 +13,7 @@ Product createProductFromSnapShot(Map<String,dynamic> alldata){
     brand: alldata['brand'],
     hasDiscount: alldata['has_discount'],
     description: alldata['description'],
-    priceBeforeDiscount: alldata['price_before_discount'],
+    priceAfterDiscount: alldata['price_after_discount'],
     size: alldata['size'],
     sizeUnit: alldata['size_unit'],
     subCategory: alldata['sub_category'],

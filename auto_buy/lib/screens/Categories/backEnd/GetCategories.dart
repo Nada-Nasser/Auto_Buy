@@ -1,9 +1,10 @@
 import 'package:auto_buy/models/Category.dart';
+import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/categoryServices.dart';
+import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'CategoryListView.dart';
@@ -14,7 +15,10 @@ class GetCategories extends StatefulWidget {
   static int selectedIndx = 0;
   static List<category> categs = [];
   static List<String> sub_categories = [];
-  Future<List<category>> _future;
+  static List<Product> AllProducts = [];
+
+  final Future<List<category>> _Categoryfuture = categoryServices().ReadCategoriesFromFirestore();
+  final Future<List<Product>> _Productfuture = ProductsBackendServices().ReadProductsFromFirestore();
 
   @override
   _GetCategoriesState createState() => _GetCategoriesState();
@@ -23,8 +27,7 @@ class GetCategories extends StatefulWidget {
 class _GetCategoriesState extends State<GetCategories> {
   @override
   void initState() {
-    // TODO: implement initState
-    widget._future = categoryServices().ReadCategoriesFromFirestore();
+
     super.initState();
   }
 
@@ -37,16 +40,18 @@ class _GetCategoriesState extends State<GetCategories> {
     return ChangeNotifierProvider(
       create: (_) => SelectedCategoryNotifier(GetCategories.selectedIndx),
       child: FutureBuilder(
-        future: widget._future,
-        builder: (context, snapshot) {
+        future: Future.wait([widget._Categoryfuture , widget._Productfuture]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           try {
+
             if (snapshot.hasError) {
               print(snapshot.error.toString());
               return Text(
-                  'Something went wrong , ${snapshot.error.toString()}');
+                  'Something went wrong xxxxxxxxxxx, ${snapshot.error.toString()}');
             }
             if (snapshot.hasData) {
-              GetCategories.categs = snapshot.data;
+              GetCategories.categs = snapshot.data[0];
+              GetCategories.AllProducts =snapshot.data[1];
               return //CategoryListView(categories : GetCategories.categs);
                   Container(
                 child: Column(
@@ -71,7 +76,8 @@ class _GetCategoriesState extends State<GetCategories> {
                               flex: 3,
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.25,
-                                decoration: BoxDecoration(color: Colors.white),
+                                padding: EdgeInsets.fromLTRB(1, 5, 2, 0),
+                                decoration: BoxDecoration(color: Colors.transparent),
                                 child: getSubCategories(),
                               ),
                             ),
@@ -83,7 +89,7 @@ class _GetCategoriesState extends State<GetCategories> {
                 ),
               );
             } else
-              return Text("no data");
+              return Center(child: CircularProgressIndicator());
           } on Exception catch (e) {
             throw e;
           }
