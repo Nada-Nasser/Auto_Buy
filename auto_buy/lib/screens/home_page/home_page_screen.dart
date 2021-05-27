@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/Categories/DisplayCategories.dart';
+import 'package:auto_buy/screens/Categories/backEnd/GetCategories.dart';
 import 'package:auto_buy/screens/expense_tracker/expense_tracker_screen.dart';
 import 'package:auto_buy/screens/friends/friends_screen.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/homepage_products_screen.dart';
@@ -90,13 +91,13 @@ Widget _drawer(BuildContext context) {
             'Categories',
             Icon(
               Icons.category_sharp,
-              color: Colors.green,
+              color: Colors.orange,
               size: 30,
             ), () {
           Navigator.of(context).push(
             MaterialPageRoute(
               fullscreenDialog: true,
-              builder: (context) => DisplayCategories(),
+              builder: (context) =>Scaffold(body:GetCategories()),
             ),
           );
         }),

@@ -1,16 +1,35 @@
+import 'package:auto_buy/screens/Categories/backEnd/GetCategories.dart';
+import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class GetSubCategories extends StatefulWidget {
+class getSubCategories extends StatefulWidget {
   @override
-  _GetSubCategoriesState createState() => _GetSubCategoriesState();
+  _getSubCategoriesState createState() => _getSubCategoriesState();
 }
 
-class _GetSubCategoriesState extends State<GetSubCategories> {
+class _getSubCategoriesState extends State<getSubCategories> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [ListTile()],
+    print("sub category called");
+    final myListener = context.watch<SelectedCategoryNotifier>();
+    return Container(
+      child: ListView.builder(
+        itemCount: GetCategories.categs[myListener.selectedIndex].subcategory.length,
+        itemExtent: 70.0,
+        padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+        itemBuilder: (context, indx){
+          return Container(
+            child: ListTile(
+              dense: true,
+              subtitle: Text( GetCategories.categs[myListener.selectedIndex].subcategory[indx]),
+            ),
+          );
+        },
+      ),
     );
   }
+
 }
+

@@ -1,12 +1,14 @@
 import 'package:auto_buy/models/Category.dart';
+import 'package:auto_buy/screens/Categories/backEnd/GetCategories.dart';
+import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CategoryListView extends StatefulWidget {
   List<category> categories = [];
   int _selectedIndex = 0;
-
-  CategoryListView({@required this.categories});
+  CategoryListView( {@required this.categories});
 
   @override
   _CategoryListViewState createState() => _CategoryListViewState();
@@ -15,7 +17,7 @@ class CategoryListView extends StatefulWidget {
 class _CategoryListViewState extends State<CategoryListView> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return  ListView.builder(
         itemCount: widget.categories.length,
         itemExtent: 70.0,
         padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
@@ -44,6 +46,8 @@ class _CategoryListViewState extends State<CategoryListView> {
                   onTap: () {
                     setState(() { // when selected change _selectedIndx
                       widget._selectedIndex = indx;
+                      Provider.of<SelectedCategoryNotifier>(context,listen: false).ChangeSelectedIndex(indx);
+
                     });
                   }),
             ),

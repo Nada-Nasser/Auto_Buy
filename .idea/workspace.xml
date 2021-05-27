@@ -23,17 +23,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="custom_app_bar.dart">
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/models/Category.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/DisplayCategories.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/CategoryListView.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetCategories.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetSubCategories.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auto_buy/lib/services/categoryServices.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/SelectedCategoryNotifier.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/SearchBar/searhBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/SearchBar/searhBar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/DisplayCategories.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/DisplayCategories.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/CategoryListView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/CategoryListView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetCategories.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetCategories.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetSubCategories.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/GetSubCategories.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/SubCategoryListView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/Categories/backEnd/SubCategoryListView.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/home_page/home_page_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/services/firebase_backend/api_paths.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/services/firebase_backend/api_paths.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,42 +125,42 @@
       <screen x="63" y="0" width="1303" height="768" />
     </state>
     <state x="494" y="138" key="FileChooserDialogImpl/63.0.1303.768@63.0.1303.768" timestamp="1621908673736" />
-    <state width="1260" height="139" key="GridCell.Tab.0.bottom" timestamp="1621983203983">
+    <state width="1260" height="2" key="GridCell.Tab.0.bottom" timestamp="1622120648521">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="139" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1621983203983" />
-    <state width="1260" height="139" key="GridCell.Tab.0.center" timestamp="1621983203983">
+    <state width="1260" height="2" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1622120648521" />
+    <state width="1260" height="2" key="GridCell.Tab.0.center" timestamp="1622120648520">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="139" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1621983203983" />
-    <state width="1260" height="139" key="GridCell.Tab.0.left" timestamp="1621983203983">
+    <state width="1260" height="2" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1622120648520" />
+    <state width="1260" height="2" key="GridCell.Tab.0.left" timestamp="1622120648520">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="139" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1621983203983" />
-    <state width="1260" height="139" key="GridCell.Tab.0.right" timestamp="1621983203983">
+    <state width="1260" height="2" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1622120648520" />
+    <state width="1260" height="2" key="GridCell.Tab.0.right" timestamp="1622120648521">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="139" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1621983203983" />
-    <state width="1260" height="182" key="GridCell.Tab.1.bottom" timestamp="1621983085199">
+    <state width="1260" height="2" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1622120648521" />
+    <state width="1260" height="2" key="GridCell.Tab.1.bottom" timestamp="1622120648520">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="182" key="GridCell.Tab.1.bottom/63.0.1303.768@63.0.1303.768" timestamp="1621983085199" />
-    <state width="1260" height="182" key="GridCell.Tab.1.center" timestamp="1621983085199">
+    <state width="1260" height="2" key="GridCell.Tab.1.bottom/63.0.1303.768@63.0.1303.768" timestamp="1622120648520" />
+    <state width="1260" height="2" key="GridCell.Tab.1.center" timestamp="1622120648519">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="182" key="GridCell.Tab.1.center/63.0.1303.768@63.0.1303.768" timestamp="1621983085199" />
-    <state width="1260" height="182" key="GridCell.Tab.1.left" timestamp="1621983085199">
+    <state width="1260" height="2" key="GridCell.Tab.1.center/63.0.1303.768@63.0.1303.768" timestamp="1622120648519" />
+    <state width="1260" height="2" key="GridCell.Tab.1.left" timestamp="1622120648519">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="182" key="GridCell.Tab.1.left/63.0.1303.768@63.0.1303.768" timestamp="1621983085199" />
-    <state width="1260" height="182" key="GridCell.Tab.1.right" timestamp="1621983085199">
+    <state width="1260" height="2" key="GridCell.Tab.1.left/63.0.1303.768@63.0.1303.768" timestamp="1622120648519" />
+    <state width="1260" height="2" key="GridCell.Tab.1.right" timestamp="1622120648520">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state width="1260" height="182" key="GridCell.Tab.1.right/63.0.1303.768@63.0.1303.768" timestamp="1621983085199" />
-    <state x="251" y="0" key="SettingsEditor" timestamp="1621553700834">
+    <state width="1260" height="2" key="GridCell.Tab.1.right/63.0.1303.768@63.0.1303.768" timestamp="1622120648520" />
+    <state x="251" y="0" key="SettingsEditor" timestamp="1622045694226">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
-    <state x="251" y="0" key="SettingsEditor/63.0.1303.768@63.0.1303.768" timestamp="1621553700834" />
+    <state x="251" y="0" key="SettingsEditor/63.0.1303.768@63.0.1303.768" timestamp="1622045694226" />
     <state x="354" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1621364803690">
       <screen x="63" y="0" width="1303" height="768" />
     </state>
@@ -196,10 +193,12 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
-        <watch expression="_searchHistory" language="Dart" />
         <watch expression="fromNameToProduct" language="Dart" />
         <watch expression="chosenProduct" language="Dart" />
         <watch expression="temp" language="Dart" />
+        <watch expression="categs" language="Dart" />
+        <watch expression="selectedIndx" language="Dart" />
+        <watch expression="GetCategories.selectedIndx" language="Dart" />
       </configuration>
     </watches-manager>
   </component>
