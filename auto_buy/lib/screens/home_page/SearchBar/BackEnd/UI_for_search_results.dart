@@ -14,11 +14,15 @@ import 'package:flutter/material.dart';
 
 class ProductPrettyListView extends StatelessWidget {
   final double height;
+  final double width;
+  final int numOfProdInGrid;
   final List<Product> productsList;
 
   ProductPrettyListView(
       {Key key,
-      this.height,
+      this.height = 200.0,
+        this.width = 200.0,
+        this.numOfProdInGrid = 2,
       @required this.productsList,
       })
       : super(key: key);
@@ -34,7 +38,7 @@ class ProductPrettyListView extends StatelessWidget {
               shrinkWrap: true,
               itemCount: productsList.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: numOfProdInGrid,
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 2),
               ),
@@ -48,8 +52,8 @@ class ProductPrettyListView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       child: ProductListTile(
-                        height: 200.0,
-                        width: 200.0,
+                        height: height,
+                        width: width,
                         product: productsList[index],
                         onTap: () {
                           //  Navigator.pop(context);

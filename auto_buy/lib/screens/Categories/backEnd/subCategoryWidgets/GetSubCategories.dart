@@ -1,5 +1,8 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/Categories/backEnd/GetCategories.dart';
+import 'package:auto_buy/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
+import 'package:auto_buy/widgets/products_list_view/product_list_tile.dart';
+import '../MainCategoryWidgets/GetCategories.dart';
 import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +43,10 @@ class _getSubCategoriesState extends State<getSubCategories> {
               trailing: IconButton(
                 icon: Icon(Icons.arrow_forward_ios_rounded),
                 iconSize: 15,
-                onPressed: () {},
+                onPressed: () {
+                  getAllProducts();
+                  print("called@");
+                },
               ),
             ),
           ),
@@ -50,6 +56,8 @@ class _getSubCategoriesState extends State<getSubCategories> {
               itemCount: GetCategories
                   .categs[myListener.selectedIndex].subcategory.length,
               itemBuilder: (context, indx) {
+                String curSubCateg = GetCategories
+                    .categs[myListener.selectedIndex].subcategory[indx];
                 return Card(
                   child: Column(
                     children: [
@@ -95,6 +103,49 @@ class _getSubCategoriesState extends State<getSubCategories> {
                       Divider(
                         color: Colors.grey,
                       ),
+                      Container(
+                        height: 300,
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                          ),
+                          itemCount:
+                              widget.FromSubCategToProducts[curSubCateg] == null
+                                  ? 0
+                                  : widget.FromSubCategToProducts[curSubCateg]
+                                      .length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ProductListTile(
+                                height: 100,
+                                width: 100,
+                                product: widget
+                                    .FromSubCategToProducts[curSubCateg][index],
+                                onTap: () {
+                                  //  Navigator.pop(context);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          ProductInfoScreen.create(
+                                        context,
+                                        widget.FromSubCategToProducts[
+                                            curSubCateg][index],
+                                        widget
+                                            .FromSubCategToProducts[curSubCateg]
+                                                [index]
+                                            .picturePath,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -114,5 +165,15 @@ class _getSubCategoriesState extends State<getSubCategories> {
       }
       widget.FromSubCategToProducts[subCat].add(P);
     }
+  }
+}
+
+class getAllProducts extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print("called");
+    return Container(
+      child: ProductPrettyListView(productsList: GetCategories.AllProducts),
+    );
   }
 }

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'CategoryListView.dart';
-import 'GetSubCategories.dart';
-import 'SelectedCategoryNotifier.dart';
+import '../subCategoryWidgets/GetSubCategories.dart';
+import '../SelectedCategoryNotifier.dart';
 
 class GetCategories extends StatefulWidget {
   static int selectedIndx = 0;
@@ -31,14 +31,10 @@ class _GetCategoriesState extends State<GetCategories> {
     super.initState();
   }
 
-  changeSelectedIndx(int i) {
-    GetCategories.selectedIndx = i;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SelectedCategoryNotifier(GetCategories.selectedIndx),
+      create: (_) => SelectedCategoryNotifier(0,0),
       child: FutureBuilder(
         future: Future.wait([widget._Categoryfuture , widget._Productfuture]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {

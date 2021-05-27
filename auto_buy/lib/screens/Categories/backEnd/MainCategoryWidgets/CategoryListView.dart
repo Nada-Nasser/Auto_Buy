@@ -1,5 +1,5 @@
 import 'package:auto_buy/models/Category.dart';
-import 'package:auto_buy/screens/Categories/backEnd/GetCategories.dart';
+import 'GetCategories.dart';
 import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
