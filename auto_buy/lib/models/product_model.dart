@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class Product {
   final String id;
@@ -11,14 +10,14 @@ class Product {
   String picturePath;
   final double price;
   final bool hasDiscount;
-  final double priceBeforeDiscount;
+  final double priceAfterDiscount;
   final String subCategory;
   final double size;
   final String sizeUnit;
+  static String get numberInStockFieldName => "number_in_stock";
 
-  double get discountPercentage => hasDiscount
-      ? ((priceBeforeDiscount - price) / priceBeforeDiscount) * 100
-      : 0;
+  double get discountPercentage =>
+      hasDiscount ? ((price - priceAfterDiscount) / price) * 100 : 0;
 
   Product({
     @required this.id,
@@ -30,11 +29,11 @@ class Product {
     this.brand = 'None',
     this.description = '',
     this.hasDiscount = false,
-    this.priceBeforeDiscount,
+    this.priceAfterDiscount,
     this.subCategory = "",
     this.size = 0,
     this.sizeUnit = "",
-  }) : assert(priceBeforeDiscount != 0);
+  }) : assert(price != 0 && price != null);
 
   factory Product.fromMap(Map<String, dynamic> value, String id) {
     return Product(
@@ -42,13 +41,15 @@ class Product {
       name: value['name'],
       numberInStock: value['number_in_stock'],
       picturePath: value['pic_path'],
-      price: value['price'],
+      price: double.parse('${value['price']}'),
       categoryID: value['category_id'],
       brand: value['brand'] ?? "",
       description: value['description'] ?? "",
       hasDiscount: value['has_discount'] ?? false,
-      priceBeforeDiscount: value['price_before_discount'] ?? null,
-      size: value['size'] ?? 0,
+      priceAfterDiscount: value['price_after_discount'] != null
+          ? double.parse('${value['price_after_discount']}')
+          : null,
+      size: value['size'] != null ? double.parse("${value['size']}") : null,
       sizeUnit: value['size_unit'] ?? "",
       subCategory: value['sub_category'] ?? "",
     );
@@ -65,7 +66,7 @@ class Product {
       'brand': this.brand,
       'description': this.description,
       'has_discount': this.hasDiscount,
-      'price_before_discount': this.priceBeforeDiscount,
+      'price_after_discount': this.priceAfterDiscount,
       'size': this.size,
       'size_unit': this.sizeUnit,
       'sub_category': this.subCategory,
@@ -74,8 +75,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product{id: $id, name: $name, brand: $brand, categoryID: $categoryID, description: $description, numberInStock: $numberInStock, picturePath: $picturePath, price: $price, hasDiscount: $hasDiscount, priceBeforeDiscount: $priceBeforeDiscount, subCategory: $subCategory, size: $size, sizeUnit: $sizeUnit}';
+    return 'Product{id: $id, name: $name, brand: $brand, categoryID: $categoryID, description: $description, numberInStock: $numberInStock, picturePath: $picturePath, price: $price, hasDiscount: $hasDiscount, priceBeforeDiscount: $priceAfterDiscount, subCategory: $subCategory, size: $size, sizeUnit: $sizeUnit}';
   }
 
-  static String get numberInStockFieldName => "number_in_stock";
 }

@@ -1,10 +1,19 @@
 import 'package:flutter/foundation.dart';
 
-import 'monthly_cart_product_item.dart';
-
 class MonthlyCartModel {
   final String name;
-  final List<MonthlyCartItem> items;
+  final DateTime dateTime;
 
-  MonthlyCartModel({@required this.name, @required this.items});
+  MonthlyCartModel({@required this.name, @required this.dateTime});
+
+  factory MonthlyCartModel.fromMap(Map<String, dynamic> values, String id) {
+    return MonthlyCartModel(name: id, dateTime: values['delivery_date']);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': this.name,
+      'delivery_date': this.dateTime,
+    };
+  }
 }

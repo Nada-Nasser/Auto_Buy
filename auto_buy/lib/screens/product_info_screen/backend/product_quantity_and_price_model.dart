@@ -5,7 +5,7 @@ class ProductQuantityAndPriceModel {
 
   ProductQuantityAndPriceModel({
     this.isLoading = false,
-    this.quantity = 1,
+    this.quantity = 0,
     // this.isProductInWishList = false,
   });
 

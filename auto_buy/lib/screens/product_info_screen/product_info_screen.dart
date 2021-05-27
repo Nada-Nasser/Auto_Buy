@@ -17,7 +17,8 @@ import 'package:provider/provider.dart';
 import 'backend/product_info_screen_bloc.dart';
 
 class ProductInfoScreen extends StatelessWidget {
-  ProductInfoScreen({Key key, this.bloc, this.url}) : super(key: key);
+  ProductInfoScreen({Key key, @required this.bloc, @required this.url})
+      : super(key: key);
 
   final ProductInfoScreenBloc bloc;
   final String url;
