@@ -73,7 +73,7 @@ class ProductListTile extends StatelessWidget {
               width: 10,
             ),
             Text(
-              "-${percent.toStringAsFixed(0)}%",
+              "-${percent.toStringAsFixed(2)}%",
               style: TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.w500,

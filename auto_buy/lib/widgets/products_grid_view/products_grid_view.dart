@@ -19,6 +19,16 @@ class ProductsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (products.length == 0) {
+      return Center(
+        child: Container(
+          child: Text(
+            "You didn't add any products to this cart...",
+            style: TextStyle(color: Colors.black54),
+          ),
+        ),
+      );
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,

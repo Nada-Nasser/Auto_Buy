@@ -61,8 +61,9 @@ class ProductInfoScreenBloc {
       ? "You cannot buy more than ${product.numberInStock} items"
       : "The product is out of stock for now";
 
-  double get totalPrice =>
-      _productQuantityAndPriceModel.quantity * product.price;
+  double get totalPrice => product.hasDiscount
+      ? _productQuantityAndPriceModel.quantity * product.priceAfterDiscount
+      : _productQuantityAndPriceModel.quantity * product.price;
 
   Future<String> onClickShoppingCartButton() async {
     if (product.numberInStock == 0) return "The product is out of stock";

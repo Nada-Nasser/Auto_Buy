@@ -23,19 +23,57 @@ class MonthlyCartServices {
           String uid, String cartName) async =>
       _firestoreService.getCollectionData(
           collectionPath:
-          APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
+              APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
           builder: (values, id) => MonthlyCartItem.fromMap(values, id));
 
   // TODO: check if exists: edit the quantity, else: set new Document
-  Future<void> addProductToMonthlyCart(String uid, String cartName, MonthlyCartItem product) async =>
-      _firestoreService.setDocument(
-        documentPath: APIPath.userMonthlyCartProductDocumentPath(
-          uid,
-          cartName,
-          product.productId,
-        ),
-        data: product.toMap(),
-      );
+  Future<void> addProductToMonthlyCart(
+      String uid, String cartName, MonthlyCartItem product) async {
+    try {
+      /// check if product exists
+      /// if true:
+      ///          fetch the product to get the old quantity
+      ///          set Doc with sum of quantities
+      /// if false:
+      ///          set the doc.
+      final flag = await _firestoreService.checkExist(
+          docPath: APIPath.userMonthlyCartProductDocumentPath(
+              uid, cartName, product.productId));
+      if (flag) {
+        final oldCartItem = await _firestoreService.readOnceDocumentData(
+          collectionPath:
+              APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
+          documentId: product.productId,
+          builder: (values, id) => MonthlyCartItem.fromMap(values, id),
+        );
+        int quantity = oldCartItem.quantity + product.quantity;
+        final cart = MonthlyCartItem(
+          quantity: quantity,
+          productId: product.productId,
+        );
+
+        _firestoreService.setDocument(
+          documentPath: APIPath.userMonthlyCartProductDocumentPath(
+            uid,
+            cartName,
+            product.productId,
+          ),
+          data: cart.toMap(),
+        );
+      } else {
+        _firestoreService.setDocument(
+          documentPath: APIPath.userMonthlyCartProductDocumentPath(
+            uid,
+            cartName,
+            product.productId,
+          ),
+          data: product.toMap(),
+        );
+      }
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
 
   String _documentIdBuilder(Map<String, dynamic> data, String documentId) {
     return documentId;
