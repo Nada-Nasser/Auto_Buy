@@ -258,7 +258,7 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   ProductPrettyListView gridList(List<Product> productsList) {
-    return ProductPrettyListView(productsList: productsList);
+    return ProductPrettyListView(productsList: productsList,);
   }
 
   @override

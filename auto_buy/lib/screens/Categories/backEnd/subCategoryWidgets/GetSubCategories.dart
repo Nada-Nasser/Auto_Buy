@@ -32,12 +32,15 @@ class _getSubCategoriesState extends State<getSubCategories> {
 
   @override
   Widget build(BuildContext context) {
-    print("sub category called");
+
     final myListener = context.watch<SelectedCategoryNotifier>();
     category categ = GetCategories.categs[myListener.selectedIndex];
-    return myListener.isAllSelected
-        ? getAllProducts(
-            mainCategory: categ.name, products: widget.FromCategToProducts[categ.name] ??[])
+    return myListener.isAllSelected != 0
+        ? (myListener.isAllSelected == 1?
+    getAllProducts(
+        mainCategory: categ.name, products: widget.FromCategToProducts[categ.name] ??[]):
+    getAllProducts(
+        mainCategory: myListener.subCategory, products: widget.FromSubCategToProducts[myListener.subCategory] ??[]))
         : Container(
             child: Column(
               children: [
@@ -78,8 +81,8 @@ class _getSubCategoriesState extends State<getSubCategories> {
                                         alignment: Alignment.centerRight,
                                         child: GestureDetector(
                                           onTap: () {
-                                            getAllProducts(
-                                                mainCategory: curSubCateg, products: widget.FromSubCategToProducts[curSubCateg]??[]);
+                                            Provider.of<SelectedCategoryNotifier>(context, listen: false)
+                                            .isALLSubCategSELECTED(2,curSubCateg);
                                           },
                                           child: Text(
                                             "SEE ALL",

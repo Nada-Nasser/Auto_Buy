@@ -1,19 +1,30 @@
+import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/GetSubCategories.dart';
 import 'package:flutter/cupertino.dart';
 
 class SelectedCategoryNotifier extends ChangeNotifier {
   int _selectedIndex= 0;
-  bool _isAllSelected = false;
+  int _isAllSelected = 0;
+  String _subCategory;
 
   int get selectedIndex =>_selectedIndex;
-  bool get isAllSelected => _isAllSelected;
+  int get isAllSelected => _isAllSelected;
+  String get subCategory => _subCategory;
+
+
   SelectedCategoryNotifier(this._selectedIndex,this._isAllSelected);
   void ChangeSelectedIndex(int x) {
-    _isAllSelected = false;
+    _isAllSelected = 0;
     _selectedIndex = x;
     notifyListeners();
   }
-  void isALLSELECTED(bool x) {
+  void isALLSELECTED(int x) {
     _isAllSelected = x;
+    notifyListeners();
+  }
+
+  void isALLSubCategSELECTED(int x,String subCategory) {
+    _isAllSelected = x;
+    _subCategory = subCategory;
     notifyListeners();
   }
 }

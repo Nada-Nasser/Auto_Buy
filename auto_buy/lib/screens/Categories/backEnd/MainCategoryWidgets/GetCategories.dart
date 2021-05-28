@@ -35,7 +35,7 @@ class _GetCategoriesState extends State<GetCategories> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SelectedCategoryNotifier(0,false),
+      create: (_) => SelectedCategoryNotifier(0,0),
       child: FutureBuilder(
         future: Future.wait([widget._Categoryfuture , widget._Productfuture]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {

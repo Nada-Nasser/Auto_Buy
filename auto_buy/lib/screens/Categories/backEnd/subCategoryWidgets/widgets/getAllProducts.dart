@@ -46,7 +46,7 @@ class _getAllProductsState extends State<getAllProducts> {
                     onTap: () {
                       Provider.of<SelectedCategoryNotifier>(context,
                           listen: false)
-                          .isALLSELECTED(false);
+                          .isALLSELECTED(0);
                     },
                     child: Text(
                       "Back",

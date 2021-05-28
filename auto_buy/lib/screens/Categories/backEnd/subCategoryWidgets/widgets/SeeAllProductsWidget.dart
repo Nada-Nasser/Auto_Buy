@@ -20,7 +20,7 @@ class seeAllProductsWidget extends StatelessWidget {
             iconSize: 15,
             onPressed: () {
               Provider.of<SelectedCategoryNotifier>(context, listen: false)
-                  .isALLSELECTED(true);
+                  .isALLSELECTED(1);
             }),
       ),
     );
