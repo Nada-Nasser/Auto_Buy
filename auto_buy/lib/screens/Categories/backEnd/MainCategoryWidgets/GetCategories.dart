@@ -1,5 +1,6 @@
 import 'package:auto_buy/models/Category.dart';
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart';
 import 'package:auto_buy/services/categoryServices.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
@@ -34,11 +35,12 @@ class _GetCategoriesState extends State<GetCategories> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SelectedCategoryNotifier(0,0),
+      create: (_) => SelectedCategoryNotifier(0,false),
       child: FutureBuilder(
         future: Future.wait([widget._Categoryfuture , widget._Productfuture]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           try {
+           // final myListener = context.select<SelectedCategoryNotifier,bool>((value) => value.isAllSelected);
 
             if (snapshot.hasError) {
               print(snapshot.error.toString());
@@ -74,7 +76,7 @@ class _GetCategoriesState extends State<GetCategories> {
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 padding: EdgeInsets.fromLTRB(1, 5, 2, 0),
                                 decoration: BoxDecoration(color: Colors.transparent),
-                                child: getSubCategories(),
+                                child:getSubCategories(),
                               ),
                             ),
                           ],
@@ -94,3 +96,5 @@ class _GetCategoriesState extends State<GetCategories> {
     );
   }
 }
+
+

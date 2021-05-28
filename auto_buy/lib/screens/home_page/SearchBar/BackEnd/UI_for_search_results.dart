@@ -18,14 +18,13 @@ class ProductPrettyListView extends StatelessWidget {
   final int numOfProdInGrid;
   final List<Product> productsList;
 
-  ProductPrettyListView(
-      {Key key,
-      this.height = 200.0,
-        this.width = 200.0,
-        this.numOfProdInGrid = 2,
-      @required this.productsList,
-      })
-      : super(key: key);
+  ProductPrettyListView({
+    Key key,
+    this.height = 200.0,
+    this.width = 200.0,
+    this.numOfProdInGrid = 2,
+    @required this.productsList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +38,10 @@ class ProductPrettyListView extends StatelessWidget {
               itemCount: productsList.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: numOfProdInGrid,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 2),
+                childAspectRatio: height/width, //TODO this is not the correct format
               ),
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  elevation: 10,
                   shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(10)),
