@@ -6,19 +6,15 @@ import 'grid_tile.dart';
 class ProductsGridView extends StatelessWidget {
   final List<Product> products;
   final List<int> quantities;
-  final int AxisCount;
-  final double height;
-  final double width;
   final Function(BuildContext context, Product product) onTap;
   final Function(BuildContext context, Product product) onLongPress;
 
   const ProductsGridView(
       {Key key,
-      @required this.products,
-      this.AxisCount = 2,
-      this.quantities,
-      this.onTap,
-      this.onLongPress, this.height = 300.0, this.width=200.0})
+        @required this.products,
+        this.quantities,
+        this.onTap,
+        this.onLongPress})
       : super(key: key);
 
   @override
@@ -39,19 +35,21 @@ class ProductsGridView extends StatelessWidget {
       child: GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: width/ height,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
-            crossAxisCount: AxisCount),
-        itemCount: products.length,
+            childAspectRatio:
+            MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 2),
+            // crossAxisSpacing: 4.0,
+            // mainAxisSpacing: 4.0,
+            crossAxisCount: 2),
         itemBuilder: (_, index) => ProductGridTile(
           product: products[index],
-          quantity:  1,
-          width: MediaQuery.of(context).size.width * 0.5,
-          height: MediaQuery.of(context).size.height * 0.4,
+          quantity: quantities[index] ?? 1,
+          // width: MediaQuery.of(context).size.width * 0.5,
+          // height: MediaQuery.of(context).size.height * 0.4,
           onTap: () => onTap(context, products[index]),
           onLongPress: () => onLongPress(context, products[index]),
         ),
+        itemCount: products.length,
       ),
     );
   }

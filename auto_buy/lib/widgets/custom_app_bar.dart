@@ -13,12 +13,6 @@ Widget customAppBar(BuildContext context, {hasLeading = true}) {
             color: Colors.white,
             onPressed: () {
               Navigator.pop(context);
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     fullscreenDialog: false,
-              //     builder: (context) => HomePage(),
-              //   ),
-              // );
             },
           )
         : null,

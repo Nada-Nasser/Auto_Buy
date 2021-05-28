@@ -13,12 +13,12 @@ class ProductGridTile extends StatelessWidget {
 
   const ProductGridTile(
       {Key key,
-      @required this.product,
-      this.quantity,
-      this.height = 200,
-      this.width = 200,
-      this.onTap,
-      this.onLongPress})
+        @required this.product,
+        this.quantity,
+        this.height = 200,
+        this.width = double.infinity,
+        this.onTap,
+        this.onLongPress})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class ProductGridTile extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onLongPress: onLongPress,
       onTap: onTap ??
-          () {
+              () {
             print("PRODUCT_MODEL_ON_TAP");
           },
       child: Container(
@@ -39,7 +39,7 @@ class ProductGridTile extends StatelessWidget {
         margin: EdgeInsets.all(8),
         width: width,
         decoration: BoxDecoration(
-         // borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(25),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -50,6 +50,7 @@ class ProductGridTile extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (quantity != null)
               Row(
@@ -91,7 +92,7 @@ class ProductGridTile extends StatelessWidget {
       placeholder: (context, url) => LoadingImage(),
       errorWidget: (context, url, error) => Icon(Icons.error),
       width: width,
-      height: 0.7 * height,
+      height: 0.5 * height,
     );
   }
 }

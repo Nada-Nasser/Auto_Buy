@@ -1,6 +1,4 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/monthly_supplies/widgets/products_grid_view.dart';
-import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

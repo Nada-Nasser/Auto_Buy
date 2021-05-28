@@ -10,26 +10,26 @@ import 'order_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   ///testing data
-  List<Map<String, dynamic>> testData = [
-    {
-      "address": {
-        "building_number": 3,
-        "city": "cairo",
-        "street": "ahmed oraby"
-      },
-      "delivery_date": "4/2/2020",
-      "price": "325.32",
-      "product_ids": [1, 2, 3, 4],
-      "user_id": "VDdL7063FDQC3EYpkxIBFIEJuNf2 "
-    },
-    {
-      "address": {"building_number": 4, "city": "cairo", "street": "haram"},
-      "delivery_date": "4/2/2020",
-      "price": "325.32",
-      "product_ids": [1, 2, 3, 4],
-      "user_id": "VDdL7063FDQC3EYpkxIBFIEJuNf2 "
-    },
-  ];
+  // List<Map<String, dynamic>> testData = [
+  //   {
+  //     "address": {
+  //       "building_number": 3,
+  //       "city": "cairo",
+  //       "street": "ahmed oraby"
+  //     },
+  //     "delivery_date": "4/2/2020",
+  //     "price": "325.32",
+  //     "product_ids": [1, 2, 3, 4],
+  //     "user_id": "VDdL7063FDQC3EYpkxIBFIEJuNf2 "
+  //   },
+  //   {
+  //     "address": {"building_number": 4, "city": "cairo", "street": "haram"},
+  //     "delivery_date": "4/2/2020",
+  //     "price": "325.32",
+  //     "product_ids": [1, 2, 3, 4],
+  //     "user_id": "VDdL7063FDQC3EYpkxIBFIEJuNf2 "
+  //   },
+  // ];
   @override
   _MyOrdersScreenState createState() => _MyOrdersScreenState();
 }

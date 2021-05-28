@@ -97,7 +97,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
                                             mainAxisAlignment:
@@ -171,9 +171,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                               }),
                                           Text(
                                             snapshot.data['data']['name'],
+                                            overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
                                             ),
                                           ),
                                         ],

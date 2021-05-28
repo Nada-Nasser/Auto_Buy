@@ -4,11 +4,11 @@ import 'package:auto_buy/screens/monthly_supplies/widgets/monthly_cart_names_sel
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
+import 'package:auto_buy/widgets/products_grid_view/products_grid_view.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'file:///D:/Documents/FCI/Y4T2/Graduation%20Project/Implementation/auto_buy/lib/widgets/products_grid_view/products_grid_view.dart';
 
 import 'monthly_carts_screen_bloc.dart';
 
