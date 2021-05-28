@@ -49,8 +49,8 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
     final user = await auth.registerWithGoogle();
     Map <String, dynamic> data = {
       "name" : auth.user.displayName == "" ? "" : auth.user.displayName,
-      "friends" : {},
-      "adress" : {"building_number" : "", "city" : "", "street" : ""},
+      "friends" : [],
+      "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
       "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
     };
     try {
@@ -78,9 +78,9 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       print(name);
       Map <String, dynamic> data = {
         "name" : name == "" ? "" : name,
-        "friends" : {},
-        "adress" : {"building_number" : "", "city" : "", "street" : ""},
-        "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
+        "friends" : [],
+        "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
+        "pic_path" : auth.user.photoURL == null ? "/images/optiologo.png" : auth.user.photoURL,
       };
       await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
 

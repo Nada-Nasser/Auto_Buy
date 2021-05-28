@@ -1,23 +1,20 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
+import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import 'User_Settings.dart';
 import 'constants.dart';
 
-
 class Profile extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-      initTheme: kDarkTheme,
-      child: Builder(builder: (context) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeProvider.of(context),
-          home: ProfileScreen(),
-        );
-      }),
+    return Scaffold(
+      body: ProfileScreen(),
     );
   }
 }
@@ -25,46 +22,65 @@ class Profile extends StatelessWidget {
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+
     ScreenUtil.init(context, height: 896, width: 414, allowFontScaling: true);
 
     var profileInfo = Expanded(
-      child: Column(
-        children: [
-          Container(
-            height: kSpacingUnit.w * 10,
-            width: kSpacingUnit.w * 10,
-            margin: EdgeInsets.only(top: kSpacingUnit.w * 1),
-            child: Stack(
+      child: FutureBuilder(
+        future: CloudFirestoreService.instance.readOnceDocumentData(
+            collectionPath: "users/",
+            documentId: auth.uid,
+            builder: (Map<String, dynamic> data, String documentId) {
+              return data;
+            }),
+        builder: (ctx, snapShot) {
+          if (snapShot.hasData) {
+            return Column(
               children: [
-                CircleAvatar(
-                  radius: kSpacingUnit.w * 5,
-                  backgroundImage: AssetImage('assets/images/Tony.png'),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: kSpacingUnit.w * 2.5,
-                    width: kSpacingUnit.w * 2.5,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      LineAwesomeIcons.pen,
-                      color: kDarkPrimaryColor,
-                      size: ScreenUtil().setSp(kSpacingUnit.w * 1.5),
-                    ),
+                Container(
+                  height: kSpacingUnit.w * 10,
+                  width: kSpacingUnit.w * 10,
+                  margin: EdgeInsets.only(top: kSpacingUnit.w * 1),
+                  child: Stack(
+                    children: [
+                      FutureBuilder(
+                        future: FirebaseStorageService.instance
+                            .downloadURL(snapShot.data['pic_path']),
+                        builder: (ctx, image) {
+                          if (image.hasData) {
+                            String pth;
+                            if (snapShot.data['pic_path']
+                                .toString()
+                                .contains('googleusercontent')) {
+                              pth = snapShot.data['pic_path'];
+                            } else {
+                              pth = image.data;
+                            }
+                            return CircleAvatar(
+                              radius: kSpacingUnit.w * 5,
+                              backgroundImage:
+                                  NetworkImage(pth),
+                            );
+                          }else{
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                )
+                ),
+                SizedBox(height: kSpacingUnit.w * 2),
+                Text(snapShot.data['name'], style: kTitleTextStyle),
+                SizedBox(height: kSpacingUnit.w * 0.5),
+                Text(auth.user.email, style: kCaptionTextStyle),
+                SizedBox(height: kSpacingUnit.w * 2),
               ],
-            ),
-          ),
-          SizedBox(height: kSpacingUnit.w * 2),
-          Text('Tony Stark', style: kTitleTextStyle),
-          SizedBox(height: kSpacingUnit.w * 0.5),
-          Text('tStark@gmail.com', style: kCaptionTextStyle),
-          SizedBox(height: kSpacingUnit.w * 2),
-        ],
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
 
@@ -78,51 +94,64 @@ class ProfileScreen extends StatelessWidget {
       ],
     );
 
-    return ThemeSwitchingArea(
-      child: Builder(builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(LineAwesomeIcons.arrow_left,
-                  size: ScreenUtil().setSp(kSpacingUnit.w * 3)),
-              onPressed: () => Navigator.of(context).pop(context),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(kSpacingUnit.w * 1.7),
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
           ),
-          body: Column(
-            children: <Widget>[
-              header,
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    ProfileListItem(
-                      icon: LineAwesomeIcons.cog,
-                      text: 'Settings',
-                    ),
-                    ProfileListItem(
-                      icon: LineAwesomeIcons.history,
-                      text: 'Purchase History',
-                    ),
-                    ProfileListItem(
-                      icon: LineAwesomeIcons.user_plus,
-                      text: 'Invite a Friend',
-                    ),
-                    ProfileListItem(
-                      icon: LineAwesomeIcons.question_circle,
-                      text: 'Help & Support',
-                    ),
-                    ProfileListItem(
-                      icon: LineAwesomeIcons.alternate_sign_out,
-                      text: 'Logout',
-                      hasNavigation: false,
-                    ),
-                  ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(LineAwesomeIcons.arrow_left,
+              size: ScreenUtil().setSp(kSpacingUnit.w * 3)),
+          onPressed: () => Navigator.of(context).pop(context),
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          header,
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                ProfileListItem(
+                  icon: LineAwesomeIcons.user,
+                  text: 'My Account',
+                  Navigate_To: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => EditProfilePage(),
+                      ),
+                    );
+                  },
                 ),
-              )
-            ],
-          ),
-        );
-      }),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.history,
+                  text: 'Purchase History',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.user_plus,
+                  text: 'Invite a Friend',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.question_circle,
+                  text: 'Help & Support',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.alternate_sign_out,
+                  text: 'Logout',
+                  hasNavigation: false,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -131,11 +160,13 @@ class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final text;
   final bool hasNavigation;
+  final Function Navigate_To;
   const ProfileListItem({
     Key key,
     this.icon,
     this.text,
     this.hasNavigation = true,
+    this.Navigate_To,
   }) : super(key: key);
 
   @override
@@ -172,6 +203,7 @@ class ProfileListItem extends StatelessWidget {
             icon: Icon(
               LineAwesomeIcons.angle_right,
             ),
+            onPressed: Navigate_To,
           ),
         ],
       ),

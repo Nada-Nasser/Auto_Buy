@@ -290,7 +290,8 @@ Future<void> onLongPressProduct(
                 SizedBox(height: 5),
                 ElevatedButton(
                   onPressed: () async {
-                    await CloudFirestoreService.instance.deleteDocument(path: collectionPath+documentId);
+                    await CloudFirestoreService.instance
+                        .deleteDocument(path: collectionPath + documentId);
                     Navigator.of(context).pop(true);
                   },
                   child: Text("Delete"),
@@ -336,7 +337,7 @@ Future<void> onLongPressProduct(
                     Text("$newQuantity"),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () => setState((){
+                      onTap: () => setState(() {
                         // quantityInCart++;
                         newQuantity++;
                       }),
@@ -353,40 +354,67 @@ Future<void> onLongPressProduct(
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    int productNumberInStock = await getProductNumber(product.id);
+                    int productNumberInStock =
+                        await getProductNumber(product.id);
                     if (newQuantity == 0) {
-                      await CloudFirestoreService.instance.deleteDocument(path: collectionPath+documentId);
+                      await CloudFirestoreService.instance
+                          .deleteDocument(path: collectionPath + documentId);
                       Navigator.of(context).pop(true);
-                    } else if(newQuantity > quantityInCart && ((newQuantity-quantityInCart)<=productNumberInStock)) {
-                        print("first if");
-                        print(newQuantity);
-                        print(quantityInCart);
-                        print(productNumberInStock);
-                       ///user will increase cart amount and decrease it from storage
-                        productNumberInStock = productNumberInStock - (newQuantity - quantityInCart);
-                        ///update quantity in stock
-                        await CloudFirestoreService.instance.updateDocumentField(collectionPath: "products/", documentID: "${product.id}", fieldName: "number_in_stock", updatedValue: productNumberInStock);
-                        ///update user's order
-                        await CloudFirestoreService.instance.updateDocumentField(collectionPath: collectionPath, documentID: documentId, fieldName: 'quantity', updatedValue: newQuantity);
-                        Navigator.of(context).pop(true);
-                    } else if(newQuantity < quantityInCart){
+                    } else if (newQuantity > quantityInCart &&
+                        ((newQuantity - quantityInCart) <=
+                            productNumberInStock)) {
+                      print("first if");
+                      print(newQuantity);
+                      print(quantityInCart);
+                      print(productNumberInStock);
+
+                      ///user will increase cart amount and decrease it from storage
+                      productNumberInStock =
+                          productNumberInStock - (newQuantity - quantityInCart);
+
+                      ///update quantity in stock
+                      await CloudFirestoreService.instance.updateDocumentField(
+                          collectionPath: "products/",
+                          documentID: "${product.id}",
+                          fieldName: "number_in_stock",
+                          updatedValue: productNumberInStock);
+
+                      ///update user's order
+                      await CloudFirestoreService.instance.updateDocumentField(
+                          collectionPath: collectionPath,
+                          documentID: documentId,
+                          fieldName: 'quantity',
+                          updatedValue: newQuantity);
+                      Navigator.of(context).pop(true);
+                    } else if (newQuantity < quantityInCart) {
                       print("second if");
                       print(newQuantity);
                       print(quantityInCart);
                       print(productNumberInStock);
-                      productNumberInStock = productNumberInStock + (quantityInCart - newQuantity);
+                      productNumberInStock =
+                          productNumberInStock + (quantityInCart - newQuantity);
+
                       ///update quantity in stock
-                      await CloudFirestoreService.instance.updateDocumentField(collectionPath: "products/", documentID: "${product.id}", fieldName: "number_in_stock", updatedValue: productNumberInStock);
+                      await CloudFirestoreService.instance.updateDocumentField(
+                          collectionPath: "products/",
+                          documentID: "${product.id}",
+                          fieldName: "number_in_stock",
+                          updatedValue: productNumberInStock);
+
                       ///update user's order
-                      await CloudFirestoreService.instance.updateDocumentField(collectionPath: collectionPath, documentID: documentId, fieldName: 'quantity', updatedValue: newQuantity);
+                      await CloudFirestoreService.instance.updateDocumentField(
+                          collectionPath: collectionPath,
+                          documentID: documentId,
+                          fieldName: 'quantity',
+                          updatedValue: newQuantity);
                       Navigator.of(context).pop(true);
-                    }else if(newQuantity - quantityInCart > productNumberInStock){
+                    } else if (newQuantity - quantityInCart >
+                        productNumberInStock) {
                       print("third if");
                       print(newQuantity);
                       print(quantityInCart);
                       print(productNumberInStock);
-                      showInSnackBar(
-                          "Quantity is more than in stock", context);
+                      showInSnackBar("Quantity is more than in stock", context);
                       // Navigator.of(context).pop(true);
                     }
                   },
@@ -405,10 +433,10 @@ Future<void> onLongPressProduct(
       });
 }
 
-Future<int> getProductNumber(String productId)async{
-  return await CloudFirestoreService.
-  instance.
-  readOnceDocumentData(collectionPath: "products/",
+Future<int> getProductNumber(String productId) async {
+  return await CloudFirestoreService.instance.readOnceDocumentData(
+      collectionPath: "products/",
       documentId: "$productId",
-      builder: (Map<String, dynamic> data, String documentId)=>data["number_in_stock"]);
+      builder: (Map<String, dynamic> data, String documentId) =>
+          data["number_in_stock"]);
 }
