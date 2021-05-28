@@ -11,16 +11,20 @@ class ProductListTile extends StatelessWidget {
     this.onTap,
     this.backgroundColor = Colors.white,
     @required this.product,
+    this.width = 200,
+    this.height = 300,
   }) : super(key: key);
 
   final Product product;
   final VoidCallback onTap;
   final Color backgroundColor;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    final height = 300.0;
-    final width = 200.0;
+    // final height = 300.0;
+    //   final width = 200.0;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap ??
@@ -49,6 +53,8 @@ class ProductListTile extends StatelessWidget {
   }
 
   Padding _buildProductPriceBeforeDiscount(double width) {
+    String price = "${product.price.toStringAsFixed(2)}";
+
     double percent = product.discountPercentage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -57,7 +63,7 @@ class ProductListTile extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "EGP ${product.priceAfterDiscount.toStringAsFixed(2)}",
+              "EGP $price",
               style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 fontWeight: FontWeight.w200,
@@ -67,7 +73,7 @@ class ProductListTile extends StatelessWidget {
               width: 10,
             ),
             Text(
-              "-${percent.toStringAsFixed(0)}%",
+              "-${percent.toStringAsFixed(2)}%",
               style: TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.w500,
@@ -80,13 +86,17 @@ class ProductListTile extends StatelessWidget {
   }
 
   Padding _buildProductPrice(double width) {
+    double price =
+        product.hasDiscount ? product.priceAfterDiscount : product.price;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: SizedBox(
         width: width,
         child: Text(
-          "EGP ${product.price.toStringAsFixed(2)}",
+          "EGP ${price.toStringAsFixed(2)}",
           textAlign: TextAlign.start,
+          //    softWrap: true,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
       ),

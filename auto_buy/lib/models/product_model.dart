@@ -33,7 +33,7 @@ class Product {
     this.subCategory = "",
     this.size = 0,
     this.sizeUnit = "",
-  }) : assert(price != 0);
+  }) : assert(price != 0 && price != null);
 
   factory Product.fromMap(Map<String, dynamic> value, String id) {
     return Product(
@@ -41,7 +41,7 @@ class Product {
       name: value['name'],
       numberInStock: value['number_in_stock'],
       picturePath: value['pic_path'],
-      price: value['price']!=null?double.parse("${value['price']}"):null,
+      price: double.parse('${value['price']}'),
       categoryID: value['category_id'],
       brand: value['brand'] ?? "",
       description: value['description'] ?? "",
@@ -49,7 +49,7 @@ class Product {
       priceAfterDiscount: value['price_after_discount'] != null
           ? double.parse('${value['price_after_discount']}')
           : null,
-      size: value['size'] != null? double.parse("${value['size']}") :null,
+      size: value['size'] != null ? double.parse("${value['size']}") : null,
       sizeUnit: value['size_unit'] ?? "",
       subCategory: value['sub_category'] ?? "",
     );
@@ -77,5 +77,4 @@ class Product {
   String toString() {
     return 'Product{id: $id, name: $name, brand: $brand, categoryID: $categoryID, description: $description, numberInStock: $numberInStock, picturePath: $picturePath, price: $price, hasDiscount: $hasDiscount, priceBeforeDiscount: $priceAfterDiscount, subCategory: $subCategory, size: $size, sizeUnit: $sizeUnit}';
   }
-
 }
