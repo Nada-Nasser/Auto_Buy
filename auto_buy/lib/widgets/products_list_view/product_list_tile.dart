@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ProductListTile extends StatelessWidget {
-  const ProductListTile({
-    Key key,
-    this.onTap,
-    this.backgroundColor = Colors.white,
-    @required this.product,
-    this.width = 200,
-    this.height = 300,
-  }) : super(key: key);
+  const ProductListTile(
+      {Key key,
+      this.onTap,
+      this.backgroundColor = Colors.white,
+      @required this.product,
+      this.height = 300.0,
+      this.width = 200.0})
+      : super(key: key);
 
   final Product product;
   final VoidCallback onTap;

@@ -1,63 +1,42 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductGridTile extends StatelessWidget {
+class ProductTile extends StatelessWidget {
   final Product product;
-  final int quantity;
   final double height;
   final double width;
   final VoidCallback onTap;
-  final VoidCallback onLongPress;
 
-  const ProductGridTile(
-      {Key key,
-      @required this.product,
-      this.quantity,
-      this.height = 200,
-      this.width = 200,
-      this.onTap,
-      this.onLongPress})
-      : super(key: key);
+  const ProductTile({
+    Key key,
+    @required this.product,
+    this.height = 200,
+    this.width = 200,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: _buildContent());
-  }
-
-  Widget _buildContent() {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onLongPress: onLongPress,
       onTap: onTap ??
           () {
-            print("PRODUCT_MODEL_ON_TAP");
+            _onTapProduct(context,product);
           },
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.all(8),
+        padding: EdgeInsets.all(2),
+        //margin: EdgeInsets.all(2),
         width: width,
         decoration: BoxDecoration(
-         // borderRadius: BorderRadius.circular(25),
+          // borderRadius: BorderRadius.circular(25),
           color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.5),
-              blurRadius: 3,
-              offset: Offset(0, 3),
-            )
-          ],
         ),
         child: Column(
           children: [
-            if (quantity != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(height: height * 0.1, child: Text("$quantity Pcs"))
-                ],
-              ),
             _productImage(),
             _buildProductTitle(),
           ],
@@ -78,7 +57,7 @@ class ProductGridTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.start,
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 10,
           ),
         ),
       ),
@@ -91,7 +70,21 @@ class ProductGridTile extends StatelessWidget {
       placeholder: (context, url) => LoadingImage(),
       errorWidget: (context, url, error) => Icon(Icons.error),
       width: width,
-      height: 0.7 * height,
+      height: 0.5 * height,
+    );
+  }
+
+  _onTapProduct(BuildContext context, Product product) {
+    //  Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => ProductInfoScreen.create(
+          context,
+          product,
+          product.picturePath,
+        ),
+      ),
     );
   }
 }
