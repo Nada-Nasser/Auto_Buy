@@ -31,7 +31,7 @@ class ShoppingCartScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             StreamBuilder(
-              stream: CloudFirestoreService.instance.collectionStream(path: path, builder: builder),
+              //stream: CloudFirestoreService.instance.collectionStream(path: path, builder: builder),
               builder: (context, snapshot) {
                 GridView(
                   
