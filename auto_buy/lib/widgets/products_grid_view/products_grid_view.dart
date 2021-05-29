@@ -32,20 +32,16 @@ class ProductsGridView extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio:
-            MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 2),
-            // crossAxisSpacing: 4.0,
-            // mainAxisSpacing: 4.0,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height),
             crossAxisCount: 2),
         itemBuilder: (_, index) => ProductGridTile(
           product: products[index],
           quantity: quantities[index] ?? 1,
-          // width: MediaQuery.of(context).size.width * 0.5,
-          // height: MediaQuery.of(context).size.height * 0.4,
           onTap: () => onTap(context, products[index]),
           onLongPress: () => onLongPress(context, products[index]),
         ),

@@ -1,30 +1,33 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/monthly_supplies/widgets/adding_new_cart_dialog.dart';
-import 'package:auto_buy/screens/monthly_supplies/widgets/monthly_cart_names_selection_widget.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
+import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/products_grid_view/products_grid_view.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import 'monthly_carts_screen_bloc.dart';
 
 class MonthlySuppliesScreen extends StatelessWidget {
   final MonthlyCartsScreenBloc bloc;
+  final String cartName;
 
-  MonthlySuppliesScreen({Key key, this.bloc}) : super(key: key);
+  MonthlySuppliesScreen({Key key, this.bloc, this.cartName}) : super(key: key);
 
-  static Widget create(BuildContext context) {
+  static Widget create(BuildContext context, String cartName) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return Provider<MonthlyCartsScreenBloc>(
       create: (_) => MonthlyCartsScreenBloc(
         uid: auth.uid,
+        selectedCartName: cartName,
       ),
       child: Consumer<MonthlyCartsScreenBloc>(
-        builder: (_, bloc, __) => MonthlySuppliesScreen(bloc: bloc),
+        builder: (_, bloc, __) => MonthlySuppliesScreen(
+          bloc: bloc,
+          cartName: cartName,
+        ),
       ),
     );
   }
@@ -32,51 +35,34 @@ class MonthlySuppliesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: _buildFloatingActionButton(context),
         appBar: customAppBar(context),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            buildCartName(),
-            StreamBuilder<String>(
-                stream: bloc.selectedCartNameStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Expanded(
-                      child: ProductsGridView(
-                        products: bloc.monthlyCartProducts,
-                        quantities: bloc.quantities,
-                        onTap: _onTapProduct,
-                        onLongPress: _onLongPressProduct,
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Container(
-                      margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-                      child: Center(
-                        child: Text(
-                          "Error has occured",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-                      child: Center(
-                        child: Text(
-                          "Select Monthly Cart Name",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                      ),
-                    );
-                  }
-                }),
-          ],
-        ));
+        body: StreamBuilder<bool>(
+            stream: bloc.stream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingImage();
+              }
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  buildHeader(),
+                  Expanded(
+                    child: ProductsGridView(
+                      products: bloc.monthlyCartProducts,
+                      quantities: bloc.quantities,
+                      onTap: _onTapProduct,
+                      onLongPress: _onLongPressProduct,
+                    ),
+                  ),
+                ],
+              );
+            }));
   }
 
-  Container buildCartName() {
+  Container buildHeader() {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
       child: Row(
@@ -95,20 +81,8 @@ class MonthlySuppliesScreen extends StatelessWidget {
               ),
             ],
           ),
-          CartNameDropDownButton(),
         ],
       ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        addNewCartDialog(context, "New Monthly Cart",
-            "Write a new cart name and select delivery date you want", bloc);
-      },
-      label: Text('Add New Cart'),
-      icon: Icon(Icons.add),
     );
   }
 

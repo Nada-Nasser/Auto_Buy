@@ -19,6 +19,13 @@ class MonthlyCartServices {
         builder: (data, documentId) => _documentIdBuilder(data, documentId),
       );
 
+  Future<List<MonthlyCartModel>> readAllMonthlyCarts(String uid) async {
+    return _firestoreService.getCollectionData(
+        collectionPath: APIPath.userMonthlyCartsPath(uid),
+        builder: (data, documentId) =>
+            MonthlyCartModel.fromMap(data, documentId));
+  }
+
   Future<List<MonthlyCartItem>> readMonthlyCartProducts(
           String uid, String cartName) async =>
       _firestoreService.getCollectionData(
@@ -26,9 +33,11 @@ class MonthlyCartServices {
               APIPath.userMonthlyCartProductsCollectionPath(uid, cartName),
           builder: (values, id) => MonthlyCartItem.fromMap(values, id));
 
-  // TODO: check if exists: edit the quantity, else: set new Document
   Future<void> addProductToMonthlyCart(
       String uid, String cartName, MonthlyCartItem product) async {
+    /// steps:
+    /// 1- check if product exists to (set / update) document.
+
     try {
       /// check if product exists
       /// if true:
@@ -87,7 +96,7 @@ class MonthlyCartServices {
   Future<void> addNewMonthlyCart(
       String uid, String name, DateTime selectedDate) async {
     MonthlyCartModel monthlyCartModel =
-        MonthlyCartModel(name: name, dateTime: selectedDate);
+        MonthlyCartModel(name: name, deliveryDate: selectedDate);
 
     await _firestoreService.setDocument(
         documentPath: APIPath.userMonthlyCartDocument(uid, name),

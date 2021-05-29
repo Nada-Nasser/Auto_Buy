@@ -1,9 +1,7 @@
-import 'package:auto_buy/screens/Categories/DisplayCategories.dart';
-import '../Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
 import 'package:auto_buy/screens/expense_tracker/expense_tracker_screen.dart';
 import 'package:auto_buy/screens/friends/friends_screen.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/homepage_products_screen.dart';
-import 'package:auto_buy/screens/monthly_supplies/monthly_supplies_screen.dart';
+import 'package:auto_buy/screens/monthly_supplies/monthly_carts_screen.dart';
 import 'package:auto_buy/screens/my_orders/my_orders_screen.dart';
 import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:auto_buy/screens/user_account/user_account_screen.dart';
@@ -13,6 +11,8 @@ import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -109,7 +109,7 @@ Widget _drawer(BuildContext context) {
           Navigator.of(context).push(
             MaterialPageRoute(
               fullscreenDialog: true,
-              builder: (context) => MonthlySuppliesScreen.create(context),
+              builder: (context) => MonthlyCartsScreen.create(context),
             ),
           );
         }),

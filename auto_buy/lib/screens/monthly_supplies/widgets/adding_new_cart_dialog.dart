@@ -1,6 +1,8 @@
-import 'package:auto_buy/screens/monthly_supplies/monthly_carts_screen_bloc.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../monthly_carts_bloc.dart';
 
 void addNewCartDialog(
   BuildContext screenContext,
@@ -8,10 +10,13 @@ void addNewCartDialog(
   // List<String> options,
   String title,
   String content,
-  MonthlyCartsScreenBloc bloc,
-) {
-  String name;
-  DateTime selectedDate = DateTime.now();
+  MonthlyCartsBloc bloc, {
+  String cartName,
+  DateTime date,
+  bool editCart = false,
+}) {
+  String name = cartName ?? "";
+  DateTime selectedDate = date ?? DateTime.now();
   final _formKey = GlobalKey<FormState>();
   bool valid = true;
 
@@ -57,6 +62,8 @@ void addNewCartDialog(
                       height: 10,
                     ),
                     TextFormField(
+                      enabled: editCart ? false : true,
+                      initialValue: name,
                       decoration: InputDecoration(
                         labelText: "Cart Name",
                         labelStyle: TextStyle(
@@ -88,7 +95,7 @@ void addNewCartDialog(
                     SizedBox(height: 10),
                     Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(height: 5),
                         ElevatedButton(
@@ -98,49 +105,70 @@ void addNewCartDialog(
                                 initialDate: selectedDate,
                                 firstDate: DateTime(2015, 8),
                                 lastDate: DateTime(2101));
-                            if (picked != null && picked != selectedDate)
+                            if (picked != null && picked != selectedDate) {
                               setState(() {
                                 selectedDate = picked;
                               });
+                              if (editCart) {
+                                await bloc.editCartDate(cartName, selectedDate);
+                              }
+                            }
+                            if (editCart) {
+                              showInSnackBar("Date Updated", screenContext);
+                              Navigator.of(context).pop(false);
+                            }
                           },
                           child: Text(
                             "Change Date",
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (editCart)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await bloc.deleteMonthlyCart(cartName);
+                            },
+                            child: Text("Delete Cart"),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
             ),
             actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text("Cancel"),
-              ),
-              FlatButton(
-                onPressed: () async {
-                  _validateForm();
-                  // check if the cart exists
-                  bool isExist = await bloc.checkIfMonthlyCartExist(name);
-                  if (isExist) {
-                    setState(() {
-                      valid = false;
-                    });
-                  } else {
-                    setState(() {
-                      valid = true;
-                    });
-                    // add it
-                    await bloc.addNewMonthlyCart(name, selectedDate);
-                    showInSnackBar("Cart Added", screenContext);
-                    Navigator.of(context).pop(true);
-                  }
-                },
-                child: Text("Add"),
-              ),
+              if (!editCart)
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Cancel"),
+                ),
+              if (!editCart)
+                TextButton(
+                  onPressed: () async {
+                    try {
+                      await bloc.addNewMonthlyCart(name, selectedDate);
+                      showInSnackBar("$name Cart Added", screenContext);
+                    } on Exception catch (e) {}
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Add"),
+                ),
             ],
           );
         },
