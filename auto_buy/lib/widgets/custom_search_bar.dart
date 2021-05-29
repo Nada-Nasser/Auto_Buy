@@ -1,10 +1,8 @@
 import 'package:auto_buy/screens/home_page/SearchBar/searhBar.dart';
 import 'package:auto_buy/screens/optio/optio_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 Widget customSearchBar(BuildContext context) {
-  // TODO: FARAH
   return Container(
     padding: EdgeInsets.fromLTRB(50, 5, 0, 5),
     child: Row(
