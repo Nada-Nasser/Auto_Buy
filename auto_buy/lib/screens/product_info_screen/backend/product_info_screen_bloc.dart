@@ -12,6 +12,7 @@ import 'user_rates_model.dart';
 
 class ProductInfoScreenBloc {
   ProductInfoScreenServices _services = ProductInfoScreenServices();
+  WishListButtonServices _wishListBloc = WishListButtonServices();
 
   Product product;
   final String uid;
@@ -25,10 +26,8 @@ class ProductInfoScreenBloc {
   Future<void> getProductSameCategory() async {
     sameCategoryProducts =
         await _services.readCategoryProducts(product.categoryID);
-    // print(sameCategoryProducts);
   }
 
-  WishListButtonServices _wishListBloc = WishListButtonServices();
 
   Future<void> checkProductInUserWishList() async =>
       await _wishListBloc.checkProductInUserWishList(uid, product.id);
@@ -57,8 +56,9 @@ class ProductInfoScreenBloc {
   void disposeQuantityAndPriceModelStream() =>
       _quantityAndPriceModelStreamController.close();
 
-  String get increasingQuantityErrorMessage => product.numberInStock > 0
-      ? "You cannot buy more than ${product.numberInStock} items"
+  String get increasingQuantityErrorMessage =>
+      product.numberInStock > 0
+      ? "You cannot buy more than $quantity items from this product"
       : "The product is out of stock for now";
 
   double get totalPrice => product.hasDiscount
@@ -68,7 +68,7 @@ class ProductInfoScreenBloc {
   Future<String> onClickShoppingCartButton() async {
     if (product.numberInStock == 0) return "The product is out of stock";
     try {
-      if (quantity > 0 && quantity <= product.numberInStock) {
+      if (quantity > 0) {
         final cartItem = ShoppingCartItem(
           productID: product.id,
           totalPrice: totalPrice,
@@ -94,7 +94,8 @@ class ProductInfoScreenBloc {
   }
 
   bool increaseQuantity() {
-    if (_productQuantityAndPriceModel.quantity < product.numberInStock) {
+    if (_productQuantityAndPriceModel.quantity < product.numberInStock &&
+        _productQuantityAndPriceModel.quantity < product.maxDemandPerUser) {
       _updateQuantityAndPriceModelWith(
           quantity: _productQuantityAndPriceModel.quantity + 1);
       return true;
@@ -122,10 +123,6 @@ class ProductInfoScreenBloc {
     _quantityAndPriceModelStreamController.sink
         .add(_productQuantityAndPriceModel);
   }
-
-  ///***************************************************************************
-
-  ///***************************************************************************
 
   final StreamController<List<int>> _ratesStreamController =
       StreamController.broadcast();
@@ -213,31 +210,6 @@ class ProductInfoScreenBloc {
   }
 
   ///*************************************************************************
-}
-
-class MonthlyCartButtonServices {
-  ProductInfoScreenServices _services = ProductInfoScreenServices();
-
-  Future<List<String>> getMonthlyCartsNames(String uid) async =>
-      await _services.readUserMonthlyCartsNames(uid);
-
-  Future<String> onClickMonthlyCartButton(String monthlyCartName, String uid,
-      int quantity, String productId) async {
-    try {
-      MonthlyCartItem item = MonthlyCartItem(
-        productId: productId,
-        quantity: quantity,
-      );
-
-      if (quantity < 1) return "You can not add 0 items to your monthly carts";
-
-      await _services.addProductToMonthlyCart(uid, monthlyCartName, item);
-
-      return "Product added to $monthlyCartName monthly cart";
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
 }
 
 class WishListButtonServices {

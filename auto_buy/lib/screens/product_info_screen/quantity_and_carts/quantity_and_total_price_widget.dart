@@ -15,8 +15,6 @@ class QuantityAndTotalPrice extends StatelessWidget {
         });
   }
 
-// TODO : Dispose stream ?
-
   Row _buildContent(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,8 +30,6 @@ class QuantityAndTotalPrice extends StatelessWidget {
     return Container(
       width: 0.50 * MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
-      //margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-      // decoration: boxDecorationWithBordersAndShadow(Colors.black),
       child: Column(
         children: [
           Text(

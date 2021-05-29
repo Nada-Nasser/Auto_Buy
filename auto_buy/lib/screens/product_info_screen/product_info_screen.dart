@@ -42,12 +42,9 @@ class ProductInfoScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-
         flexibleSpace: Container(
           margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
         ),
-
-// homepage-trendingView
         title: Text(""),
         elevation: 10,
       ),
@@ -91,16 +88,9 @@ class ProductInfoScreen extends StatelessWidget {
         ],
       ),
       _buildContainer(
-          context,
-          Column(
-            children: [
-              ProductImage(
-                productName: product.name,
-                productURL: url,
-              ),
-              ProductNumberInStockWidget(numberInStock: product.numberInStock),
-            ],
-          )),
+        context,
+        _productPrice(context, product),
+      ),
       _buildContainer(
           context,
           Column(
@@ -156,6 +146,84 @@ class ProductInfoScreen extends StatelessWidget {
       decoration: _boxDecorationNoBorders(),
       padding: EdgeInsets.fromLTRB(5, 15, 5, 20),
       child: child,
+    );
+  }
+
+  Widget _productPrice(BuildContext context, Product product) {
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.fromLTRB(2, 0, 5, 0),
+          child: Row(
+            children: [
+              Text(
+                "Price: ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 0.05 * MediaQuery.of(context).size.width,
+                ),
+              ),
+              Text(
+                '\$${product.hasDiscount ? product.priceAfterDiscount : product.price}',
+                style: TextStyle(
+                  fontSize: 0.05 * MediaQuery.of(context).size.width,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        if (product.hasDiscount)
+          _buildProductPriceBeforeDiscount(
+              MediaQuery.of(context).size.width, product),
+        ProductImage(
+          productName: product.name,
+          productURL: url,
+        ),
+        ProductNumberInStockWidget(numberInStock: product.numberInStock),
+      ],
+    );
+  }
+
+  Widget _buildProductPriceBeforeDiscount(double width, Product product) {
+    String price = "${product.price.toStringAsFixed(2)}";
+    double percent = product.discountPercentage;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: SizedBox(
+            width: width,
+            child: Row(
+              children: [
+                Text(
+                  "EGP $price",
+                  style: TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "-${percent.toStringAsFixed(2)}%",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 2,
+        ),
+      ],
     );
   }
 }

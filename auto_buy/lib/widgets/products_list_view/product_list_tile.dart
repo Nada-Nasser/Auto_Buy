@@ -54,7 +54,6 @@ class ProductListTile extends StatelessWidget {
 
   Padding _buildProductPriceBeforeDiscount(double width) {
     String price = "${product.price.toStringAsFixed(2)}";
-
     double percent = product.discountPercentage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),

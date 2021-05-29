@@ -83,14 +83,13 @@ class AddingToCartsButtons extends StatelessWidget {
 
   Future<void> _onClickMonthlyCartButton(BuildContext context) async {
     /// step 1 : Select Monthly Cart name from Dialog?
+    /// step 2 : add The Product To Monthly Cart
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     List<String> names = await bloc.getMonthlyCartsNames();
     print(names);
     selectionDialog(
       context,
       _addTheProductToMonthlyCart,
-
-      /// step 2 : add The Product To Monthly Cart
       names,
       "Monthly Cart Names",
       "Please select monthly cart name you want to add the product in.",

@@ -14,6 +14,10 @@ class Product {
   final String subCategory;
   final double size;
   final String sizeUnit;
+  final int demand;
+  final int maxDemandPerUser;
+  final int demandLimit;
+
   static String get numberInStockFieldName => "number_in_stock";
 
   double get discountPercentage =>
@@ -26,6 +30,9 @@ class Product {
     @required this.picturePath,
     @required this.price,
     @required this.categoryID,
+    @required this.demand,
+    @required this.maxDemandPerUser,
+    @required this.demandLimit,
     this.brand = 'None',
     this.description = '',
     this.hasDiscount = false,
@@ -52,6 +59,9 @@ class Product {
       size: value['size'] != null ? double.parse("${value['size']}") : null,
       sizeUnit: value['size_unit'] ?? "",
       subCategory: value['sub_category'] ?? "",
+      demandLimit: int.parse('${value['demand_limit']}'),
+      demand: int.parse('${value['demand']}'),
+      maxDemandPerUser: int.parse('${value['max_demand_per_user']}'),
     );
   }
 
@@ -70,6 +80,9 @@ class Product {
       'size': this.size,
       'size_unit': this.sizeUnit,
       'sub_category': this.subCategory,
+      'demand_limit': this.demandLimit,
+      'demand': this.demand,
+      'max_demand_per_user': this.maxDemandPerUser,
     };
   }
 
