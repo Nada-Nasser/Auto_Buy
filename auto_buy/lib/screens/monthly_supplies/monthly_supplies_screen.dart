@@ -8,7 +8,7 @@ import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'monthly_carts_screen_bloc.dart';
+import 'cart_supplies_screen_bloc.dart';
 
 class MonthlySuppliesScreen extends StatelessWidget {
   final MonthlyCartsScreenBloc bloc;
@@ -80,6 +80,9 @@ class MonthlySuppliesScreen extends StatelessWidget {
                     color: Colors.black54, fontWeight: FontWeight.bold),
               ),
             ],
+          ),
+          Row(
+            children: [Text("Total Price = \$${bloc.totalPrice}")],
           ),
         ],
       ),
@@ -168,7 +171,12 @@ class MonthlySuppliesScreen extends StatelessWidget {
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () => setState(() {
-                          q++;
+                          if (q < product.maxDemandPerUser)
+                            q++;
+                          else
+                            showInSnackBar(
+                                "You can't add more than $q ${product.name} in the cart",
+                                context);
                         }),
                         child: Text(
                           "+",
@@ -199,7 +207,7 @@ class MonthlySuppliesScreen extends StatelessWidget {
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text("cancel"),
+                  child: Text("Close"),
                 ),
               ],
             );

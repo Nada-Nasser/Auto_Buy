@@ -61,7 +61,59 @@ class ProductGridTile extends StatelessWidget {
               ),
             _productImage(),
             _buildProductTitle(),
+            _buildProductPrice(width),
+            if (product.hasDiscount) _buildProductPriceBeforeDiscount(width),
           ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildProductPriceBeforeDiscount(double width) {
+    String price = "${product.price.toStringAsFixed(2)}";
+    double percent = product.discountPercentage;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: SizedBox(
+        width: width,
+        child: Row(
+          children: [
+            Text(
+              "EGP $price",
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+                fontWeight: FontWeight.w200,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              "-${percent.toStringAsFixed(2)}%",
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildProductPrice(double width) {
+    double price =
+        product.hasDiscount ? product.priceAfterDiscount : product.price;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: SizedBox(
+        width: width,
+        child: Text(
+          "EGP ${price.toStringAsFixed(2)}",
+          textAlign: TextAlign.start,
+          //    softWrap: true,
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
       ),
     );

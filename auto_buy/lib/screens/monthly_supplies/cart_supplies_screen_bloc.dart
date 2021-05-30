@@ -5,6 +5,7 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/monthly_cart_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MonthlyCartsScreenBloc {
   MonthlyCartsScreenBloc({@required this.uid, this.selectedCartName}) {
@@ -22,6 +23,7 @@ class MonthlyCartsScreenBloc {
 
   StreamController<bool> _streamController = StreamController.broadcast();
   bool reload = false;
+  double totalPrice = 0;
 
   dispose() => _streamController.close();
 
@@ -38,6 +40,9 @@ class MonthlyCartsScreenBloc {
           await _productsBackendServices.readProduct(items[i].productId);
       monthlyCartProducts.add(product);
     }
+    totalPrice = await _monthlyCartServices.getMonthlyCartTotalPrice(
+        uid, selectedCartName);
+    print("TOTAL PRICE $totalPrice");
 
     reload = !reload;
     _streamController.add(reload);
