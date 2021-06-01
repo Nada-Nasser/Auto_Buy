@@ -16,7 +16,7 @@ void addNewCartDialog(
   bool editCart = false,
 }) {
   String name = cartName ?? "";
-  DateTime selectedDate = date ?? DateTime.now();
+  DateTime selectedDate = date ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
   final _formKey = GlobalKey<FormState>();
   bool valid = true;
 
@@ -102,8 +102,8 @@ void addNewCartDialog(
                           onPressed: () async {
                             final DateTime picked = await showDatePicker(
                                 context: context,
-                                initialDate: selectedDate,
-                                firstDate: DateTime(2015, 8),
+                                initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3),
+                                firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3),
                                 lastDate: DateTime(2101));
                             if (picked != null && picked != selectedDate) {
                               setState(() {
@@ -141,6 +141,8 @@ void addNewCartDialog(
                           ElevatedButton(
                             onPressed: () async {
                               await bloc.deleteMonthlyCart(cartName);
+                              showInSnackBar("Cart Deleted", screenContext);
+                              Navigator.of(context).pop(false);
                             },
                             child: Text("Delete Cart"),
                           ),

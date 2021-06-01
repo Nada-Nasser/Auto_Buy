@@ -120,4 +120,19 @@ class MonthlyCartServices {
       updatedValue: quantity,
     );
   }
+
+  Future<void> deleteMonthlyCart(String uid, String selectedCartName) async {
+    await _firestoreService.deleteDocument(
+        path: APIPath.userMonthlyCartDocument(uid, selectedCartName));
+  }
+
+  Future<void> updateDeliveryDateInMonthlyCart(
+      String uid, String cartName, DateTime selectedDate) async {
+    await _firestoreService.updateDocumentField(
+      collectionPath: APIPath.userMonthlyCartsPath(uid),
+      documentID: cartName,
+      fieldName: "delivery_date",
+      updatedValue: selectedDate,
+    );
+  }
 }
