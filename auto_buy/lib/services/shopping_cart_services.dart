@@ -6,8 +6,8 @@ import 'firebase_backend/firestore_service.dart';
 class ShoppingCartServices {
   final _firestoreService = CloudFirestoreService.instance;
 
-  Future<void> addProductToUserShoppingCart(
-      String uid, ShoppingCartItem cartItem, int numberInStock) async {
+  Future<void> addProductToUserShoppingCart(String uid,
+      ShoppingCartItem cartItem, int numberInStock) async {
     try {
       /// check if the product exists in user shopping cart
       final flag = await _firestoreService.checkExist(
@@ -34,7 +34,7 @@ class ShoppingCartServices {
         /// add product to shopping cart
         await _firestoreService.setDocument(
           documentPath:
-              APIPath.userShoppingCartItemPath(uid, cartItem.productID),
+          APIPath.userShoppingCartItemPath(uid, cartItem.productID),
           data: cartItem.toMap(),
         );
       }
