@@ -74,21 +74,7 @@ flutter:
     - assets/images/Optio_body_happy.svg
     - assets/images/optioface.svg
     - assets/images/optiobodyhi.svg
-    - assets/images/testing_ads/ad1.png
-    - assets/images/testing_ads/ad2.png
-    - assets/images/testing_ads/ad3.png
-    - assets/images/testing_ads/ad4.png
-    - assets/images/testing_ads/ad5.png
-    - assets/images/testing_ads/1.jpg
-    - assets/images/testing_ads/2.jpg
-    - assets/images/testing_ads/3.jpg
-    - assets/images/testing_ads/5.jpg
-    - assets/images/testing_ads/6.jpg
-    - assets/gifs/loading.gif
     - assets/gifs/loading_2.gif
-    - assets/gifs/top_sales.gif
-    - assets/gifs/text.gif
-    - assets/gifs/most_trending.gif
     - assets/images/Tony.png
   #   - images/a_dot_ham.jpeg
 
