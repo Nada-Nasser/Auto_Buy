@@ -286,7 +286,7 @@ class _SearchBarState extends State<SearchBar> {
     );
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        floatingActionButton: FSB(),
+        floatingActionButton: SafeArea(child: FSB()),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
           automaticallyImplyLeading: false,

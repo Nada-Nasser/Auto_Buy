@@ -8,9 +8,7 @@ import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//TODO try to use Nada's gridView
-//TODO SEEALL property
-//
+
 class getSubCategories extends StatefulWidget {
   Map<String, List<Product>> FromSubCategToProducts =
       Map<String, List<Product>>();
@@ -23,7 +21,6 @@ class getSubCategories extends StatefulWidget {
 class _getSubCategoriesState extends State<getSubCategories> {
   @override
   void initState() {
-    // TODO: implement initState
     print("init of subCategories here");
     CreatMapChosenProductsFromSubCateg();
     CreatMapChosenProductsFromCateg();
