@@ -83,15 +83,25 @@ class CloudFirestoreService {
   /// This function used to write new document in firestore
   /// it uses [documentPath] to reach the needed document,
   /// and [data] Map contains the document fields
-  Future<void> setDocument({
+  Future<String> setDocument({
     @required String documentPath,
     @required Map<String, dynamic> data,
   }) async {
     final reference = FirebaseFirestore.instance.doc(documentPath);
     print('$documentPath: $data');
     await reference.set(data);
+    return reference.id;
   }
 
+
+  Future<String> addDocument({
+    @required String documentPath,
+    @required Map<String, dynamic> data,
+  }) async {
+    final reference = await FirebaseFirestore.instance.collection(documentPath).add(data);
+    print('$documentPath: $data');
+    return reference.id;
+  }
   /// This function used to delete document from firestore
   /// it uses [documentPath] to reach the needed document,
   Future<void> deleteDocument({@required String path}) async {

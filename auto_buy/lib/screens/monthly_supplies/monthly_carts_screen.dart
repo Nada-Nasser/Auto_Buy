@@ -72,7 +72,7 @@ class _MonthlyCartsScreenState extends State<MonthlyCartsScreen> {
                                             bloc.monthlyCartsScreenModel
                                                 .monthlyCarts[index].name),
                                   ),
-                                );
+                                ).then((value)async => await bloc.fetchUserMonthlyCarts());
                               },
                               onLongPress: () {
                                 addNewCartDialog(

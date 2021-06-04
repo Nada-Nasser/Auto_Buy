@@ -1,4 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/cart_checkout_screen/cart_checkout_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
@@ -57,6 +58,21 @@ class MonthlySuppliesScreen extends StatelessWidget {
                       onLongPress: _onLongPressProduct,
                     ),
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (!bloc.monthlyCartProducts.isEmpty) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CartCheckoutScreen(
+                                    cartPath: bloc.selectedCartName,
+                                    orderPrice: bloc.totalPrice,
+                                    isMonthlyCart: true,
+                                    productIDs: bloc.productIDs,
+                                  )));
+                        } else
+                          showInSnackBar(
+                              "You need to add items first!", context);
+                      },
+                      child: Text("Check Out"))
                 ],
               );
             }));

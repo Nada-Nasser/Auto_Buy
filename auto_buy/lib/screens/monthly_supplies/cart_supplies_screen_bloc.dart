@@ -20,6 +20,7 @@ class MonthlyCartsScreenBloc {
   final selectedCartName;
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
+  List<String> productIDs = [];
 
   StreamController<bool> _streamController = StreamController.broadcast();
   bool reload = false;
@@ -43,7 +44,7 @@ class MonthlyCartsScreenBloc {
     totalPrice = await _monthlyCartServices.getMonthlyCartTotalPrice(
         uid, selectedCartName);
     print("TOTAL PRICE $totalPrice");
-
+    getProductIDs();
     reload = !reload;
     _streamController.add(reload);
   }
@@ -54,6 +55,13 @@ class MonthlyCartsScreenBloc {
       if (monthlyCartProducts[i].id == productID) break;
 
     return quantities[i];
+  }
+
+  List<String> getProductIDs() {
+    int i;
+    for (i = 0; i < monthlyCartProducts.length; i++)
+        productIDs.add(monthlyCartProducts[i].id);
+    return productIDs;
   }
 
   Future<void> deleteProduct(String productId) async {

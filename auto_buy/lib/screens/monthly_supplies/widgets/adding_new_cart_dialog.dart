@@ -15,9 +15,10 @@ void addNewCartDialog(
   DateTime date,
   bool editCart = false,
 }) {
-  String name = cartName ?? "";
-  DateTime selectedDate = date ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
   final _formKey = GlobalKey<FormState>();
+  String name = cartName ?? "";
+  DateTime selectedDate = date ??
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
   bool valid = true;
 
   bool _validateForm() {
@@ -102,8 +103,14 @@ void addNewCartDialog(
                           onPressed: () async {
                             final DateTime picked = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3),
-                                firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3),
+                                initialDate: DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day + 3),
+                                firstDate: DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day + 3),
                                 lastDate: DateTime(2101));
                             if (picked != null && picked != selectedDate) {
                               setState(() {

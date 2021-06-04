@@ -170,7 +170,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       ),
                     );
                   } else {
-                    return CircularProgressIndicator();
+                    return CircularProgressIndicator();//todo please display a message or anything else
                   }
                 },
               ),
