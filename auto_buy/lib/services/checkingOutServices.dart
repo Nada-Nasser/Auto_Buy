@@ -32,6 +32,8 @@ class CheckingOutServices {
         // check if user exists in the orders_users
         docPath: APIPath.userOrdersDocumentPath(uid));
 
+    ///if user already has orders (exists in users_orders collection) then just update order_ids array
+    ///else create the document with the user id and create the order_ids array
     if (flag) {
       await _firestoreService.updateDocumentField(
         collectionPath: APIPath.userOrdersPath(),
