@@ -20,7 +20,7 @@ class ShoppingCartScreen extends StatefulWidget {
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   ShoppingCartScreenBloc _cartScreenBloc = ShoppingCartScreenBloc();
-
+  bool isGift = false;
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -47,6 +47,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         fontSize: 12,
                       ),
                     ),
+                    // Spacer(),
+                    // Text("Check out as gift"),
+                    // Checkbox(
+                    //   value: isGift,
+                    //   onChanged: (bool value){setState((){isGift = value;});},
+                    // ),
                   ],
                 ),
               ),
@@ -220,25 +226,30 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   );
                 },
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.orange,
-                    padding: EdgeInsets.all(20)
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartCheckoutScreen()));
-                  },
-                  child: Text(
-                    "Check Out",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.orange,
+                        padding: EdgeInsets.all(20)
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartCheckoutScreen()));
+                      },
+                      child: Text(
+                        "Check Out",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               )
             ],
           ),

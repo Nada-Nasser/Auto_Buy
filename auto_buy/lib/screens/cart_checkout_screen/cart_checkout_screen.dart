@@ -1,5 +1,4 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/cart_checkout_screen/payment_screen.dart';
 import 'package:auto_buy/screens/user_account/User_Settings.dart';
 import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
@@ -97,7 +96,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: widget.enabledEditing==false?()=>Navigator.of(context).push(MaterialPageRoute(builder:(context) => PaymentScreen(),)):null,
+                      onPressed: widget.enabledEditing==false?(){
+                        print("pressed");
+                        // makeSure(context,checkout);
+                      }:null,
                       child: Text("Proceed to Checkout", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),),
                       style: ElevatedButton.styleFrom(
                         elevation: 4,
@@ -221,6 +223,26 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         fieldName: 'adress',
         updatedValue: newAdress);
   }
+}
+
+Widget makeSure(BuildContext context,){
+  showDialog(
+    context: context,
+    builder: (context) =>
+       StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text("Are you sure you want to checkout??"),
+            actions: [
+              ElevatedButton(onPressed: (){
+              }, child: Text("proceed to checkout")),
+              ElevatedButton(onPressed: (){
+                Navigator.of(context).pop();
+              }, child: Text("go back")),
+            ],
+    );
+    })
+  );
 }
 
 
