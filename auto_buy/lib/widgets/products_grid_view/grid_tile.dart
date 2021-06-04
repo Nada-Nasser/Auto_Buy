@@ -37,7 +37,7 @@ class ProductGridTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(8),
         margin: EdgeInsets.all(8),
-        width: width,
+        //height: 500,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           color: Colors.white,
@@ -61,7 +61,59 @@ class ProductGridTile extends StatelessWidget {
               ),
             _productImage(),
             _buildProductTitle(),
+            _buildProductPrice(width),
+            if (product.hasDiscount) _buildProductPriceBeforeDiscount(width),
           ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildProductPriceBeforeDiscount(double width) {
+    String price = "${product.price.toStringAsFixed(2)}";
+    double percent = product.discountPercentage;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: SizedBox(
+        width: width,
+        child: Row(
+          children: [
+            Text(
+              "EGP $price",
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+                fontWeight: FontWeight.w200,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              "-${percent.toStringAsFixed(2)}%",
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildProductPrice(double width) {
+    double price =
+        product.hasDiscount ? product.priceAfterDiscount : product.price;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: SizedBox(
+        width: width,
+        child: Text(
+          "EGP ${price.toStringAsFixed(2)}",
+          textAlign: TextAlign.start,
+          //    softWrap: true,
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -70,17 +122,13 @@ class ProductGridTile extends StatelessWidget {
   Container _buildProductTitle() {
     return Container(
       padding: EdgeInsets.all(5),
-      child: SizedBox(
-        width: width,
-        height: height * 0.1,
-        child: Text(
-          product.name,
-          softWrap: true,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            fontSize: 15,
-          ),
+      child: Text(
+        product.name,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.start,
+        style: TextStyle(
+          fontSize: 15,
         ),
       ),
     );
@@ -91,8 +139,7 @@ class ProductGridTile extends StatelessWidget {
       imageUrl: this.product.picturePath,
       placeholder: (context, url) => LoadingImage(),
       errorWidget: (context, url, error) => Icon(Icons.error),
-      width: width,
-      height: 0.5 * height,
+      fit: BoxFit.fitHeight,
     );
   }
 }

@@ -16,17 +16,22 @@ class APIPath {
 
   static String Categories() => "/categories";
 
+  static String ordersDocuemtPath() => "/orders";
+
   static String trendingProductsPath() => "/trending_products";
 
   static String eventProductsPath() => "/event_products";
+
+  static String userOrdersPath() => "/users_orders";
+
+  static String userOrdersDocumentPath(String uid) => "/users_orders/$uid";
 
   static String userShoppingCartItemPath(String uid, String itemID) =>
       "/shopping_carts/$uid/shopping_cart_items/$itemID";
 
   static String userShoppingCartProductsCollectionPath(
     String uid,
-  ) =>
-      "/shopping_carts/$uid/shopping_cart_items";
+  ) => "/shopping_carts/$uid/shopping_cart_items";
 
   static String userWishListProductPath(String uid, String productID) =>
       "/wish_lists/$uid/wish_list_products/$productID";
@@ -53,4 +58,6 @@ class APIPath {
 
   static String userMonthlyCartDocument(String uid, String cartName) =>
       "/monthly_carts/$uid/monthly_carts/$cartName";
+
+
 }

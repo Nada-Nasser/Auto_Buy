@@ -4,6 +4,7 @@ import 'package:auto_buy/models/monthly_cart_product_item.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/models/product_rate.dart';
 import 'package:auto_buy/models/shopping_cart_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'product_info_screen_Services.dart';
@@ -199,13 +200,16 @@ class ProductInfoScreenBloc {
         quantity: quantity,
       );
 
-      if (quantity < 1) return "You can not add 0 items to your monthly carts";
+      if (quantity < 1) return "You can't add 0 items to your monthly carts";
 
       await _services.addProductToMonthlyCart(uid, monthlyCartName, item);
 
       return "Product added to $monthlyCartName monthly cart";
-    } on Exception catch (e) {
-      throw e;
+    } on FirebaseException catch (e) {
+      print(e.message);
+      return "${e.message}";
+    } on Exception {
+      return "Couldn't add this quantity in the cart";
     }
   }
 

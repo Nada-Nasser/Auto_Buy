@@ -41,7 +41,9 @@ class _CategoryListViewState extends State<CategoryListView> {
                   subtitle: Center(
                     child: Text(widget.categories[indx].name,
                         maxLines: 3,
-                        textWidthBasis: TextWidthBasis.longestLine),
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   onTap: () {
                     setState(() { // when selected change _selectedIndx

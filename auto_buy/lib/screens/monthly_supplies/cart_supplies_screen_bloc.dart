@@ -5,33 +5,34 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/monthly_cart_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MonthlyCartsScreenBloc {
-  MonthlyCartsScreenBloc({@required this.uid});
+  MonthlyCartsScreenBloc({@required this.uid, this.selectedCartName}) {
+    getCartProducts();
+  }
 
   final String uid;
   final MonthlyCartServices _monthlyCartServices = MonthlyCartServices();
   final ProductsBackendServices _productsBackendServices =
       ProductsBackendServices();
 
-  String selectedCartName;
+  final selectedCartName;
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
+  List<String> productIDs = [];
 
-  Stream<String> get selectedCartNameStream => _cartNameStreamController.stream;
+  StreamController<bool> _streamController = StreamController.broadcast();
+  bool reload = false;
+  double totalPrice = 0;
 
-  Stream<List<String>> get cartNamesStream =>
-      _monthlyCartServices.userMonthlyCartsNamesStream(uid);
+  dispose() => _streamController.close();
 
-  StreamController<String> _cartNameStreamController = StreamController();
+  Stream<bool> get stream => _streamController.stream;
 
-  void dispose() => _cartNameStreamController.close();
-
-  Future<void> changeSelectedCart(String selectedName) async {
-    selectedCartName = selectedName;
-    List<MonthlyCartItem> items =
-        await _monthlyCartServices.readMonthlyCartProducts(uid, selectedName);
-
+  Future<void> getCartProducts() async {
+    List<MonthlyCartItem> items = await _monthlyCartServices
+        .readMonthlyCartProducts(uid, selectedCartName);
     monthlyCartProducts.clear();
     quantities.clear();
     for (int i = 0; i < items.length; i++) {
@@ -40,8 +41,12 @@ class MonthlyCartsScreenBloc {
           await _productsBackendServices.readProduct(items[i].productId);
       monthlyCartProducts.add(product);
     }
-
-    _cartNameStreamController.add(selectedName);
+    totalPrice = await _monthlyCartServices.getMonthlyCartTotalPrice(
+        uid, selectedCartName);
+    print("TOTAL PRICE $totalPrice");
+    getProductIDs();
+    reload = !reload;
+    _streamController.add(reload);
   }
 
   int getProductQuantityInTheCart(String productID) {
@@ -52,17 +57,18 @@ class MonthlyCartsScreenBloc {
     return quantities[i];
   }
 
-  Future<bool> checkIfMonthlyCartExist(String name) async =>
-      await _monthlyCartServices.checkIfMonthlyCartExist(uid, name);
-
-  Future<void> addNewMonthlyCart(String name, DateTime selectedDate) async =>
-      await _monthlyCartServices.addNewMonthlyCart(uid, name, selectedDate);
+  List<String> getProductIDs() {
+    int i;
+    for (i = 0; i < monthlyCartProducts.length; i++)
+        productIDs.add(monthlyCartProducts[i].id);
+    return productIDs;
+  }
 
   Future<void> deleteProduct(String productId) async {
     try {
       await _monthlyCartServices.deleteProductFromMonthlyCart(
           uid, selectedCartName, productId);
-      changeSelectedCart(selectedCartName);
+      await getCartProducts();
     } on Exception catch (e) {
       rethrow;
     }
@@ -73,7 +79,7 @@ class MonthlyCartsScreenBloc {
     try {
       await _monthlyCartServices.updateProductQuantityInMonthlyCart(
           uid, selectedCartName, productId, q);
-      await changeSelectedCart(selectedCartName);
+      await getCartProducts();
     } on Exception catch (e) {
       rethrow;
     }

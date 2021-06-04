@@ -48,6 +48,14 @@ class ProductsBackendServices {
     return product;
   }
 
+  Future<double> getProductPrice(String productID) async {
+    Product product = await readProduct(productID);
+    if (product.hasDiscount)
+      return product.priceAfterDiscount;
+    else
+      return product.price;
+  }
+
   Future<List<Product>> readCategoryProducts(String categoryID) async {
     print('CATEGORY ID :  $categoryID');
     List<Product> products = await _firestoreService.getCollectionData(
