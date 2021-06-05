@@ -30,22 +30,8 @@ class MonthlyExpensesLineChart extends StatelessWidget {
         // should create the same type of [DateTime] as the data provided. If none
         // specified, the default creates local date time.
         dateTimeFactory: const charts.LocalDateTimeFactory(),
-/*
-        primaryMeasureAxis: new charts.NumericAxisSpec(
-            renderSpec: new charts.SmallTickRendererSpec(
-              // Tick and Label styling here.
-            )),
-*/
+
         behaviors: [
-          /*    new charts.ChartTitle('Your Expenses(\$)',
-              behaviorPosition: charts.BehaviorPosition.top,
-              titleOutsideJustification: charts.OutsideJustification.start,
-              // Set a larger inner padding than the default (10) to avoid
-              // rendering the text too close to the top measure axis tick label.
-              // The top tick label may extend upwards into the top margin region
-              // if it is located at the top of the draw area.
-              ),
-*/
           new charts.ChartTitle('Months',
               behaviorPosition: charts.BehaviorPosition.bottom,
               titleOutsideJustification:

@@ -7,7 +7,6 @@ class CategoriesExpensesPieChart extends StatelessWidget {
 
   CategoriesExpensesPieChart(this.seriesList, {this.animate});
 
-  /// Creates a [PieChart] with sample data and no transition.
   factory CategoriesExpensesPieChart.withSampleData() {
     return CategoriesExpensesPieChart(
       _createSampleData(),
@@ -35,19 +34,9 @@ class CategoriesExpensesPieChart extends StatelessWidget {
           ),
           behaviors: [
             new charts.DatumLegend(
-              // Positions for "start" and "end" will be left and right respectively
-              // for widgets with a build context that has directionality ltr.
-              // For rtl, "start" and "end" will be right and left respectively.
-              // Since this example has directionality of ltr, the legend is
-              // positioned on the right side of the chart.
               position: charts.BehaviorPosition.bottom,
-              // By default, if the position of the chart is on the left or right of
-              // the chart, [horizontalFirst] is set to false. This means that the
-              // legend entries will grow as new rows first instead of a new column.
               horizontalFirst: false,
-              // This defines the padding around each legend entry.
               cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-              // Set [showMeasures] to true to display measures in series legend.
               showMeasures: true,
               // Configure the measure value to be shown by default in the legend.
               legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,

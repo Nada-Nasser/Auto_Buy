@@ -29,6 +29,19 @@ class ExpenseTrackerServices {
       }
       expenses.add(expense);
     }
+    expenses = _sortExpenses(expenses);
+    return expenses;
+  }
+
+  List<Expense> _sortExpenses(List<Expense> expenses, {bool reversed: false}) {
+    expenses.sort((a, b) {
+      return a.compareTo(b);
+    });
+
+    if (reversed) {
+      expenses = expenses.reversed.toList();
+    }
+
     return expenses;
   }
 }
