@@ -8,6 +8,7 @@ class ShoppingCartScreenBloc {
   bool reset = false;
   StreamController<bool> totalPriceController;
   Stream<bool> totalPriceStream;
+  List<String> productIds;
 
   ShoppingCartScreenBloc(){
     totalPriceController = StreamController.broadcast();
@@ -20,6 +21,7 @@ class ShoppingCartScreenBloc {
   }
   
   Future<double> calculateTotalPrice(String cartPath,String productPath) async{
+    productIds = [];
     dynamic cartItems  = await CloudFirestoreService.instance.getCollectionData(collectionPath: cartPath, builder: (Map<String, dynamic> data, String documentId){
       Map<String, dynamic> output = {
         "data": data,
@@ -37,6 +39,7 @@ class ShoppingCartScreenBloc {
       Product.fromMap(productMap, cartItems[i]['id']);
       totalSum += product.hasDiscount?product.priceAfterDiscount*cartItems[i]['data']['quantity']
           :product.price*cartItems[i]['data']['quantity'];
+      productIds.add(product.id);
     }
     return totalSum;
   }

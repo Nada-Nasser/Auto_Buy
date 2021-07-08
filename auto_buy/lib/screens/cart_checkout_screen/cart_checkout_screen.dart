@@ -1,12 +1,8 @@
-import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/cart_checkout_screen/payment_screen.dart';
-import 'package:auto_buy/screens/monthly_supplies/cart_supplies_screen_bloc.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_bloc.dart';
-import 'package:auto_buy/screens/user_account/User_Settings.dart';
-import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/services/checkingOutServices.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,39 +31,15 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
 
   List listItem = [
-    'Al Sharqia',
-    'Alexandria',
-    'Aswan',
-    'Asyut',
-    'Behira',
-    'Beni Suef',
-    'Cairo',
-    'Dakahlia',
-    'Damietta',
-    'Faiyum',
-    'Gharbia',
-    'Giza',
-    'Ismalia'
-        'Kafr el-Sheikh',
-    'Luxor',
-    'Matruh',
-    'Minya',
-    'Monufia',
-    'New Valley',
-    'North Sinai',
-    'Port Said',
-    'Qalyubia',
-    'Qena',
-    'Red Sea',
-    'Sohag',
-    'South Sinai',
-    'Suez'
+    'Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia',
+    'Giza', 'Ismalia', 'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said',
+    'Qalyubia', 'Qena', 'Red Sea', 'Sohag', 'South Sinai', 'Suez'
   ];
 
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-
+    print(widget.productIDs);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
           path: "/users/${auth.uid}",
@@ -161,17 +133,24 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           print(widget.enabledEditing);
                           setState(() {});
                         } else {
-                          update(
-                              context,
-                              auth,
-                              bNumberController,
-                              cityController,
-                              streetController,
-                              aNumberController,
-                              fNumberController);
-                          widget.enabledEditing = false;
-                          print(widget.enabledEditing);
-                          setState(() {});
+                          if(cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
+                          && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty)
+                          {
+                            update(
+                                context,
+                                auth,
+                                bNumberController,
+                                cityController,
+                                streetController,
+                                aNumberController,
+                                fNumberController);
+                            widget.enabledEditing = false;
+                            print(widget.enabledEditing);
+                            setState(() {});
+                          }else {
+                            showInSnackBar("please fill in all the fields", context);
+                          }
+
                         }
                       },
                       child: Text(
@@ -215,11 +194,15 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                         ['floor_number']
                                   },
                                   selectedDate: selectedDate);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PaymentScreen(),
-                              ));
+                              if(widget.isMonthlyCart == false)
+                                {
+                                  await CheckingOutServices().removeItemsFromCart(cartPath:"/shopping_carts/${auth.uid}/shopping_cart_items",deletePath: "/shopping_carts/${auth.uid}");
+                                }
+
+                              Navigator.of(context).pop();
                             }
                           : null,
+
                       child: Text(
                         "Proceed to Checkout",
                         style: TextStyle(

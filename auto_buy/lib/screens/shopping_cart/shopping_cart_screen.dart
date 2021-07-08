@@ -14,13 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
+  List<String> productIds = [];
+  double totalPrice;
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   ShoppingCartScreenBloc _cartScreenBloc = ShoppingCartScreenBloc();
-  bool isGift = false;
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -30,7 +31,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 5, top: 10),
+                padding: EdgeInsets.only(left: 5, top: 10,right: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -47,12 +48,26 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         fontSize: 12,
                       ),
                     ),
-                    // Spacer(),
-                    // Text("Check out as gift"),
-                    // Checkbox(
-                    //   value: isGift,
-                    //   onChanged: (bool value){setState((){isGift = value;});},
-                    // ),
+                    Spacer(),
+                    StreamBuilder(
+                      stream: _cartScreenBloc.totalPriceStream,
+                      builder: (context, reset) {
+                        return  FutureBuilder(
+                            future: _cartScreenBloc.calculateTotalPrice("/shopping_carts/${auth.uid}/shopping_cart_items","/products/"),
+                            builder:(context,price){
+                              if(price.hasData){
+                                widget.totalPrice = price.data;
+                                print(widget.productIds);
+                                return Text("total cost is ${price.data} \$",style: TextStyle(
+                                  fontSize: 18,
+                                ),);
+                              }else{
+                                return Text("Your cost is 0.00\$");
+                              }
+                            }
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -102,6 +117,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     Product.fromMap(
                                         snapshot.data['data'],
                                         snapshot.data['id']);
+                                    if(!widget.productIds.contains(product.id))
+                                      {
+                                        print("adding product");
+                                        widget.productIds.add(product.id);
+                                      }
                                     return Container(
                                       padding: EdgeInsets.all(10),
                                       margin: EdgeInsets.all(10),
@@ -204,27 +224,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           },
                         );
                       } else {
-                        return CircularProgressIndicator();
+                        return Container(
+                          child: Center(
+                            child: Text("Your shopping cart is empty"),
+                          ),
+                        );
                       }
                     }),
-              ),
-              StreamBuilder(
-                stream: _cartScreenBloc.totalPriceStream,
-                builder: (context, reset) {
-                  return  FutureBuilder(
-                      future: _cartScreenBloc.calculateTotalPrice("/shopping_carts/${auth.uid}/shopping_cart_items","/products/"),
-                      builder:(context,price){
-                        if(price.hasData){
-                          return Text("total cost is ${price.data} \$",style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),);
-                        }else{
-                          return Text("Your cost is 0.00\$");
-                        }
-                      }
-                  );
-                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +243,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         padding: EdgeInsets.all(20)
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartCheckoutScreen()));
+                          if(_cartScreenBloc.productIds.length == 0)
+                              showInSnackBar("your cart is empty", context);
+                            else{
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => CartCheckoutScreen(
+                                  orderPrice: widget.totalPrice,
+                                  productIDs: widget.productIds,
+                                  isMonthlyCart: false,))).then((value) => _cartScreenBloc.resetState());
+                          }
                       },
                       child: Text(
                         "Check Out",
@@ -290,6 +304,7 @@ Future<void> onLongPressProduct(
                   onPressed: () async {
                     await CloudFirestoreService.instance
                         .deleteDocument(path: collectionPath + documentId);
+                    bloc.resetState();
                     Navigator.of(context).pop(true);
                   },
                   child: Text("Delete"),
@@ -315,8 +330,8 @@ Future<void> onLongPressProduct(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => {
                         setState(() {
-                          if (newQuantity > 0)
-                            newQuantity--;
+                          if (quantityInCart > 0)
+                            quantityInCart--;
                           else {
                             showInSnackBar(
                                 "Quantity can not be less than zero", context);
@@ -332,12 +347,12 @@ Future<void> onLongPressProduct(
                         ),
                       ),
                     ),
-                    Text("$newQuantity"),
+                    Text("$quantityInCart"),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => setState(() {
-                        // quantityInCart++;
-                        newQuantity++;
+                        quantityInCart++;
+                        // newQuantity++;
                       }),
                       child: Text(
                         "+",
@@ -354,33 +369,22 @@ Future<void> onLongPressProduct(
                   onPressed: () async {
                     int productNumberInStock =
                         await getProductNumber(product.id);
-                    if (newQuantity == 0) {
+                    if (quantityInCart == 0) {
                       await CloudFirestoreService.instance
                           .deleteDocument(path: collectionPath + documentId);
+                      bloc.resetState();
                       Navigator.of(context).pop(true);
-                    } else if (newQuantity > quantityInCart &&
-                        ((newQuantity - quantityInCart) <=
-                            productNumberInStock)) {
+                    } else if (quantityInCart<=productNumberInStock) {
                       ///update user's order quantity
                       await CloudFirestoreService.instance.updateDocumentField(
                           collectionPath: collectionPath,
                           documentID: documentId,
                           fieldName: 'quantity',
-                          updatedValue: newQuantity);
+                          updatedValue: quantityInCart);
                       bloc.resetState();
                       Navigator.of(context).pop();
-                    } else if (newQuantity < quantityInCart) {
-                      ///update user's order
-                      await CloudFirestoreService.instance.updateDocumentField(
-                          collectionPath: collectionPath,
-                          documentID: documentId,
-                          fieldName: 'quantity',
-                          updatedValue: newQuantity);
-                      ///update price
-                      Navigator.of(context).pop();
-                      setState((){});
-                    } else if (newQuantity - quantityInCart >
-                        productNumberInStock) {
+                    }
+                    else if (quantityInCart > productNumberInStock) {
                       showInSnackBar("Quantity is more than in stock", context);
                       bloc.resetState();
                     }
