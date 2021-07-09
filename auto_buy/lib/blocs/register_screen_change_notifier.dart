@@ -50,8 +50,10 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
     Map <String, dynamic> data = {
       "name" : auth.user.displayName == "" ? "" : auth.user.displayName,
       "friends" : [],
+      "requests": [],
       "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
       "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
+      "id": name + '#' + auth.uid.substring(0,5),
     };
     try {
       await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
@@ -75,12 +77,15 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       );
       user.sendEmailVerification();
       // TODO: Add user to DB
-      print(name);
+      String s = auth.uid.substring(0,5);
+      print(s);
       Map <String, dynamic> data = {
         "name" : name == "" ? "" : name,
         "friends" : [],
+        "requests": [],
         "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
         "pic_path" : auth.user.photoURL == null ? "/images/optiologo.png" : auth.user.photoURL,
+        "id": name + '#' + auth.uid.substring(0,5),
       };
       await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
 

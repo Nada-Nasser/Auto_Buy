@@ -396,7 +396,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget  buildDropDownMenu(data)
   {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: DropdownButtonFormField(
           style: TextStyle(fontSize: 13.0, color: Colors.black),
           decoration: InputDecoration(
@@ -407,7 +407,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             
             labelText: (data == null) ? "Governorate" : data,
             enabledBorder: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
+                        borderRadius: new BorderRadius.circular(10.0),
                         borderSide: new BorderSide(
                           color: Colors.grey,
                         ),
@@ -419,6 +419,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           
           icon: Icon(Icons.arrow_drop_down, color: Colors.orange),
           iconSize: 36,
+          
           value: governorate,
           onChanged: (newValue){
             setState(() {
@@ -427,6 +428,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           },
           items: listItem.map((valueItem){
             return DropdownMenuItem(
+              
               value: valueItem,
               child: Text(valueItem),
             );
