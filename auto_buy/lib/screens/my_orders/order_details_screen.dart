@@ -53,7 +53,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           MainAxisAlignment.end,
                           children: [
                             Text(
-                              "pcs ${widget.productIdsAndQuantity[widget.productIds[index]]}",
+                              widget.productIdsAndQuantity!=null?"pcs ${widget.productIdsAndQuantity[widget.productIds[index]]}":"",
                               textAlign: TextAlign.end,
                             ),
                           ],
