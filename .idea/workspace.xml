@@ -24,12 +24,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="custom_app_bar.dart">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/models/order_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/models/order_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/cart_checkout_screen/cart_checkout_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/cart_checkout_screen/cart_checkout_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/cart_supplies_screen_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/cart_supplies_screen_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/monthly_carts_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/monthly_carts_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/monthly_supplies_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/monthly_supplies_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/widgets/adding_new_cart_dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/screens/monthly_supplies/widgets/adding_new_cart_dialog.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auto_buy/lib/services/checkingOutServices.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/services/checkingOutServices.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,45 +128,45 @@
       <screen x="63" y="0" width="1303" height="768" />
     </state>
     <state x="494" y="138" key="FileChooserDialogImpl/63.0.1303.768@63.0.1303.768" timestamp="1622678495220" />
-    <state width="1260" height="197" key="GridCell.Tab.0.bottom" timestamp="1625860086341">
+    <state width="1260" height="172" key="GridCell.Tab.0.bottom" timestamp="1625862587008">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.0.bottom/62.0.1304.768@62.0.1304.768" timestamp="1625860086341" />
+    <state width="1260" height="172" key="GridCell.Tab.0.bottom/62.0.1304.768@62.0.1304.768" timestamp="1625862587008" />
     <state width="1259" height="224" key="GridCell.Tab.0.bottom/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.0.center" timestamp="1625860086341">
+    <state width="1260" height="172" key="GridCell.Tab.0.center" timestamp="1625862587008">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.0.center/62.0.1304.768@62.0.1304.768" timestamp="1625860086341" />
+    <state width="1260" height="172" key="GridCell.Tab.0.center/62.0.1304.768@62.0.1304.768" timestamp="1625862587008" />
     <state width="1259" height="224" key="GridCell.Tab.0.center/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.0.left" timestamp="1625860086341">
+    <state width="1260" height="172" key="GridCell.Tab.0.left" timestamp="1625862587008">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.0.left/62.0.1304.768@62.0.1304.768" timestamp="1625860086341" />
+    <state width="1260" height="172" key="GridCell.Tab.0.left/62.0.1304.768@62.0.1304.768" timestamp="1625862587008" />
     <state width="1259" height="224" key="GridCell.Tab.0.left/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.0.right" timestamp="1625860086341">
+    <state width="1260" height="172" key="GridCell.Tab.0.right" timestamp="1625862587008">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.0.right/62.0.1304.768@62.0.1304.768" timestamp="1625860086341" />
+    <state width="1260" height="172" key="GridCell.Tab.0.right/62.0.1304.768@62.0.1304.768" timestamp="1625862587008" />
     <state width="1259" height="224" key="GridCell.Tab.0.right/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.1.bottom" timestamp="1625860086530">
+    <state width="1260" height="172" key="GridCell.Tab.1.bottom" timestamp="1625862587087">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.1.bottom/62.0.1304.768@62.0.1304.768" timestamp="1625860086530" />
+    <state width="1260" height="172" key="GridCell.Tab.1.bottom/62.0.1304.768@62.0.1304.768" timestamp="1625862587087" />
     <state width="1259" height="224" key="GridCell.Tab.1.bottom/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.1.center" timestamp="1625860086530">
+    <state width="1260" height="172" key="GridCell.Tab.1.center" timestamp="1625862587087">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.1.center/62.0.1304.768@62.0.1304.768" timestamp="1625860086530" />
+    <state width="1260" height="172" key="GridCell.Tab.1.center/62.0.1304.768@62.0.1304.768" timestamp="1625862587087" />
     <state width="1259" height="224" key="GridCell.Tab.1.center/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.1.left" timestamp="1625860086530">
+    <state width="1260" height="172" key="GridCell.Tab.1.left" timestamp="1625862587086">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.1.left/62.0.1304.768@62.0.1304.768" timestamp="1625860086530" />
+    <state width="1260" height="172" key="GridCell.Tab.1.left/62.0.1304.768@62.0.1304.768" timestamp="1625862587086" />
     <state width="1259" height="224" key="GridCell.Tab.1.left/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
-    <state width="1260" height="197" key="GridCell.Tab.1.right" timestamp="1625860086530">
+    <state width="1260" height="172" key="GridCell.Tab.1.right" timestamp="1625862587087">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state width="1260" height="197" key="GridCell.Tab.1.right/62.0.1304.768@62.0.1304.768" timestamp="1625860086530" />
+    <state width="1260" height="172" key="GridCell.Tab.1.right/62.0.1304.768@62.0.1304.768" timestamp="1625862587087" />
     <state width="1259" height="224" key="GridCell.Tab.1.right/63.0.1303.768@63.0.1303.768" timestamp="1623008225303" />
     <state x="497" y="86" key="RollbackChangesDialog" timestamp="1625856271703">
       <screen x="62" y="0" width="1304" height="768" />

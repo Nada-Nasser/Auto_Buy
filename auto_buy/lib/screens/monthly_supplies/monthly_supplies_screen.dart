@@ -58,9 +58,10 @@ class MonthlySuppliesScreen extends StatelessWidget {
                       onLongPress: _onLongPressProduct,
                     ),
                   ),
-                  bloc.isCheckedOut ?ElevatedButton(
+                  bloc.isCheckedOut ? ElevatedButton(
                     child: Text("Cancel Monthly Cart Order"),
-                  ) :ElevatedButton(
+                  )
+                      :ElevatedButton(
                       onPressed: () {  // CHECK OUT button
                         if (!bloc.monthlyCartProducts.isEmpty) {
                           Navigator.of(context).push(MaterialPageRoute(
