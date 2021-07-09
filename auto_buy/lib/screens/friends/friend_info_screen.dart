@@ -1,11 +1,11 @@
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
-import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:commons/alert_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class FriendInfo extends StatefulWidget {
+class FriendInfo extends StatelessWidget {
   Map<String, dynamic> friend;          /*  This map will hold the details of the friend the the user had pressed on his card   */
   String pth;                          /*   Hold the path of the friend's image                                                */
   String friendId;                    /*    This string will hold the ID of the friend the the user had pressed on his card   */
@@ -17,11 +17,6 @@ class FriendInfo extends StatefulWidget {
     this.friendId = friendId;
     this.friends = friends;
   }
-  @override
-  _FriendInfoState createState() => _FriendInfoState();
-}
-
-class _FriendInfoState extends State<FriendInfo> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -65,7 +60,7 @@ class _FriendInfoState extends State<FriendInfo> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(widget.pth)))),
+                              image: NetworkImage(this.pth)))),
                 ],
               ),
             ),
@@ -74,7 +69,7 @@ class _FriendInfoState extends State<FriendInfo> {
             ),
             Center(
               child: Text(
-                widget.friend['name'],
+                this.friend['name'],
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
               ),
             ),
@@ -119,11 +114,42 @@ class _FriendInfoState extends State<FriendInfo> {
                 SizedBox(height: 20),
                 RaisedButton(
                   onPressed: () {
-                    _showDialog(
-                      context,
-                      auth,
-                    );
-                  },
+                    confirmationDialog(
+                      context, "Are you sure about removing " + this.friend['name'] + " from your friend list?", 
+                      positiveText: "Delete",
+                      title: "Warning",
+                      positiveAction: () async{
+
+                        /* Remove the selected user from the friends list of the current user */
+                        this.friends.remove(this.friendId);
+                        
+                        /* Remove the current user from the friend list of the user being removed */
+                        List <dynamic> hisFriends = await CloudFirestoreService.instance.readOnceDocumentData(
+                        collectionPath: "users/",
+                        documentId: this.friendId,
+                        builder: (Map<String, dynamic> data,String documentId)
+                        {
+                           return data['friends'];
+                        }
+                      );
+                      hisFriends.remove(auth.uid);
+
+                      /*Now update the fields of bothe users */
+                      await CloudFirestoreService.instance.updateDocumentField(
+                        collectionPath: "users/",
+                        documentID: auth.user.uid,
+                        fieldName: 'friends',
+                        updatedValue: this.friends);
+
+                      await CloudFirestoreService.instance.updateDocumentField(
+                        collectionPath: "users/",
+                        documentID: this.friendId,
+                        fieldName: 'friends',
+                        updatedValue: hisFriends);
+                        Navigator.of(context).pop(); 
+                    }
+                  ); 
+                },
                   color: Colors.orange,
                   padding:
                       EdgeInsets.only(left: 50, top: 20, right: 50, bottom: 15),
@@ -147,46 +173,6 @@ class _FriendInfoState extends State<FriendInfo> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showDialog(
-    BuildContext context,
-    FirebaseAuthService auth,
-  ) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Yes"),
-      onPressed: () async {
-        widget.friends.remove(widget.friendId);
-        await CloudFirestoreService.instance.updateDocumentField(
-            collectionPath: "users/",
-            documentID: auth.user.uid,
-            fieldName: 'friends',
-            updatedValue: widget.friends);
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 2);
-      },
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          title: new Text("Warning"),
-          content: new Text("Are you sure about removing " +
-              widget.friend['name'] +
-              " from your friend list?"),
-          actions: <Widget>[cancelButton, continueButton],
-        );
-      },
     );
   }
 }
