@@ -18,6 +18,7 @@ class MonthlyCartModel {
     return {
       'name': this.name,
       'delivery_date': this.deliveryDate,
+      'is_checkedout' : this.isCheckedOut ?? false
     };
   }
 }

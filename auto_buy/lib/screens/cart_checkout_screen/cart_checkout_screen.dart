@@ -214,6 +214,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => PaymentScreen(),
                               ));
+                              await MonthlyCartsBloc(uid: auth.uid)
+                                  .setCheckedOut(widget.cartPath);
                             }
                           : null,
                       child: Text(

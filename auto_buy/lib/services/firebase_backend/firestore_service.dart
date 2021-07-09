@@ -52,7 +52,7 @@ class CloudFirestoreService {
   /// The function uses [collectionPath] to reach the collection in firestore
   /// , [documentId] to reach the needed document only,
   /// and uses [builder] to convert the map fetched from the firestore to the desired dataType [T]
-  Future<T> readOnceDocumentData<T>({
+  Future<T>   readOnceDocumentData<T>({
     @required String collectionPath,
     @required documentId,
     @required T Function(Map<String, dynamic> data, String documentId) builder,

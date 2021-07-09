@@ -21,6 +21,7 @@ class MonthlyCartsScreenBloc {
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
   List<String> productIDs = [];
+  bool isCheckedOut;
 
   StreamController<bool> _streamController = StreamController.broadcast();
   bool reload = false;
@@ -43,7 +44,11 @@ class MonthlyCartsScreenBloc {
     }
     totalPrice = await _monthlyCartServices.getMonthlyCartTotalPrice(
         uid, selectedCartName);
+
+    isCheckedOut = await _monthlyCartServices.getIsCheckedOut(uid, selectedCartName);
+
     print("TOTAL PRICE $totalPrice");
+    print("IS CHECKED OUT? $isCheckedOut");
     getProductIDs();
     reload = !reload;
     _streamController.add(reload);
@@ -60,7 +65,7 @@ class MonthlyCartsScreenBloc {
   List<String> getProductIDs() {
     int i;
     for (i = 0; i < monthlyCartProducts.length; i++)
-        productIDs.add(monthlyCartProducts[i].id);
+      productIDs.add(monthlyCartProducts[i].id);
     return productIDs;
   }
 
