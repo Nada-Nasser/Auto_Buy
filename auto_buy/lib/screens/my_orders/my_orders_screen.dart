@@ -146,7 +146,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   fullscreenDialog: true,
-                                                  builder: (context) => OrderDetailsScreen(snapshotOrderDetail.data['product_ids']),
+                                                  builder: (context) => OrderDetailsScreen(productIds:snapshotOrderDetail.data['product_ids'],
+                                                    productIdsAndQuantity: snapshotOrderDetail.data['productid_quantity'],
+                                                    price: snapshotOrderDetail.data['price'],
+                                                  )
                                                 ),
                                               );
                                             },

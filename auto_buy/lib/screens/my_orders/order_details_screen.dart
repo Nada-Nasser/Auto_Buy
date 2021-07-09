@@ -5,10 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  var _productIds;
-  OrderDetailsScreen(dynamic _productIds) {
-    this._productIds = _productIds;
-  }
+  List<dynamic> productIds;
+  Map<String,dynamic> productIdsAndQuantity;
+  double price;
+  OrderDetailsScreen({@required this.productIds, this.productIdsAndQuantity,@required this.price});
   @override
   _OrderDetailsScreenState createState() => _OrderDetailsScreenState();
 }
@@ -17,21 +17,24 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title:  Text("Order price : ${widget.price.toStringAsFixed(2)}\$"),
+      ),
       body: Container(
           child: GridView.builder(
-        itemCount: widget._productIds.length,
+        itemCount: widget.productIds.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: MediaQuery.of(context).size.width /
               (MediaQuery.of(context).size.height / 2),
         ),
         itemBuilder: (context, index) {
-          ///this feature builder goes through each item in the user wishlist
+          ///this feature builder goes through each item in the user orders
           return FutureBuilder(
               future: CloudFirestoreService.instance.readOnceDocumentData(
                   collectionPath: "/products/",
-                  documentId: "${widget._productIds[index]}",
+                  documentId: "${widget.productIds[index]}",
                   builder: (data, documentId) => data),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -45,6 +48,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "pcs ${widget.productIdsAndQuantity[widget.productIds[index]]}",
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
                         FutureBuilder(
                             future: FirebaseStorageService.instance
                                 .downloadURL(snapshot.data['pic_path']),

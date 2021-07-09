@@ -16,14 +16,16 @@ class CheckingOutServices {
 
 
   Future<void> addNewOrder({String uid, Map<String, dynamic> address, DateTime selectedDate, List<String> productIDs,
-      double price}) async
+      double price, Map<String,int> productIdAndQuantity}) async
   {
     orderModel oneOrderModel = orderModel(
         userID: uid,
         address: address,
         price: price,
         productIDs: productIDs,
-        deliveryDate: selectedDate);
+        deliveryDate: selectedDate,
+        productIdsAndQuantity: productIdAndQuantity,
+    );
 
     String ID = await _firestoreService.addDocument(documentPath: APIPath.ordersDocuemtPath(), data: oneOrderModel.toMap());
 

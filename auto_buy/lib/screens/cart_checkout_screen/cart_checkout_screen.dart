@@ -12,6 +12,7 @@ class CartCheckoutScreen extends StatefulWidget {
     @required this.productIDs,
     @required this.orderPrice,
     this.isMonthlyCart = false,
+    this.productIdsAndQuantity
   });
 
   // final List<Product> products;
@@ -19,6 +20,7 @@ class CartCheckoutScreen extends StatefulWidget {
   final double orderPrice;
   final bool isMonthlyCart;
   final List<String> productIDs;
+  final Map<String,int> productIdsAndQuantity;
   bool enabledEditing = false;
 
   @override
@@ -39,7 +41,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-    print(widget.productIDs);
+    print(widget.productIdsAndQuantity);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
           path: "/users/${auth.uid}",
@@ -177,10 +179,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     child: ElevatedButton(
                       onPressed: widget.enabledEditing == false
                           ? () async {
+                        ///changed prouctIDs to productIdsAndQuantity
                               await CheckingOutServices().addNewOrder(
                                   productIDs: widget.productIDs,
                                   price: widget.orderPrice,
                                   uid: auth.uid,
+                                  productIdAndQuantity: widget.productIdsAndQuantity,
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],

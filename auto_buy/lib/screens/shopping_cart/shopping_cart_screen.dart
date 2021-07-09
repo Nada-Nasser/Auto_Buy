@@ -57,8 +57,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             builder:(context,price){
                               if(price.hasData){
                                 widget.totalPrice = price.data;
-                                print(widget.productIds);
-                                return Text("total cost is ${price.data} \$",style: TextStyle(
+                                return Text("total cost is ${widget.totalPrice.toStringAsFixed(2)} \$",style: TextStyle(
                                   fontSize: 18,
                                 ),);
                               }else{
@@ -242,14 +241,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         primary: Colors.orange,
                         padding: EdgeInsets.all(20)
                       ),
-                      onPressed: () {
+                      onPressed: () async{
                           if(_cartScreenBloc.productIds.length == 0)
                               showInSnackBar("your cart is empty", context);
                             else{
+                            await _cartScreenBloc.calculateTotalPrice("/shopping_carts/${auth.uid}/shopping_cart_items","/products/");
+                            print('in cart screen');
+                            print(_cartScreenBloc.productIdsAndQuantity);
                             Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) => CartCheckoutScreen(
                                   orderPrice: widget.totalPrice,
                                   productIDs: widget.productIds,
+                                  productIdsAndQuantity: _cartScreenBloc.productIdsAndQuantity,
                                   isMonthlyCart: false,))).then((value) => _cartScreenBloc.resetState());
                           }
                       },
