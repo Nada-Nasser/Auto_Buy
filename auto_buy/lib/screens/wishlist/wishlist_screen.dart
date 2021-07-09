@@ -82,7 +82,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                     }),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    // print(snapshot.data);
+                                    print(snapshot.data);
                                     return Container(
                                       padding: EdgeInsets.all(10),
                                       margin: EdgeInsets.all(10),
@@ -164,16 +164,6 @@ class _WishListScreenState extends State<WishListScreen> {
                       }
                     }),
               ),
-              // Container(
-              //   color: Colors.white.withOpacity(0),
-              //   child: ElevatedButton(
-              //     onPressed: (){},
-              //     child: Text("Check Out",
-              //       style: TextStyle(
-              //         color: Colors.white,
-              //       ),),
-              //   ),
-              // )
             ],
           ),
         ));

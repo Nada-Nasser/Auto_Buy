@@ -12,15 +12,19 @@ class CartCheckoutScreen extends StatefulWidget {
     @required this.productIDs,
     @required this.orderPrice,
     this.isMonthlyCart = false,
-    this.productIdsAndQuantity
+    this.productIdsAndQuantity,
+    this.isGift=false,
+    this.friendId=false
   });
 
   // final List<Product> products;
   final String cartPath;
   final double orderPrice;
   final bool isMonthlyCart;
+  final bool isGift;
   final List<String> productIDs;
   final Map<String,int> productIdsAndQuantity;
+  final friendId;
   bool enabledEditing = false;
 
   @override
@@ -44,7 +48,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     print(widget.productIdsAndQuantity);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
-          path: "/users/${auth.uid}",
+          path: "/users/${widget.isGift==false?auth.uid:widget.friendId}",
           builder: (Map<String, dynamic> data, String documentID) => data),
       builder: (context, userdata) {
         if (userdata.hasError) {
@@ -126,7 +130,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
+                  widget.isGift==false?Container(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
@@ -166,7 +170,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         padding: EdgeInsets.all(10),
                       ),
                     ),
-                  ),
+                  ):Container(),
                   SizedBox(
                     height: 20,
                   ),
@@ -184,7 +188,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                   productIDs: widget.productIDs,
                                   price: widget.orderPrice,
                                   uid: auth.uid,
-                                  productIdAndQuantity: widget.productIdsAndQuantity,
+                                  productIdAndQuantity: widget.productIdsAndQuantity!=null?widget.productIdsAndQuantity:null,
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],

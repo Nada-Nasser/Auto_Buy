@@ -239,7 +239,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.orange,
-                        padding: EdgeInsets.all(20)
+                        padding: EdgeInsets.all(20),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                        ),
                       ),
                       onPressed: () async{
                           if(_cartScreenBloc.productIds.length == 0)

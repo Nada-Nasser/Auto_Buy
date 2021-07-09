@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'friend_wish_list.dart';
+
 class FriendInfo extends StatelessWidget {
   Map<String, dynamic> friend;          /*  This map will hold the details of the friend the the user had pressed on his card   */
   String pth;                          /*   Hold the path of the friend's image                                                */
@@ -88,10 +90,18 @@ class FriendInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RaisedButton(
-                  onPressed: () {
-                    /*
-                    we have to deligate the user to a screen that contains the wish list of the selected user.
-                    */
+                  onPressed: () async {
+                    dynamic data = await CloudFirestoreService.instance.getCollectionData(collectionPath: "wish_lists/$friendId/wish_list_products/",
+                        builder: (Map<String, dynamic> data, String documentId) {
+                          return documentId;
+                        });
+                    int len = data.length;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => FriendWishList(friendId: friendId,name: this.friend['name'],checkListLength: len,),
+                      ),
+                    );
                   },
                   color: Colors.orange,
                   padding:
