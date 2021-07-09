@@ -21,6 +21,7 @@ class MonthlyCartsScreenBloc {
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
   List<String> productIDs = [];
+  Map<String, int> productIdsAndQuantity = new Map<String,int>();
   bool isCheckedOut;
 
   StreamController<bool> _streamController = StreamController.broadcast();
@@ -36,7 +37,9 @@ class MonthlyCartsScreenBloc {
         .readMonthlyCartProducts(uid, selectedCartName);
     monthlyCartProducts.clear();
     quantities.clear();
+    if(productIdsAndQuantity.isNotEmpty) productIdsAndQuantity.clear();
     for (int i = 0; i < items.length; i++) {
+      productIdsAndQuantity[items[i].productId] = items[i].quantity;
       quantities.add(items[i].quantity);
       final product =
           await _productsBackendServices.readProduct(items[i].productId);

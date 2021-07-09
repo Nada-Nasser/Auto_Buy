@@ -28,7 +28,7 @@ class CartCheckoutScreen extends StatefulWidget {
 
 class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   String governorate;
-  DateTime selectedDate = DateTime(
+  DateTime selectedDeliveryDate = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
 
   List listItem = [
@@ -146,9 +146,6 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                       "City", cityController, widget.enabledEditing),
                   buildDropDownMenu(userdata.data['adress']['governorate'],
                       widget.enabledEditing),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -193,11 +190,20 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Container(child: monthlyCartWidgets(auth.uid)),
                   SizedBox(
-                    height: 20,
+                    height: 5,
+                  ),
+                  Text(
+                      "Please note that your monthly cart items will "
+                      "be automatically ordered every 30 days from this date",
+                      style: TextStyle(
+                        color: Colors.blueGrey,
+                      )),
+                  SizedBox(
+                    height: 5,
                   ),
                   Container(
                     width: double.infinity,
@@ -223,7 +229,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                     "floor_number": userdata.data['adress']
                                         ['floor_number']
                                   },
-                                  selectedDate: selectedDate);
+                                  selectedDate: selectedDeliveryDate);
                               if (widget.isMonthlyCart == false) {
                                 await CheckingOutServices().removeItemsFromCart(
                                     cartPath:
@@ -238,10 +244,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           : null,
                       child: Text(
                         "Proceed to Checkout",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
                         elevation: 4,
@@ -283,7 +286,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                  child: Text('${selectedDate.month} / ${selectedDate.day}')),
+                  child: Text('${selectedDeliveryDate.month} / ${selectedDeliveryDate.day}')),
               SizedBox(height: 5),
               Expanded(
                 child: ElevatedButton(
@@ -295,12 +298,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           firstDate: DateTime(DateTime.now().year,
                               DateTime.now().month, DateTime.now().day + 3),
                           lastDate: DateTime(2101));
-                      if (picked != null && picked != selectedDate) {
+                      if (picked != null && picked != selectedDeliveryDate) {
                         setState(() {
-                          selectedDate = picked;
+                          selectedDeliveryDate = picked;
                         });
                         await MonthlyCartsBloc(uid: uid)
-                            .editCartDate(widget.cartPath, selectedDate);
+                            .editCartDate(widget.cartPath, selectedDeliveryDate);
                       }
                     },
                     child: Text(

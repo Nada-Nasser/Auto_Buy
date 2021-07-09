@@ -24,6 +24,8 @@ class CheckingOutServices {
         price: price,
         productIDs: productIDs,
         deliveryDate: selectedDate,
+        orderDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day),
         productIdsAndQuantity: productIdAndQuantity,
     );
 
