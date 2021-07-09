@@ -1,28 +1,25 @@
-import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/cart_checkout_screen/payment_screen.dart';
-import 'package:auto_buy/screens/monthly_supplies/cart_supplies_screen_bloc.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_bloc.dart';
-import 'package:auto_buy/screens/user_account/User_Settings.dart';
-import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/services/checkingOutServices.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
-  CartCheckoutScreen({
-    this.cartPath,
-    @required this.productIDs,
-    @required this.orderPrice,
-    this.isMonthlyCart = false,
-  });
+  CartCheckoutScreen(
+      {this.cartPath,
+      @required this.productIDs,
+      @required this.orderPrice,
+      this.isMonthlyCart = false,
+      this.productIdsAndQuantity});
 
   // final List<Product> products;
   final String cartPath;
   final double orderPrice;
   final bool isMonthlyCart;
   final List<String> productIDs;
+  final Map<String, int> productIdsAndQuantity;
   bool enabledEditing = false;
 
   @override
@@ -47,8 +44,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     'Faiyum',
     'Gharbia',
     'Giza',
-    'Ismalia'
-        'Kafr el-Sheikh',
+    'Ismalia',
+    'Kafr el-Sheikh',
     'Luxor',
     'Matruh',
     'Minya',
@@ -67,7 +64,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-
+    print(widget.productIdsAndQuantity);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
           path: "/users/${auth.uid}",
@@ -161,17 +158,26 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           print(widget.enabledEditing);
                           setState(() {});
                         } else {
-                          update(
-                              context,
-                              auth,
-                              bNumberController,
-                              cityController,
-                              streetController,
-                              aNumberController,
-                              fNumberController);
-                          widget.enabledEditing = false;
-                          print(widget.enabledEditing);
-                          setState(() {});
+                          if (cityController.text.isNotEmpty &&
+                              bNumberController.text.isNotEmpty &&
+                              fNumberController.text.isNotEmpty &&
+                              aNumberController.text.isNotEmpty &&
+                              streetController.text.isNotEmpty) {
+                            update(
+                                context,
+                                auth,
+                                bNumberController,
+                                cityController,
+                                streetController,
+                                aNumberController,
+                                fNumberController);
+                            widget.enabledEditing = false;
+                            print(widget.enabledEditing);
+                            setState(() {});
+                          } else {
+                            showInSnackBar(
+                                "please fill in all the fields", context);
+                          }
                         }
                       },
                       child: Text(
@@ -198,24 +204,36 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     child: ElevatedButton(
                       onPressed: widget.enabledEditing == false
                           ? () async {
+                              ///changed prouctIDs to productIdsAndQuantity
                               await CheckingOutServices().addNewOrder(
                                   productIDs: widget.productIDs,
                                   price: widget.orderPrice,
                                   uid: auth.uid,
+                                  productIdAndQuantity:
+                                      widget.productIdsAndQuantity,
                                   address: {
-                                    "building_number": userdata.data['adress']['building_number'],
+                                    "building_number": userdata.data['adress']
+                                        ['building_number'],
                                     "city": userdata.data['adress']['city'],
                                     "street": userdata.data['adress']['street'],
-                                    "governorate": userdata.data['adress']['governorate'],
-                                    "apartment_number": userdata.data['adress']['apartment_number'],
-                                    "floor_number":userdata.data['adress']['floor_number']
+                                    "governorate": userdata.data['adress']
+                                        ['governorate'],
+                                    "apartment_number": userdata.data['adress']
+                                        ['apartment_number'],
+                                    "floor_number": userdata.data['adress']
+                                        ['floor_number']
                                   },
                                   selectedDate: selectedDate);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PaymentScreen(),
-                              ));
-                              await MonthlyCartsBloc(uid: auth.uid)
-                                  .setCheckedOut(widget.cartPath);
+                              if (widget.isMonthlyCart == false) {
+                                await CheckingOutServices().removeItemsFromCart(
+                                    cartPath:
+                                        "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                    deletePath: "/shopping_carts/${auth.uid}");
+                              } else
+                                await MonthlyCartsBloc(uid: auth.uid)
+                                    .setCheckedOut(widget.cartPath);
+
+                              Navigator.of(context).pop();
                             }
                           : null,
                       child: Text(
@@ -411,4 +429,26 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         fieldName: 'adress',
         updatedValue: newAdress);
   }
+}
+
+Widget makeSure(
+  BuildContext context,
+) {
+  showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text("Are you sure you want to checkout??"),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {}, child: Text("proceed to checkout")),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("go back")),
+              ],
+            );
+          }));
 }

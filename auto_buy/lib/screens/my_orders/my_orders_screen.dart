@@ -5,7 +5,7 @@ import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import 'order_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -35,6 +35,7 @@ class MyOrdersScreen extends StatefulWidget {
 }
 
 class _MyOrdersScreenState extends State<MyOrdersScreen> {
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -128,8 +129,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                               softWrap: true,
                                             ),
                                             Text(
-                                              snapshotOrderDetail
-                                                  .data['delivery_date'],
+                                              DateFormat('yyyy-dd-MM').format(snapshotOrderDetail.data['delivery_date'].toDate()).toString()
+                                              ,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
@@ -145,7 +146,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   fullscreenDialog: true,
-                                                  builder: (context) => OrderDetailsScreen(snapshotOrderDetail.data['product_ids']),
+                                                  builder: (context) => OrderDetailsScreen(productIds:snapshotOrderDetail.data['product_ids'],
+                                                    productIdsAndQuantity: snapshotOrderDetail.data['productid_quantity'],
+                                                    price: snapshotOrderDetail.data['price'],
+                                                  )
                                                 ),
                                               );
                                             },
@@ -170,7 +174,9 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       ),
                     );
                   } else {
-                    return CircularProgressIndicator();//todo please display a message or anything else
+                    return Container(
+                      child: Center(child: Text("You don't have any orders"),),
+                    );//todo please display a message or anything else
                   }
                 },
               ),
