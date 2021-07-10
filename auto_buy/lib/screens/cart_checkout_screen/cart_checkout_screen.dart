@@ -238,7 +238,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               } else
                                 await MonthlyCartsBloc(uid: auth.uid)
                                     .setCheckedOut(widget.cartPath);
-
+                              showInSnackBar(
+                                  "checkout done!", context);
                               Navigator.of(context).pop();
                             }
                           : null,
