@@ -73,7 +73,7 @@ Widget _drawer(BuildContext context) {
           Navigator.of(context).push(
             MaterialPageRoute(
               fullscreenDialog: true,
-              builder: (context) => ExpenseTrackerScreen(),
+              builder: (context) => ExpenseTrackerScreen.create(context),
             ),
           );
         }),

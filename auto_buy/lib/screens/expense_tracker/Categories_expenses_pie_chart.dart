@@ -1,6 +1,9 @@
-import 'package:auto_buy/widgets/colors.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'category_pie_chart_item.dart';
+import 'expenses_tracker_bloc.dart';
 
 class CategoriesExpensesPieChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -8,9 +11,9 @@ class CategoriesExpensesPieChart extends StatelessWidget {
 
   CategoriesExpensesPieChart(this.seriesList, {this.animate});
 
-  factory CategoriesExpensesPieChart.withSampleData() {
+  factory CategoriesExpensesPieChart.withSampleData(BuildContext context) {
     return CategoriesExpensesPieChart(
-      _createSampleData(),
+      _createSampleData(context),
       // Disable animations for image tests.
       animate: true,
     );
@@ -46,7 +49,7 @@ class CategoriesExpensesPieChart extends StatelessWidget {
               // Optionally provide a measure formatter to format the measure value.
               // If none is specified the value is formatted as a decimal.
               measureFormatter: (num value) {
-                return value == null ? '-' : '${value}k';
+                return value == null ? '-' : '${value} EGP';
               },
             ),
           ],
@@ -55,34 +58,22 @@ class CategoriesExpensesPieChart extends StatelessWidget {
     );
   }
 
-  static List<charts.Series<LinearSales, String>> _createSampleData() {
-    final data = [
-      LinearSales("Food", 5, charts.ColorUtil.fromDartColor(colors[0])),
-      LinearSales("fruits", 20, charts.ColorUtil.fromDartColor(colors[1])),
-      LinearSales("cats", 75, charts.ColorUtil.fromDartColor(colors[2])),
-      LinearSales("goods", 100, charts.ColorUtil.fromDartColor(colors[3])),
-      LinearSales("gg", 120, charts.ColorUtil.fromDartColor(colors[4])),
-    ];
+  static List<charts.Series<CategoryPieChartItem, String>> _createSampleData(
+      BuildContext context) {
+    final bloc = Provider.of<ExpensesTrackerBloc>(context, listen: false);
+    final data = bloc.categoryPieChartItems;
 
     return [
-      new charts.Series<LinearSales, String>(
+      new charts.Series<CategoryPieChartItem, String>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (CategoryPieChartItem sales, _) => sales.category,
+        measureFn: (CategoryPieChartItem sales, _) => sales.sales,
         data: data,
-        colorFn: (LinearSales sales, _) => sales.color,
+        colorFn: (CategoryPieChartItem sales, _) => sales.color,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (LinearSales row, _) => '${row.year}: ${row.sales}',
+        labelAccessorFn: (CategoryPieChartItem row, _) =>
+            '${row.category}: ${row.sales}',
       )
     ];
   }
-}
-
-/// Sample linear data type.
-class LinearSales {
-  final String year;
-  final int sales;
-  final charts.Color color;
-
-  LinearSales(this.year, this.sales, this.color);
 }
