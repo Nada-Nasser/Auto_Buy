@@ -57,6 +57,7 @@ void addNewCartDialog(
                   children: <Widget>[
                     Text(
                       content,
+                      style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.justify,
                     ),
                     SizedBox(
@@ -79,81 +80,18 @@ void addNewCartDialog(
                       validator: isValid,
                     ),
                     SizedBox(height: 20),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Delivery Date:",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text('${selectedDate.month} / ${selectedDate.day}'),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 5),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final DateTime picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime(
-                                    DateTime.now().year,
-                                    DateTime.now().month,
-                                    DateTime.now().day + 3),
-                                firstDate: DateTime(
-                                    DateTime.now().year,
-                                    DateTime.now().month,
-                                    DateTime.now().day + 3),
-                                lastDate: DateTime(2101));
-                            if (picked != null && picked != selectedDate) {
-                              setState(() {
-                                selectedDate = picked;
-                              });
-                              if (editCart) {
-                                await bloc.editCartDate(cartName, selectedDate);
-                              }
-                            }
-                            if (editCart) {
-                              showInSnackBar("Date Updated", screenContext);
-                              Navigator.of(context).pop(false);
-                            }
-                          },
-                          child: Text(
-                            "Change Date",
-                          ),
-                        ),
-                      ],
-                    ),
+
                     SizedBox(
                       height: 10,
                     ),
                     if (editCart)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child: Text("Cancel"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              await bloc.deleteMonthlyCart(cartName);
-                              showInSnackBar("Cart Deleted", screenContext);
-                              Navigator.of(context).pop(false);
-                            },
-                            child: Text("Delete Cart"),
-                          ),
-                        ],
+                      ElevatedButton(
+                        onPressed: () async {
+                          await bloc.deleteMonthlyCart(cartName);
+                          showInSnackBar("Cart Deleted", screenContext);
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Text("Delete Cart"),
                       ),
                   ],
                 ),

@@ -58,8 +58,11 @@ class MonthlySuppliesScreen extends StatelessWidget {
                       onLongPress: _onLongPressProduct,
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
+                  bloc.isCheckedOut ? ElevatedButton(
+                    child: Text("Cancel Monthly Cart Order"),
+                  )
+                      :ElevatedButton(
+                      onPressed: () {  // CHECK OUT button
                         if (!bloc.monthlyCartProducts.isEmpty) {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => CartCheckoutScreen(
@@ -67,12 +70,15 @@ class MonthlySuppliesScreen extends StatelessWidget {
                                     orderPrice: bloc.totalPrice,
                                     isMonthlyCart: true,
                                     productIDs: bloc.productIDs,
-                                  )));
+                                    productIdsAndQuantity: bloc.productIdsAndQuantity,
+                                  ))
+                          ).then((val){});
                         } else
                           showInSnackBar(
                               "You need to add items first!", context);
                       },
-                      child: Text("Check Out"))
+                      child: Text("Check Out")
+                  )
                 ],
               );
             }));
@@ -98,7 +104,7 @@ class MonthlySuppliesScreen extends StatelessWidget {
             ],
           ),
           Row(
-            children: [Text("Total Price = \$${bloc.totalPrice}")],
+            children: [Text("Total Price = \$${bloc.totalPrice.toStringAsFixed(3)}")],
           ),
         ],
       ),

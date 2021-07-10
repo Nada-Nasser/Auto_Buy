@@ -77,8 +77,8 @@ class _MonthlyCartsScreenState extends State<MonthlyCartsScreen> {
                               onLongPress: () {
                                 addNewCartDialog(
                                   context,
-                                  "Edit/Delete Monthly Cart",
-                                  "You can edit the starting delivery date by selecting a new one",
+                                  "Delete Monthly Cart",
+                                  "Please note that deleting this monthly cart will stop the automatic ordering of items in monthly cart",
                                   bloc,
                                   cartName: bloc.monthlyCartsScreenModel
                                       .monthlyCarts[index].name,
@@ -138,7 +138,7 @@ class _MonthlyCartsScreenState extends State<MonthlyCartsScreen> {
                                 addNewCartDialog(
                                     context,
                                     "New Monthly Cart",
-                                    "Write a new cart name and select delivery date you want",
+                                    "Write a new cart name",
                                     bloc);
                               },
                               child: Container(
