@@ -110,6 +110,18 @@ class CloudFirestoreService {
     await reference.delete();
   }
 
+  Future<dynamic> readFieldValueFromDocument(
+      {@required String collectionPath,
+      @required String documentID,
+      @required fieldName}) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(documentID)
+        .get();
+
+    return snapshot.data()[fieldName];
+  }
+
   /// This function returns a [Stream] on a collection in firestore
   /// that can be used to listen any event occur in this collection.
   /// it uses [path] to reach the collection in firestore

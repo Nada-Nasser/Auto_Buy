@@ -14,23 +14,14 @@ import 'package:provider/provider.dart';
 
 import '../Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //the drawer icon
       backgroundColor: Colors.white,
       appBar: customAppBar(
         context,
         hasLeading: false,
-        /* flexibleSpace: Container(
-            margin: EdgeInsets.fromLTRB(0, 30.0, 0, 0),
-            child: customSearchBar(context)),*/
       ),
       drawer: _drawer(context),
       body: HomePageProducts(),

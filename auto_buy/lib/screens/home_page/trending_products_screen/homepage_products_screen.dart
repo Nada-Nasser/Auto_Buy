@@ -3,13 +3,13 @@ import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/adve
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/home_page_products.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'widgets/home_page_list_views/list_type.dart';
 
 class HomePageProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = [
-      // homePageCatigories(context),
       SizedBox(height: 10),
       buildSectionHeader(context, "Top Sales"),
       AdvertisementSwiper.create(context),
@@ -62,7 +62,7 @@ class HomePageProducts extends StatelessWidget {
           textAlign: TextAlign.start,
           style: TextStyle(
             fontSize: 0.0655 * MediaQuery.of(context).size.width,
-            fontWeight: FontWeight.w600,
+            //fontWeight: FontWeight.w600,
           ),
         ),
       ),

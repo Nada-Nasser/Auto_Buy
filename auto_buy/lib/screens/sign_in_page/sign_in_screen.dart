@@ -2,6 +2,7 @@ import 'package:auto_buy/blocs/sign_in_changes_notifier.dart';
 import 'package:auto_buy/screens/sign_in_page/sign_in_using_email_form.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -82,11 +83,20 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInUsingGoogle(
       BuildContext context, SignInChangeNotifier notifier) async {
-    bool flag = await notifier.enterUsingGoogle();
-    if (flag) {
-      Navigator.of(context).pop();
-    } else {
-      return null;
+    try {
+      bool flag = await notifier.enterUsingGoogle();
+      if (flag) {
+        Navigator.of(context).pop();
+      } else {
+        showAlertDialog(context,
+            titleText: "Sign in Failed", content: "", actionButtonString: "Ok");
+        return null;
+      }
+    } on Exception catch (e) {
+      showAlertDialog(context,
+          titleText: "Sign in Failed",
+          content: "Check your network Connection",
+          actionButtonString: "Ok");
     }
   }
 }
