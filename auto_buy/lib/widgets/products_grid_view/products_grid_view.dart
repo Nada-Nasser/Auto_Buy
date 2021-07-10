@@ -43,7 +43,7 @@ class ProductsGridView extends StatelessWidget {
           product: products[index],
           quantity: quantities[index] ?? 1,
           onTap: () => onTap(context, products[index]),
-          onLongPress: () => onLongPress(context, products[index]),
+          onLongPress: () => onLongPress == null ? ()=>{} : onLongPress(context, products[index]),
         ),
         itemCount: products.length,
       ),

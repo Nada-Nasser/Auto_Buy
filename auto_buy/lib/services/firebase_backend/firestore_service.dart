@@ -104,7 +104,7 @@ class CloudFirestoreService {
   }
   /// This function used to delete document from firestore
   /// it uses [documentPath] to reach the needed document,
-  Future<void> deleteDocument({@required String path}) async {
+  Future<void>  deleteDocument({@required String path}) async {
     final reference = FirebaseFirestore.instance.doc(path);
     print('delete: $path');
     await reference.delete();
@@ -122,6 +122,15 @@ class CloudFirestoreService {
     return snapshot.data()[fieldName];
   }
 
+  /// This function used to delete collection from firestore
+  /// it uses [documentPath] to reach the needed collection and loops to delete all the docs in collection,
+  Future<void>  deleteCollection({@required String path}) async {
+   await FirebaseFirestore.instance.collection(path).get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs){
+        ds.reference.delete();
+      };
+    });
+  }
   /// This function returns a [Stream] on a collection in firestore
   /// that can be used to listen any event occur in this collection.
   /// it uses [path] to reach the collection in firestore

@@ -137,8 +137,7 @@ class MonthlyCartServices {
   Future<void> deleteProductFromMonthlyCart(
       String uid, String selectedCartName, String productId) async {
     await _firestoreService.deleteDocument(
-        path: APIPath.userMonthlyCartProductDocumentPath(
-            uid, selectedCartName, productId));
+        path: APIPath.userMonthlyCartProductDocumentPath(uid, selectedCartName, productId));
   }
 
   Future<void> updateProductQuantityInMonthlyCart(
@@ -153,8 +152,11 @@ class MonthlyCartServices {
   }
 
   Future<void> deleteMonthlyCart(String uid, String selectedCartName) async {
+    await _firestoreService.deleteCollection(
+        path: APIPath.userMonthlyCartProductsCollectionPath(uid, selectedCartName));
     await _firestoreService.deleteDocument(
         path: APIPath.userMonthlyCartDocument(uid, selectedCartName));
+
   }
 
   Future<void> updateDeliveryDateInMonthlyCart(
