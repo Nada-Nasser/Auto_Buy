@@ -29,10 +29,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
                 appBar: AppBar(
                   bottom: TabBar(
                     labelColor: Colors.white,
-                    tabs: [
-                      Tab(text: 'Categories Expenses'),
-                      Tab(text: 'Monthly Expenses')
-                    ],
+                    tabs: [Tab(text: 'Per Category'), Tab(text: 'Per Month')],
                   ),
                   title: Text('Expenses Tracker',
                       style: TextStyle(color: Colors.white)),

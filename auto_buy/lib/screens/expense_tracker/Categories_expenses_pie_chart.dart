@@ -1,3 +1,4 @@
+import 'package:auto_buy/widgets/colors.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class CategoriesExpensesPieChart extends StatelessWidget {
     return CategoriesExpensesPieChart(
       _createSampleData(),
       // Disable animations for image tests.
-      animate: false,
+      animate: true,
     );
   }
 
@@ -22,14 +23,15 @@ class CategoriesExpensesPieChart extends StatelessWidget {
         margin: EdgeInsets.all(20),
         child: charts.PieChart(
           seriesList,
-          animate: true,
+          animate: animate,
           animationDuration: const Duration(
             seconds: 1,
           ),
           defaultRenderer: new charts.ArcRendererConfig(
             arcRendererDecorators: [
               new charts.ArcLabelDecorator(
-                  labelPosition: charts.ArcLabelPosition.auto)
+                labelPosition: charts.ArcLabelPosition.auto,
+              )
             ],
           ),
           behaviors: [
@@ -38,6 +40,7 @@ class CategoriesExpensesPieChart extends StatelessWidget {
               horizontalFirst: false,
               cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
               showMeasures: true,
+              desiredMaxRows: 6,
               // Configure the measure value to be shown by default in the legend.
               legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
               // Optionally provide a measure formatter to format the measure value.
@@ -52,16 +55,17 @@ class CategoriesExpensesPieChart extends StatelessWidget {
     );
   }
 
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
+  static List<charts.Series<LinearSales, String>> _createSampleData() {
     final data = [
-      LinearSales(0, 5, charts.ColorUtil.fromDartColor(Colors.purple[100])),
-      LinearSales(1, 20, charts.ColorUtil.fromDartColor(Color(0xFF522210))),
-      LinearSales(2, 75, charts.ColorUtil.fromDartColor(Color(0xFF929910))),
-      LinearSales(3, 100, charts.ColorUtil.fromDartColor(Color(0xFFD26699))),
+      LinearSales("Food", 5, charts.ColorUtil.fromDartColor(colors[0])),
+      LinearSales("fruits", 20, charts.ColorUtil.fromDartColor(colors[1])),
+      LinearSales("cats", 75, charts.ColorUtil.fromDartColor(colors[2])),
+      LinearSales("goods", 100, charts.ColorUtil.fromDartColor(colors[3])),
+      LinearSales("gg", 120, charts.ColorUtil.fromDartColor(colors[4])),
     ];
 
     return [
-      new charts.Series<LinearSales, int>(
+      new charts.Series<LinearSales, String>(
         id: 'Sales',
         domainFn: (LinearSales sales, _) => sales.year,
         measureFn: (LinearSales sales, _) => sales.sales,
@@ -76,7 +80,7 @@ class CategoriesExpensesPieChart extends StatelessWidget {
 
 /// Sample linear data type.
 class LinearSales {
-  final int year;
+  final String year;
   final int sales;
   final charts.Color color;
 
