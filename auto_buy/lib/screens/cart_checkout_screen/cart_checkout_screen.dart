@@ -112,159 +112,164 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             ),
             body: Container(
               padding: EdgeInsets.all(30),
-              child: Column(
-                children: [
-                  Text(
-                    "Shipping information",
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: buildTextFormField("Apt Number",
-                            aNumberController, widget.enabledEditing),
-                        flex: 1,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                          child: buildTextFormField("floor Number",
-                              fNumberController, widget.enabledEditing),
-                          flex: 1),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                          child: buildTextFormField("building Number",
-                              bNumberController, widget.enabledEditing),
-                          flex: 1),
-                    ],
-                  ),
-                  buildTextFormField(
-                      "Street", streetController, widget.enabledEditing),
-                  buildTextFormField(
-                      "City", cityController, widget.enabledEditing),
-                  buildDropDownMenu(userdata.data['adress']['governorate'],
-                      widget.enabledEditing),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  widget.isGift == false
-                      ? Container(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (widget.enabledEditing == false) {
-                                widget.enabledEditing = true;
-                                print(widget.enabledEditing);
-                                setState(() {});
-                              } else {
-                                if (cityController.text.isNotEmpty &&
-                                    bNumberController.text.isNotEmpty &&
-                                    fNumberController.text.isNotEmpty &&
-                                    aNumberController.text.isNotEmpty &&
-                                    streetController.text.isNotEmpty) {
-                                  update(
-                                      context,
-                                      auth,
-                                      bNumberController,
-                                      cityController,
-                                      streetController,
-                                      aNumberController,
-                                      fNumberController);
-                                  widget.enabledEditing = false;
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      "Shipping information",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: buildTextFormField("Apt Number",
+                              aNumberController, widget.enabledEditing),
+                          flex: 1,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Expanded(
+                            child: buildTextFormField("floor Number",
+                                fNumberController, widget.enabledEditing),
+                            flex: 1),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Expanded(
+                            child: buildTextFormField("building Number",
+                                bNumberController, widget.enabledEditing),
+                            flex: 1),
+                      ],
+                    ),
+                    buildTextFormField(
+                        "Street", streetController, widget.enabledEditing),
+                    buildTextFormField(
+                        "City", cityController, widget.enabledEditing),
+                    buildDropDownMenu(userdata.data['adress']['governorate'],
+                        widget.enabledEditing),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    widget.isGift == false
+                        ? Container(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (widget.enabledEditing == false) {
+                                  widget.enabledEditing = true;
                                   print(widget.enabledEditing);
                                   setState(() {});
                                 } else {
-                                  showInSnackBar(
-                                      "please fill in all the fields", context);
+                                  if (cityController.text.isNotEmpty &&
+                                      bNumberController.text.isNotEmpty &&
+                                      fNumberController.text.isNotEmpty &&
+                                      aNumberController.text.isNotEmpty &&
+                                      streetController.text.isNotEmpty) {
+                                    update(
+                                        context,
+                                        auth,
+                                        bNumberController,
+                                        cityController,
+                                        streetController,
+                                        aNumberController,
+                                        fNumberController);
+                                    widget.enabledEditing = false;
+                                    print(widget.enabledEditing);
+                                    setState(() {});
+                                  } else {
+                                    showInSnackBar(
+                                        "please fill in all the fields",
+                                        context);
+                                  }
                                 }
-                              }
-                            },
-                            child: Text(
-                                widget.enabledEditing == false
-                                    ? "Edit address"
-                                    : "Confirm editing",
-                                style: TextStyle(fontSize: 16)),
-                            style: ElevatedButton.styleFrom(
-                              elevation: 4,
-                              primary: Colors.white,
-                              padding: EdgeInsets.all(10),
+                              },
+                              child: Text(
+                                  widget.enabledEditing == false
+                                      ? "Edit address"
+                                      : "Confirm editing",
+                                  style: TextStyle(fontSize: 16)),
+                              style: ElevatedButton.styleFrom(
+                                elevation: 4,
+                                primary: Colors.white,
+                                padding: EdgeInsets.all(10),
+                              ),
                             ),
-                          ),
-                        )
-                      : Container(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(child: monthlyCartWidgets(auth.uid)),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                      "Please note that your monthly cart items will "
-                      "be automatically ordered every 30 days from this date",
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: widget.enabledEditing == false
-                          ? () async {
-                              ///changed prouctIDs to productIdsAndQuantity
-                              await CheckingOutServices().addNewOrder(
-                                  productIDs: widget.productIDs,
-                                  price: widget.orderPrice,
-                                  uid: auth.uid,
-                                  productIdAndQuantity:
-                                      widget.productIdsAndQuantity != null
-                                          ? widget.productIdsAndQuantity
-                                          : null,
-                                  address: {
-                                    "building_number": userdata.data['adress']
-                                        ['building_number'],
-                                    "city": userdata.data['adress']['city'],
-                                    "street": userdata.data['adress']['street'],
-                                    "governorate": userdata.data['adress']
-                                        ['governorate'],
-                                    "apartment_number": userdata.data['adress']
-                                        ['apartment_number'],
-                                    "floor_number": userdata.data['adress']
-                                        ['floor_number']
-                                  },
-                                  selectedDate: selectedDeliveryDate);
-                              if (widget.isMonthlyCart == false) {
-                                await CheckingOutServices().removeItemsFromCart(
-                                    cartPath:
-                                        "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                    deletePath: "/shopping_carts/${auth.uid}");
-                              } else
-                                await MonthlyCartsBloc(uid: auth.uid)
-                                    .setCheckedOut(widget.cartPath);
+                          )
+                        : Container(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(child: monthlyCartWidgets(auth.uid)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                        "Please note that your monthly cart items will "
+                        "be automatically ordered every 30 days from this date",
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: widget.enabledEditing == false
+                            ? () async {
+                                ///changed prouctIDs to productIdsAndQuantity
+                                await CheckingOutServices().addNewOrder(
+                                    productIDs: widget.productIDs,
+                                    price: widget.orderPrice,
+                                    uid: auth.uid,
+                                    productIdAndQuantity:
+                                        widget.productIdsAndQuantity != null
+                                            ? widget.productIdsAndQuantity
+                                            : null,
+                                    address: {
+                                      "building_number": userdata.data['adress']
+                                          ['building_number'],
+                                      "city": userdata.data['adress']['city'],
+                                      "street": userdata.data['adress']
+                                          ['street'],
+                                      "governorate": userdata.data['adress']
+                                          ['governorate'],
+                                      "apartment_number": userdata
+                                          .data['adress']['apartment_number'],
+                                      "floor_number": userdata.data['adress']
+                                          ['floor_number']
+                                    },
+                                    selectedDate: selectedDeliveryDate);
+                                if (widget.isMonthlyCart == false) {
+                                  await CheckingOutServices().removeItemsFromCart(
+                                      cartPath:
+                                          "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                      deletePath:
+                                          "/shopping_carts/${auth.uid}");
+                                } else
+                                  await MonthlyCartsBloc(uid: auth.uid)
+                                      .setCheckedOut(widget.cartPath);
 
-                              Navigator.of(context).pop();
-                            }
-                          : null,
-                      child: Text(
-                        "Proceed to Checkout",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                        primary: Colors.orange,
-                        padding: EdgeInsets.all(20),
+                                Navigator.of(context).pop();
+                              }
+                            : null,
+                        child: Text(
+                          "Proceed to Checkout",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 4,
+                          primary: Colors.orange,
+                          padding: EdgeInsets.all(20),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
