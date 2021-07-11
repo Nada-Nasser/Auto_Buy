@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
+<<<<<<< Updated upstream
   CartCheckoutScreen({
     this.cartPath,
     @required this.productIDs,
@@ -16,6 +17,17 @@ class CartCheckoutScreen extends StatefulWidget {
     this.isGift=false,
     this.friendId=false
   });
+=======
+  CartCheckoutScreen(
+      {this.cartPath,
+      @required this.productIDs,
+      @required this.orderPrice,
+      this.isMonthlyCart = false,
+      this.productIdsAndQuantity,
+      this.isGift = false,
+      this.friendId = false,
+      this.productIdsAndPrices});
+>>>>>>> Stashed changes
 
   // final List<Product> products;
   final String cartPath;
@@ -23,7 +35,12 @@ class CartCheckoutScreen extends StatefulWidget {
   final bool isMonthlyCart;
   final bool isGift;
   final List<String> productIDs;
+<<<<<<< Updated upstream
   final Map<String,int> productIdsAndQuantity;
+=======
+  final Map<String, int> productIdsAndQuantity;
+  final Map<String, double> productIdsAndPrices;
+>>>>>>> Stashed changes
   final friendId;
   bool enabledEditing = false;
 
@@ -46,6 +63,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     print(widget.productIdsAndQuantity);
+    print(widget.productIdsAndPrices);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
           path: "/users/${widget.isGift==false?auth.uid:widget.friendId}",
@@ -188,7 +206,18 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                   productIDs: widget.productIDs,
                                   price: widget.orderPrice,
                                   uid: auth.uid,
+<<<<<<< Updated upstream
                                   productIdAndQuantity: widget.productIdsAndQuantity!=null?widget.productIdsAndQuantity:null,
+=======
+                                  productIdAndQuantity:
+                                      widget.productIdsAndQuantity != null
+                                          ? widget.productIdsAndQuantity
+                                          : null,
+                                  productIdAndPrices:
+                                  widget.productIdsAndPrices!=null
+                                      ? widget.productIdsAndPrices
+                                      : null,
+>>>>>>> Stashed changes
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],
