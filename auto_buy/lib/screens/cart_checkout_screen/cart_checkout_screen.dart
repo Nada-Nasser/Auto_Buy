@@ -14,7 +14,8 @@ class CartCheckoutScreen extends StatefulWidget {
     this.isMonthlyCart = false,
     this.productIdsAndQuantity,
     this.isGift=false,
-    this.friendId=false
+    this.friendId=false,
+    this.productIdsAndPrices,
   });
 
   // final List<Product> products;
@@ -24,6 +25,7 @@ class CartCheckoutScreen extends StatefulWidget {
   final bool isGift;
   final List<String> productIDs;
   final Map<String,int> productIdsAndQuantity;
+  final Map<String,double> productIdsAndPrices;
   final friendId;
   bool enabledEditing = false;
 
@@ -189,6 +191,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                   price: widget.orderPrice,
                                   uid: auth.uid,
                                   productIdAndQuantity: widget.productIdsAndQuantity!=null?widget.productIdsAndQuantity:null,
+                                  productIdAndPrices: widget.productIdsAndPrices!=null?widget.productIdsAndPrices:null,
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],
