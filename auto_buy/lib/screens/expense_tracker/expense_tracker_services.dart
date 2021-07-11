@@ -8,7 +8,14 @@ class ExpenseTrackerServices {
   Future<List<Expense>> fetchAllUserExpenses(String uid) async {
     String log = "ExpenseTrackerServices(fetchAllUserExpenses):";
 
-    print("$log Start Fetching User expenses");
+    // print("$log Start Fetching User expenses");
+
+    bool flag =
+        await _firestoreService.checkExist(docPath: APIPath.userOrdersIDs(uid));
+    if (!flag) {
+      // print("$log There is no User expenses");
+      return [];
+    }
 
     List<Expense> expenses = [];
     List<dynamic> orderIDs = await _firestoreService.readOnceDocumentData(
@@ -17,11 +24,11 @@ class ExpenseTrackerServices {
         builder: (Map<String, dynamic> data, String documentId) =>
             data['orders_ids']);
 
-    print("$log End Fetching User expenses");
-    print(orderIDs);
+    //print("$log End Fetching User expenses");
+    // print(orderIDs);
 
     for (int i = 0; i < orderIDs.length; i++) {
-      print("ORDER : ${orderIDs[i]}");
+      //print("ORDER : ${orderIDs[i]}");
 
       Expense order = await _firestoreService.readOnceDocumentData(
         collectionPath: "/orders/",
@@ -31,21 +38,17 @@ class ExpenseTrackerServices {
 
       for (int j = 0; j < order.productsID.length; j++) {
         String productId = order.productsID[j];
-        print(productId);
+        // print(productId);
 
-        CategoryAndPrice categoryAndPrice =
-            await _firestoreService.readOnceDocumentData(
-          collectionPath: APIPath.productsPath(),
-          documentId: productId,
-          builder: (values, id) => CategoryAndPrice.fromMap(values, id),
-        );
+        final category = await _firestoreService.readFieldValueFromDocument(
+            collectionPath: APIPath.productsPath(),
+            documentID: productId,
+            fieldName: "category_id");
 
-        order.productCategoryNames.add(categoryAndPrice.category);
-        order.productsPrices.add(categoryAndPrice.price);
-        final category = categoryAndPrice.category;
-        final price = categoryAndPrice.price * order.quantities[productId];
+        order.productCategoryNames.add(category);
+        final price = order.prices[productId] * order.quantities[productId];
 
-        print("$category : $price");
+        // print("$category : $price");
 
         if (order.categoryAndPrice[category] != null)
           order.categoryAndPrice[category] += price;
@@ -72,26 +75,5 @@ class ExpenseTrackerServices {
     }
 
     return expenses;
-  }
-}
-
-class CategoryAndPrice {
-  final productID;
-  final String category;
-  final double price;
-
-  CategoryAndPrice({this.category, this.price, this.productID});
-
-  factory CategoryAndPrice.fromMap(Map<String, dynamic> value, String id) {
-    return CategoryAndPrice(
-      productID: id,
-      price: double.parse('${value['price']}'),
-      category: value['category_id'],
-    );
-  }
-
-  @override
-  String toString() {
-    return 'CategoryAndPrice{productID: $productID, category: $category, price: $price}';
   }
 }

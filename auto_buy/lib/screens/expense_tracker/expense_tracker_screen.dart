@@ -42,18 +42,24 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
     return Scaffold(
       body: FutureBuilder(
           future: myFuture,
-          builder: (_, __) {
-            return DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                appBar: AppBar(
-                  bottom: TabBar(
-                    labelColor: Colors.white,
-                    tabs: [Tab(text: 'Per Category'), Tab(text: 'Per Month')],
-                  ),
-                  title: Text('Expenses Tracker',
-                      style: TextStyle(color: Colors.white)),
-                  elevation: 0.1,
+          initialData: null,
+          builder: (_, snapshot) {
+            if (snapshot == null)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            else
+              return DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  appBar: AppBar(
+                    bottom: TabBar(
+                      labelColor: Colors.white,
+                      tabs: [Tab(text: 'Per Category'), Tab(text: 'Per Month')],
+                    ),
+                    title: Text('Expenses Tracker',
+                        style: TextStyle(color: Colors.white)),
+                    elevation: 0.1,
                   centerTitle: true,
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -64,9 +70,9 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
                 ),
                 body: TabBarView(
                   children: [
-                    CategoriesExpensesPieChart.withSampleData(context),
-                    MonthlyExpensesLineChart.withSampleData(),
-                  ],
+                      CategoriesExpensesPieChart.withSampleData(context),
+                      MonthlyExpensesLineChart.withSampleData(context),
+                    ],
                 ),
               ),
             );

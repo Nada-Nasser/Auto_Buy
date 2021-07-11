@@ -21,6 +21,13 @@ class CategoriesExpensesPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (seriesList.isEmpty)
+      return Scaffold(
+        body: Container(
+          child: Text("You didn't have any Orders"),
+        ),
+      );
+
     return Scaffold(
       body: Container(
         margin: EdgeInsets.all(20),
@@ -72,7 +79,7 @@ class CategoriesExpensesPieChart extends StatelessWidget {
         colorFn: (CategoryPieChartItem sales, _) => sales.color,
         // Set a label accessor to control the text of the arc label.
         labelAccessorFn: (CategoryPieChartItem row, _) =>
-            '${row.category}: ${row.sales}',
+            '${row.category}: ${row.sales}EGP',
       )
     ];
   }

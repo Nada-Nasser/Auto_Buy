@@ -39,20 +39,29 @@ class ShoppingCartScreenBloc {
     for(int i = 0 ; i < cartItems.length;i++)
     {
       dynamic productMap = await CloudFirestoreService.instance.readOnceDocumentData(collectionPath: productPath,
-          documentId: cartItems[i]['id'], builder: (Map<String, dynamic> data, String documentId)=>data);
-      Product product =
-      Product.fromMap(productMap, cartItems[i]['id']);
-      totalSum += product.hasDiscount?product.priceAfterDiscount*cartItems[i]['data']['quantity']
-          :product.price*cartItems[i]['data']['quantity'];
+              documentId: cartItems[i]['id'],
+              builder: (Map<String, dynamic> data, String documentId) => data);
+      Product product = Product.fromMap(productMap, cartItems[i]['id']);
+      totalSum += product.hasDiscount
+          ? product.priceAfterDiscount * cartItems[i]['data']['quantity']
+          : product.price * cartItems[i]['data']['quantity'];
       productIds.add(product.id);
 
-      productIdsAndQuantity.update(product.id, (existingValue) => cartItems[i]['data']['quantity'],
-        ifAbsent: () => cartItems[i]['data']['quantity'],);
+      productIdsAndQuantity.update(
+        product.id,
+        (existingValue) => cartItems[i]['data']['quantity'],
+        ifAbsent: () => cartItems[i]['data']['quantity'],
+      );
 
-      productIdsAndPrices.update(product.id, (existingValue) => product.priceAfterDiscount==null?product.price:product.priceAfterDiscount,
-        ifAbsent: () => product.priceAfterDiscount==null?product.price:product.priceAfterDiscount,);
+      productIdsAndPrices.update(
+        product.id,
+        (existingValue) =>
+            product.hasDiscount ? product.priceAfterDiscount : product.price,
+        ifAbsent: () =>
+            product.hasDiscount ? product.priceAfterDiscount : product.price,
+      );
     }
-    print('in bloc');
+    // print('in bloc');
     print(productIdsAndPrices);
     return totalSum;
   }

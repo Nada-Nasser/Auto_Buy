@@ -5,19 +5,20 @@ class Expense implements Comparable {
   final double totalPrice;
   final List<dynamic> productsID;
   List<String> productCategoryNames;
-  List<double> productsPrices;
   final Map<String, dynamic> quantities;
+  final Map<String, dynamic> prices;
 
   Map<String, double> categoryAndPrice = {};
 
-  Expense(
-      {@required this.quantities,
-      @required this.date,
-      @required this.totalPrice,
-      @required this.productsID,
-      this.productCategoryNames,
-      this.productsPrices,
-      this.categoryAndPrice});
+  Expense({
+    @required this.prices,
+    @required this.quantities,
+    @required this.date,
+    @required this.totalPrice,
+    @required this.productsID,
+    this.productCategoryNames,
+    this.categoryAndPrice,
+  });
 
   factory Expense.fromMap(Map<String, dynamic> values, String id) {
     DateTime date = DateTime.fromMicrosecondsSinceEpoch(
@@ -27,9 +28,9 @@ class Expense implements Comparable {
       totalPrice: double.parse('${values['price']}'),
       productsID: values["product_ids"],
       productCategoryNames: [],
-      productsPrices: [],
       categoryAndPrice: {},
       quantities: values['productid_quantity'],
+      prices: values['productid_prices'],
     );
   }
 
