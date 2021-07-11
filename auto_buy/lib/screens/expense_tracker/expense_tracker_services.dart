@@ -25,11 +25,8 @@ class ExpenseTrackerServices {
             data['orders_ids']);
 
     //print("$log End Fetching User expenses");
-    // print(orderIDs);
 
     for (int i = 0; i < orderIDs.length; i++) {
-      //print("ORDER : ${orderIDs[i]}");
-
       Expense order = await _firestoreService.readOnceDocumentData(
         collectionPath: "/orders/",
         documentId: "${orderIDs[i]}",
@@ -38,18 +35,20 @@ class ExpenseTrackerServices {
 
       for (int j = 0; j < order.productsID.length; j++) {
         String productId = order.productsID[j];
-        // print(productId);
+        final productAndCategoryPair =
+            await _firestoreService.readOnceDocumentData(
+          collectionPath: APIPath.productsPath(),
+          documentId: productId,
+          builder: (data, id) => ProductAndCategoryPair.fromMap(data, id),
+        );
 
-        final category = await _firestoreService.readFieldValueFromDocument(
-            collectionPath: APIPath.productsPath(),
-            documentID: productId,
-            fieldName: "category_id");
+        final category = productAndCategoryPair.categoryName;
+        final productName = productAndCategoryPair.productName;
 
         order.productCategoryNames.add(category);
+        order.productsName.add(productName);
+
         final price = order.prices[productId] * order.quantities[productId];
-
-        // print("$category : $price");
-
         if (order.categoryAndPrice[category] != null)
           order.categoryAndPrice[category] += price;
         else
@@ -75,5 +74,17 @@ class ExpenseTrackerServices {
     }
 
     return expenses;
+  }
+}
+
+class ProductAndCategoryPair {
+  final String productName;
+  final String categoryName;
+
+  ProductAndCategoryPair({this.productName, this.categoryName});
+
+  factory ProductAndCategoryPair.fromMap(Map<String, dynamic> data, String id) {
+    return ProductAndCategoryPair(
+        categoryName: data['category_id'], productName: data['name']);
   }
 }

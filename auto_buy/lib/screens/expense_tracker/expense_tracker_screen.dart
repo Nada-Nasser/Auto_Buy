@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Categories_expenses_pie_chart.dart';
+import 'invoices_view.dart';
 import 'monthly_expenses_line_chart.dart';
 
 class ExpenseTrackerScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
     return Scaffold(
       body: FutureBuilder(
           future: myFuture,
-          initialData: null,
+          //initialData: null,
           builder: (_, snapshot) {
             if (snapshot == null)
               return Center(
@@ -50,34 +51,48 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
               );
             else
               return DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Scaffold(
                   appBar: AppBar(
                     bottom: TabBar(
                       labelColor: Colors.white,
-                      tabs: [Tab(text: 'Per Category'), Tab(text: 'Per Month')],
+                      tabs: [
+                        Tab(text: 'Per Category'),
+                        Tab(text: 'Per Month'),
+                        Tab(text: "Invoices")
+                      ],
                     ),
                     title: Text('Expenses Tracker',
                         style: TextStyle(color: Colors.white)),
                     elevation: 0.1,
-                  centerTitle: true,
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    centerTitle: true,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
+                  body: buildTabBarView(context, snapshot.connectionState),
                 ),
-                body: TabBarView(
-                  children: [
-                      CategoriesExpensesPieChart.withSampleData(context),
-                      MonthlyExpensesLineChart.withSampleData(context),
-                    ],
-                ),
-              ),
-            );
+              );
           }),
     );
   }
-}
 
+  Widget buildTabBarView(
+      BuildContext context, ConnectionState connectionState) {
+    if (connectionState == ConnectionState.waiting) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return TabBarView(
+      children: [
+        CategoriesExpensesPieChart.withSampleData(context),
+        MonthlyExpensesLineChart.withSampleData(context),
+        InvoicesScreen.withSampleData(context)
+      ],
+    );
+  }
+}

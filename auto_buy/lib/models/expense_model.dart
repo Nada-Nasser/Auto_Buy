@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 class Expense implements Comparable {
   final DateTime date;
   final double totalPrice;
+
   final List<dynamic> productsID;
+  List<String> productsName;
   List<String> productCategoryNames;
   final Map<String, dynamic> quantities;
   final Map<String, dynamic> prices;
@@ -18,6 +20,7 @@ class Expense implements Comparable {
     @required this.productsID,
     this.productCategoryNames,
     this.categoryAndPrice,
+    this.productsName,
   });
 
   factory Expense.fromMap(Map<String, dynamic> values, String id) {
@@ -29,6 +32,7 @@ class Expense implements Comparable {
       productsID: values["product_ids"],
       productCategoryNames: [],
       categoryAndPrice: {},
+      productsName: [],
       quantities: values['productid_quantity'],
       prices: values['productid_prices'],
     );
