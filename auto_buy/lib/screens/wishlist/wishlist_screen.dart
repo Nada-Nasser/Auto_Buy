@@ -135,7 +135,6 @@ class _WishListScreenState extends State<WishListScreen> {
                                             snapshot.data['data']['name'],
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ],

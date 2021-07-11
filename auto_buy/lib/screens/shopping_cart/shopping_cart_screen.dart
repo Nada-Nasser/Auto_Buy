@@ -256,6 +256,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   orderPrice: widget.totalPrice,
                                   productIDs: widget.productIds,
                                   productIdsAndQuantity: _cartScreenBloc.productIdsAndQuantity,
+                                  productIdsAndPrices: _cartScreenBloc.productIdsAndPrices,
                                   isMonthlyCart: false,))).then((value) => _cartScreenBloc.resetState());
                           }
                       },
