@@ -1,7 +1,4 @@
-import 'package:auto_buy/models/monthly_cart_model.dart';
-import 'package:auto_buy/models/monthly_cart_product_item.dart';
 import 'package:auto_buy/models/order_model.dart';
-import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,15 +16,13 @@ class CheckingOutServices {
       double price, Map<String,int> productIdAndQuantity,Map<String,double> productIdAndPrices}) async
   {
     orderModel oneOrderModel = orderModel(
-        userID: uid,
-        address: address,
-        price: price,
-        productIDs: productIDs,
-        deliveryDate: selectedDate,
-        orderDate: DateTime(
-            DateTime.now().year, DateTime.now().month, DateTime.now().day),
-        productIdsAndQuantity: productIdAndQuantity,
-        productIdsAndPrices: productIdAndPrices,
+      userID: uid,
+      address: address,
+      price: price,
+      productIDs: productIDs,
+      deliveryDate: selectedDate,
+      productIdsAndQuantity: productIdAndQuantity,
+      productIdsAndPrices: productIdAndPrices,
     );
 
     String ID = await _firestoreService.addDocument(documentPath: APIPath.ordersDocuemtPath(), data: oneOrderModel.toMap());
