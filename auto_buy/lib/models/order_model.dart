@@ -35,7 +35,7 @@ class orderModel {
         price: values["price"],
         productIDs: values['product_ids'],
         userID: values['user_id'],
-        productIdsAndQuantity: values['productid_quantity']);
+        productIdsAndQuantity: values['productid_quantity'],
         productIdsAndPrices:   values['productid_prices']
     );
   }
