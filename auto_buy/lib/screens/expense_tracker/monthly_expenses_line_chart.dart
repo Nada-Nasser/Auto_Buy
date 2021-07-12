@@ -1,5 +1,9 @@
+import 'package:auto_buy/screens/expense_tracker/expenses_tracker_bloc.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'TimeSeriesExpenses.dart';
 
 class MonthlyExpensesLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -8,9 +12,9 @@ class MonthlyExpensesLineChart extends StatelessWidget {
   MonthlyExpensesLineChart(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory MonthlyExpensesLineChart.withSampleData() {
+  factory MonthlyExpensesLineChart.withSampleData(BuildContext context) {
     return new MonthlyExpensesLineChart(
-      _createSampleData(),
+      _createSampleData(context),
       // Disable animations for image tests.
       animate: false,
     );
@@ -38,68 +42,73 @@ class MonthlyExpensesLineChart extends StatelessWidget {
           new charts.ChartTitle('(\$)',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.start),
-          new charts.RangeAnnotation([
-            buildLineAnnotationSegment("Jan", 1),
-            buildLineAnnotationSegment("Feb", 2),
-            buildLineAnnotationSegment("Mar", 3),
-            buildLineAnnotationSegment("Apr", 4),
-            buildLineAnnotationSegment("May", 5),
-            buildLineAnnotationSegment("Jun", 6),
-            buildLineAnnotationSegment("Jul", 7),
-            buildLineAnnotationSegment("Aug", 8),
-            buildLineAnnotationSegment("Sep", 9),
-            buildLineAnnotationSegment("Oct", 10),
-            buildLineAnnotationSegment("Nov", 11),
-            buildLineAnnotationSegment("Dec", 12),
-          ]),
+          buildMonthsRangeAnnotation(context),
         ],
       ),
     );
   }
 
+  charts.RangeAnnotation buildMonthsRangeAnnotation(BuildContext context) {
+    final bloc = Provider.of<ExpensesTrackerBloc>(context, listen: false);
+    final data = bloc.timeSeriesExpenses;
+
+    List<charts.LineAnnotationSegment<dynamic>> l = [];
+
+    for (int i = 0; i < data.length; i++) {
+      String mY = _getMonthAndYear(data[i].time);
+
+      l.add(buildLineAnnotationSegment(mY, data[i].time));
+    }
+
+    return new charts.RangeAnnotation(l);
+  }
+
   charts.LineAnnotationSegment<dynamic> buildLineAnnotationSegment(
-      String month, int m) {
+      String month, DateTime date) {
     DateTime now = new DateTime.now();
     return new charts.LineAnnotationSegment(
-        new DateTime(now.year, m, 1), charts.RangeAnnotationAxisType.domain,
+        date, charts.RangeAnnotationAxisType.domain,
         labelPosition: charts.AnnotationLabelPosition.outside,
         color: charts.ColorUtil.fromDartColor(Colors.blueGrey[100]),
         middleLabel: month);
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-    final data = [
-      new TimeSeriesSales(new DateTime(2021, 1, 1), 5),
-      new TimeSeriesSales(new DateTime(2021, 2, 1), 25),
-      new TimeSeriesSales(new DateTime(2021, 3, 1), 100),
-      new TimeSeriesSales(new DateTime(2021, 4, 1), 75),
-      new TimeSeriesSales(new DateTime(2021, 5, 1), 20),
-      new TimeSeriesSales(new DateTime(2021, 6, 1), 100),
-      new TimeSeriesSales(new DateTime(2021, 7, 1), 75),
-      new TimeSeriesSales(new DateTime(2021, 8, 1), 200),
-      new TimeSeriesSales(new DateTime(2021, 9, 1), 100),
-      new TimeSeriesSales(new DateTime(2021, 10, 1), 90),
-      new TimeSeriesSales(new DateTime(2021, 11, 1), 90),
-      new TimeSeriesSales(new DateTime(2021, 12, 1), 90),
-    ];
+  static List<charts.Series<TimeSeriesExpenses, DateTime>> _createSampleData(
+      BuildContext context) {
+    final bloc = Provider.of<ExpensesTrackerBloc>(context, listen: false);
+    final data = bloc.timeSeriesExpenses;
 
     return [
-      new charts.Series<TimeSeriesSales, DateTime>(
+      new charts.Series<TimeSeriesExpenses, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesExpenses sales, _) => sales.time,
+        measureFn: (TimeSeriesExpenses sales, _) => sales.sales,
         data: data,
       )
     ];
   }
+
+  // mon,year
+  // jun, 2020
+  String _getMonthAndYear(DateTime time) {
+    List<String> months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    String mon = months[time.month - 1];
+    return "$mon, ${time.year}";
+  }
 }
 
-/// Sample time series data type.
-class TimeSeriesSales {
-  final DateTime time;
-  final int sales;
-
-  TimeSeriesSales(this.time, this.sales);
-}
