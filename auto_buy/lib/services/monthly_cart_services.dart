@@ -27,8 +27,8 @@ class MonthlyCartServices {
     return _firestoreService.getCollectionData(
         collectionPath: APIPath.userMonthlyCartsPath(uid),
         builder: (data, documentId) =>
-            MonthlyCartModel.fromMap(data, documentId));
-  }
+            MonthlyCartModel.fromMap(data, documentId));}
+
 
   Future<List<MonthlyCartItem>> readMonthlyCartProducts(
           String uid, String cartName) async =>
@@ -196,5 +196,8 @@ class MonthlyCartServices {
     return await  _firestoreService.readOnceDocumentData(collectionPath: APIPath.userMonthlyCartsPath(uid) ,
         documentId:cartName, builder: (Map<String, dynamic> data, String documentId) =>
         data["is_checkedout"]);
+  }
+  Future<void> addMonthlyCartDemand(){
+
   }
 }

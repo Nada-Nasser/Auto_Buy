@@ -14,7 +14,7 @@ class Product {
   final String subCategory;
   final double size;
   final String sizeUnit;
-  final int demand;
+  int demand;
   final int maxDemandPerUser;
   final int demandLimit;
 
