@@ -7,7 +7,8 @@ class orderModel {
   final double price;
   final List<String> productIDs;
   final String userID;
-  final Map<String, int> productIdsAndQuantity;
+  final Map<String,int> productIdsAndQuantity;
+  final Map<String,double> productIdsAndPrices;
 
   // newAdress = {"building_number" : bNumberController.text, "city" : cityController.text, "street" : streetController.text, "governorate" : governorate, "apartment_number" : aNumberController.text, "floor_number" : fNumberController.text};
 
@@ -18,7 +19,8 @@ class orderModel {
       @required this.orderDate,
       @required this.productIDs,
       @required this.price,
-      @required this.productIdsAndQuantity});
+      @required this.productIdsAndQuantity,
+      this.productIdsAndPrices});
 
   factory orderModel.fromMap(Map<String, dynamic> values, String id) {
     DateTime DeliveryDate = DateTime.fromMicrosecondsSinceEpoch(
@@ -34,6 +36,8 @@ class orderModel {
         productIDs: values['product_ids'],
         userID: values['user_id'],
         productIdsAndQuantity: values['productid_quantity']);
+        productIdsAndPrices:   values['productid_prices']
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -44,7 +48,8 @@ class orderModel {
       'price': this.price,
       'product_ids': this.productIDs,
       'user_id': this.userID,
-      'productid_quantity': this.productIdsAndQuantity
+      'productid_quantity': this.productIdsAndQuantity,
+      'productid_prices': this.productIdsAndPrices,
     };
   }
 }

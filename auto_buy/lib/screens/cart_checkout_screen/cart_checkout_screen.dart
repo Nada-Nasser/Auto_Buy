@@ -7,14 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
-  CartCheckoutScreen(
-      {this.cartPath,
-      @required this.productIDs,
-      @required this.orderPrice,
-      this.isMonthlyCart = false,
-      this.productIdsAndQuantity,
-      this.isGift = false,
-      this.friendId = false});
+  CartCheckoutScreen({
+    this.cartPath,
+    @required this.productIDs,
+    @required this.orderPrice,
+    this.isMonthlyCart = false,
+    this.productIdsAndQuantity,
+    this.isGift = false,
+    this.friendId = false,
+    this.productIdsAndPrices,
+  });
 
   // final List<Product> products;
   final String cartPath;
@@ -23,6 +25,7 @@ class CartCheckoutScreen extends StatefulWidget {
   final bool isGift;
   final List<String> productIDs;
   final Map<String, int> productIdsAndQuantity;
+  final Map<String, double> productIdsAndPrices;
   final friendId;
   bool enabledEditing = false;
 
@@ -228,6 +231,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                       widget.productIdsAndQuantity != null
                                           ? widget.productIdsAndQuantity
                                           : null,
+                                  productIdAndPrices:
+                                      widget.productIdsAndPrices != null
+                                          ? widget.productIdsAndPrices
+                                          : null,
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],
@@ -249,8 +256,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               } else
                                 await MonthlyCartsBloc(uid: auth.uid)
                                     .setCheckedOut(widget.cartPath);
-                              showInSnackBar(
-                                  "checkout done!", context);
+                              showInSnackBar("checkout done!", context);
                               Navigator.of(context).pop();
                             }
                           : null,
