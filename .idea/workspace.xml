@@ -23,11 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1795e4ac-cca6-49f5-83ec-f7859671912b" name="Default Changelist" comment="custom_app_bar.dart">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/lib/models/order_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/lib/models/order_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auto_buy/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auto_buy/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

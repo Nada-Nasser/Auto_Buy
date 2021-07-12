@@ -177,8 +177,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                 padding: EdgeInsets.all(10),
                               ),
                             ),
-                          ),
-                        )
+                          )
                       : Container(),
                   SizedBox(
                     height: 10,
