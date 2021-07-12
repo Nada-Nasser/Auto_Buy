@@ -24,6 +24,8 @@ class CheckingOutServices {
         price: price,
         productIDs: productIDs,
         deliveryDate: selectedDate,
+        orderDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day),
         productIdsAndQuantity: productIdAndQuantity,
     );
 
@@ -44,7 +46,7 @@ class CheckingOutServices {
         updatedValue: FieldValue.arrayUnion([ID]),
       );
     } else {
-      await _firestoreService.setDocument(documentPath: APIPath.userOrdersDocumentPath(uid), data: {'order_ids':[ID]});
+      await _firestoreService.setDocument(documentPath: APIPath.userOrdersDocumentPath(uid), data: {'orders_ids':[ID]});
     }
   }
 
@@ -72,13 +74,6 @@ class CheckingOutServices {
       ///empty te user's cart
       await _firestoreService.deleteDocument(path: cartPath+"/${cartItems[i]["product_id"]}");
     }
-
-    //
-    // try {
-    //   await _firestoreService.deleteDocument(path: deletePath);
-    // }catch(e){
-    //   print(e);
-    // }
 
   }
 

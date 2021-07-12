@@ -93,7 +93,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             crossAxisCount: 2,
                             childAspectRatio:
                                 MediaQuery.of(context).size.width /
-                                    (MediaQuery.of(context).size.height / 2),
+                                    (MediaQuery.of(context).size.height),
                           ),
                           itemBuilder: (context, index) {
                             ///this feature builder goes through each item in the user cart

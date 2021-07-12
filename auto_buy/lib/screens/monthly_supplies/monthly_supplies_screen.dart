@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'cart_supplies_screen_bloc.dart';
 
-class MonthlySuppliesScreen extends StatelessWidget {
+class MonthlySuppliesScreen extends StatefulWidget {
   final MonthlyCartsScreenBloc bloc;
   final String cartName;
 
@@ -34,11 +34,16 @@ class MonthlySuppliesScreen extends StatelessWidget {
   }
 
   @override
+  _MonthlySuppliesScreenState createState() => _MonthlySuppliesScreenState();
+}
+
+class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(context),
         body: StreamBuilder<bool>(
-            stream: bloc.stream,
+            stream: widget.bloc.stream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingImage();
@@ -52,27 +57,33 @@ class MonthlySuppliesScreen extends StatelessWidget {
                   buildHeader(),
                   Expanded(
                     child: ProductsGridView(
-                      products: bloc.monthlyCartProducts,
-                      quantities: bloc.quantities,
+                      products: widget.bloc.monthlyCartProducts,
+                      quantities: widget.bloc.quantities,
                       onTap: _onTapProduct,
-                      onLongPress: _onLongPressProduct,
+                      onLongPress: widget.bloc.isCheckedOut? null : _onLongPressProduct,
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (!bloc.monthlyCartProducts.isEmpty) {
+                  widget.bloc.isCheckedOut ? ElevatedButton(
+                    child: Text("Cancel Monthly Cart Order"),
+                  )
+                      :ElevatedButton(
+                      onPressed: () {  // CHECK OUT button
+                        if (!widget.bloc.monthlyCartProducts.isEmpty) {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => CartCheckoutScreen(
-                                    cartPath: bloc.selectedCartName,
-                                    orderPrice: bloc.totalPrice,
+                                    cartPath: widget.bloc.selectedCartName,
+                                    orderPrice: widget.bloc.totalPrice,
                                     isMonthlyCart: true,
-                                    productIDs: bloc.productIDs,
-                                  )));
+                                    productIDs: widget.bloc.productIDs,
+                                    productIdsAndQuantity: widget.bloc.productIdsAndQuantity,
+                                  ))
+                          ).then((value) =>  Navigator.of(context).pop(false));
                         } else
                           showInSnackBar(
                               "You need to add items first!", context);
                       },
-                      child: Text("Check Out"))
+                      child: Text("Check Out")
+                  )
                 ],
               );
             }));
@@ -98,7 +109,7 @@ class MonthlySuppliesScreen extends StatelessWidget {
             ],
           ),
           Row(
-            children: [Text("Total Price = \$${bloc.totalPrice}")],
+            children: [Text("Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")],
           ),
         ],
       ),
@@ -121,7 +132,7 @@ class MonthlySuppliesScreen extends StatelessWidget {
 
   Future<void> _onLongPressProduct(
       BuildContext context, Product product) async {
-    int q = bloc.getProductQuantityInTheCart(product.id);
+    int q = widget.bloc.getProductQuantityInTheCart(product.id);
     showDialog(
         context: context,
         builder: (context) {
@@ -133,13 +144,13 @@ class MonthlySuppliesScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "You can delete this product from your ${bloc.selectedCartName} monthly cart",
+                    "You can delete this product from your ${widget.bloc.selectedCartName} monthly cart",
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
-                      await bloc.deleteProduct(product.id);
+                      await widget.bloc.deleteProduct(product.id);
                       Navigator.of(context).pop(true);
                     },
                     child: Text("Delete"),
@@ -208,10 +219,10 @@ class MonthlySuppliesScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       if (q == 0) {
-                        await bloc.deleteProduct(product.id);
+                        await widget.bloc.deleteProduct(product.id);
                         Navigator.of(context).pop(true);
                       } else {
-                        await bloc.updateProductQuantityInSelectedMonthlyCart(
+                        await widget.bloc.updateProductQuantityInSelectedMonthlyCart(
                             product.id, q);
                         Navigator.of(context).pop(true);
                       }

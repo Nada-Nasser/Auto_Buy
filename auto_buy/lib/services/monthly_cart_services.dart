@@ -127,7 +127,7 @@ class MonthlyCartServices {
   Future<void> addNewMonthlyCart(
       String uid, String name, DateTime selectedDate) async {
     MonthlyCartModel monthlyCartModel =
-        MonthlyCartModel(name: name, deliveryDate: selectedDate);
+        MonthlyCartModel(name: name, deliveryDate: selectedDate ,isCheckedOut: false);
 
     await _firestoreService.setDocument(
         documentPath: APIPath.userMonthlyCartDocument(uid, name),
@@ -137,8 +137,7 @@ class MonthlyCartServices {
   Future<void> deleteProductFromMonthlyCart(
       String uid, String selectedCartName, String productId) async {
     await _firestoreService.deleteDocument(
-        path: APIPath.userMonthlyCartProductDocumentPath(
-            uid, selectedCartName, productId));
+        path: APIPath.userMonthlyCartProductDocumentPath(uid, selectedCartName, productId));
   }
 
   Future<void> updateProductQuantityInMonthlyCart(
@@ -153,8 +152,11 @@ class MonthlyCartServices {
   }
 
   Future<void> deleteMonthlyCart(String uid, String selectedCartName) async {
+    await _firestoreService.deleteCollection(
+        path: APIPath.userMonthlyCartProductsCollectionPath(uid, selectedCartName));
     await _firestoreService.deleteDocument(
         path: APIPath.userMonthlyCartDocument(uid, selectedCartName));
+
   }
 
   Future<void> updateDeliveryDateInMonthlyCart(
@@ -178,5 +180,21 @@ class MonthlyCartServices {
       totalPrice += price * item.quantity;
     }
     return totalPrice;
+  }
+
+  Future<void> setCheckedOut(
+      String uid, String cartName) async {
+    await _firestoreService.updateDocumentField(
+      collectionPath: APIPath.userMonthlyCartsPath(uid),
+      documentID: cartName,
+      fieldName: "is_checkedout",
+      updatedValue: true,
+    );
+  }
+
+  Future<bool> getIsCheckedOut(String uid,String cartName) async{
+    return await  _firestoreService.readOnceDocumentData(collectionPath: APIPath.userMonthlyCartsPath(uid) ,
+        documentId:cartName, builder: (Map<String, dynamic> data, String documentId) =>
+        data["is_checkedout"]);
   }
 }
