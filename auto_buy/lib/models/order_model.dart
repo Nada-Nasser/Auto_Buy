@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 class orderModel {
   final Map<String, dynamic> address;
   final DateTime deliveryDate;
+  final DateTime orderDate ;
   final double price;
   final List<String> productIDs;
   final String userID;
@@ -14,15 +15,17 @@ class orderModel {
   orderModel(
       {@required this.userID,
       @required this.address,
-      @required this.deliveryDate,
+      @required this.deliveryDate, this.orderDate,
       @required this.productIDs,
       @required this.price,
       @required this.productIdsAndQuantity,
       this.productIdsAndPrices});
 
   factory orderModel.fromMap(Map<String, dynamic> values, String id) {
-    DateTime date = DateTime.fromMicrosecondsSinceEpoch(
+    DateTime DeliveryDate = DateTime.fromMicrosecondsSinceEpoch(
         values['delivery_date'].microsecondsSinceEpoch);
+    DateTime OrderDate = DateTime.fromMicrosecondsSinceEpoch(
+        values['order_date'].microsecondsSinceEpoch);
 
     return orderModel(
         address: values['address'],

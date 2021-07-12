@@ -24,8 +24,8 @@ class CartCheckoutScreen extends StatefulWidget {
   final bool isMonthlyCart;
   final bool isGift;
   final List<String> productIDs;
-  final Map<String,int> productIdsAndQuantity;
-  final Map<String,double> productIdsAndPrices;
+  final Map<String, int> productIdsAndQuantity;
+  final Map<String, double> productIdsAndPrices;
   final friendId;
   bool enabledEditing = false;
 
@@ -35,13 +35,37 @@ class CartCheckoutScreen extends StatefulWidget {
 
 class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   String governorate;
-  DateTime selectedDate = DateTime(
+  DateTime selectedDeliveryDate = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
 
   List listItem = [
-    'Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia',
-    'Giza', 'Ismalia', 'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said',
-    'Qalyubia', 'Qena', 'Red Sea', 'Sohag', 'South Sinai', 'Suez'
+    'Al Sharqia',
+    'Alexandria',
+    'Aswan',
+    'Asyut',
+    'Behira',
+    'Beni Suef',
+    'Cairo',
+    'Dakahlia',
+    'Damietta',
+    'Faiyum',
+    'Gharbia',
+    'Giza',
+    'Ismalia',
+    'Kafr el-Sheikh',
+    'Luxor',
+    'Matruh',
+    'Minya',
+    'Monufia',
+    'New Valley',
+    'North Sinai',
+    'Port Said',
+    'Qalyubia',
+    'Qena',
+    'Red Sea',
+    'Sohag',
+    'South Sinai',
+    'Suez'
   ];
 
   @override
@@ -50,7 +74,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     print(widget.productIdsAndQuantity);
     return StreamBuilder(
       stream: CloudFirestoreService.instance.documentStream(
-          path: "/users/${widget.isGift==false?auth.uid:widget.friendId}",
+          path: "/users/${widget.isGift == false ? auth.uid : widget.friendId}",
           builder: (Map<String, dynamic> data, String documentID) => data),
       builder: (context, userdata) {
         if (userdata.hasError) {
@@ -178,74 +202,77 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               ),
                             ),
                           )
-                      : Container(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(child: monthlyCartWidgets(auth.uid)),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                      "Please note that your monthly cart items will "
-                      "be automatically ordered every 30 days from this date",
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: widget.enabledEditing == false
-                          ? () async {
-                              ///changed prouctIDs to productIdsAndQuantity
-                              await CheckingOutServices().addNewOrder(
-                                  productIDs: widget.productIDs,
-                                  price: widget.orderPrice,
-                                  uid: auth.uid,
-                                  productIdAndQuantity:
-                                      widget.productIdsAndQuantity != null
-                                          ? widget.productIdsAndQuantity
-                                          : null,
-                                  productIdAndPrices:
-                                      widget.productIdsAndPrices != null
-                                          ? widget.productIdsAndPrices
-                                          : null,
-                                  address: {
-                                    "building_number": userdata.data['adress']
-                                        ['building_number'],
-                                    "city": userdata.data['adress']['city'],
-                                    "street": userdata.data['adress']['street'],
-                                    "governorate": userdata.data['adress']
-                                        ['governorate'],
-                                    "apartment_number": userdata.data['adress']
-                                        ['apartment_number'],
-                                    "floor_number": userdata.data['adress']
-                                        ['floor_number']
-                                  },
-                                  selectedDate: selectedDeliveryDate);
-                              if (widget.isMonthlyCart == false) {
-                                await CheckingOutServices().removeItemsFromCart(
-                                    cartPath:
-                                        "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                    deletePath: "/shopping_carts/${auth.uid}");
-                              } else
-                                await MonthlyCartsBloc(uid: auth.uid)
-                                    .setCheckedOut(widget.cartPath);
-                              showInSnackBar("checkout done!", context);
-                              Navigator.of(context).pop();
-                            }
-                          : null,
-                      child: Text(
-                        "Proceed to Checkout",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                        primary: Colors.orange,
-                        padding: EdgeInsets.all(20),
+                        : Container(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(child: monthlyCartWidgets(auth.uid)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                        "Please note that your monthly cart items will "
+                        "be automatically ordered every 30 days from this date",
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: widget.enabledEditing == false
+                            ? () async {
+                                ///changed prouctIDs to productIdsAndQuantity
+                                await CheckingOutServices().addNewOrder(
+                                    productIDs: widget.productIDs,
+                                    price: widget.orderPrice,
+                                    uid: auth.uid,
+                                    productIdAndQuantity:
+                                        widget.productIdsAndQuantity != null
+                                            ? widget.productIdsAndQuantity
+                                            : null,
+                                    productIdAndPrices:
+                                        widget.productIdsAndPrices != null
+                                            ? widget.productIdsAndPrices
+                                            : null,
+                                    address: {
+                                      "building_number": userdata.data['adress']
+                                          ['building_number'],
+                                      "city": userdata.data['adress']['city'],
+                                      "street": userdata.data['adress']
+                                          ['street'],
+                                      "governorate": userdata.data['adress']
+                                          ['governorate'],
+                                      "apartment_number": userdata
+                                          .data['adress']['apartment_number'],
+                                      "floor_number": userdata.data['adress']
+                                          ['floor_number']
+                                    },
+                                    selectedDate: selectedDeliveryDate);
+                                if (widget.isMonthlyCart == false) {
+                                  await CheckingOutServices().removeItemsFromCart(
+                                      cartPath:
+                                          "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                      deletePath:
+                                          "/shopping_carts/${auth.uid}");
+                                } else
+                                  await MonthlyCartsBloc(uid: auth.uid)
+                                      .setCheckedOut(widget.cartPath);
+                                showInSnackBar("checkout done!", context);
+                                Navigator.of(context).pop();
+                              }
+                            : null,
+                        child: Text(
+                          "Proceed to Checkout",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 4,
+                          primary: Colors.orange,
+                          padding: EdgeInsets.all(20),
+                        ),
                       ),
                     ),
                   ],
@@ -282,7 +309,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                  child: Text('${selectedDate.month} / ${selectedDate.day}')),
+                  child: Text(
+                      '${selectedDeliveryDate.month} / ${selectedDeliveryDate.day}')),
               SizedBox(height: 5),
               Expanded(
                 child: ElevatedButton(
@@ -294,12 +322,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           firstDate: DateTime(DateTime.now().year,
                               DateTime.now().month, DateTime.now().day + 3),
                           lastDate: DateTime(2101));
-                      if (picked != null && picked != selectedDate) {
+                      if (picked != null && picked != selectedDeliveryDate) {
                         setState(() {
-                          selectedDate = picked;
+                          selectedDeliveryDate = picked;
                         });
-                        await MonthlyCartsBloc(uid: uid)
-                            .editCartDate(widget.cartPath, selectedDate);
+                        await MonthlyCartsBloc(uid: uid).editCartDate(
+                            widget.cartPath, selectedDeliveryDate);
                       }
                     },
                     child: Text(

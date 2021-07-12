@@ -38,16 +38,24 @@ dependencies:
   flutter_card_swipper: ^0.4.0
   photo_view: ^0.11.1
   firebase_storage: ^8.0.6
-  path_provider: ^2.0.1
+  path_provider: 2.0.2
+  path_provider_linux: 2.0.0
   cached_network_image: ^3.0.0
   material_floating_search_bar: ^0.2.6
   image_cropper: ^1.4.0
-  shared_preferences: ^2.0.5
+  shared_preferences:
   commons:
-  charts_flutter: ^0.10.0
-  connectivity: ^3.0.6
   flutter_sound: ^8.1.9
   permission_handler: ^8.1.2
+  google_speech: ^2.0.1
+  sound_stream: ^0.2.0
+  ext_storage: ^1.0.3
+  xdg_directories: 0.2.0
+  file: 6.0.0
+  translator: ^0.1.7
+  html_unescape: ^2.0.0
+
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -81,6 +89,7 @@ flutter:
     - assets/images/optiobodyhi.svg
     - assets/gifs/loading_2.gif
     - assets/images/Tony.png
+    - assets/sound_files/record.wav
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
