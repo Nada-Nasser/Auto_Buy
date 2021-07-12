@@ -181,7 +181,18 @@ class MonthlyCartServices {
     }
     return totalPrice;
   }
-
+  Future<  Map<String, double>> getMonthlyCartProductsPrice(String uid, String cartName) async {
+    Map<String, double> mp = Map<String, double>() ;
+    List<MonthlyCartItem> monthlyCartItems =
+    await readMonthlyCartProducts(uid, cartName);
+    for (int i = 0; i < monthlyCartItems.length; i++) {
+      final item = monthlyCartItems[i];
+      double price =
+      await _productsBackendServices.getProductPrice(item.productId);
+      mp[item.productId] = price;
+    }
+    return mp;
+  }
   Future<void> setCheckedOut(
       String uid, String cartName) async {
     await _firestoreService.updateDocumentField(

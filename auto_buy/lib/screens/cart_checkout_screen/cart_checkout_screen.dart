@@ -210,12 +210,6 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     SizedBox(
                       height: 5,
                     ),
-                    Text(
-                        "Please note that your monthly cart items will "
-                        "be automatically ordered every 30 days from this date",
-                        style: TextStyle(
-                          color: Colors.blueGrey,
-                        )),
                     SizedBox(
                       height: 5,
                     ),
@@ -292,6 +286,20 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       return Container(
           child: Column(
         children: [
+
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+              "Please note that your monthly cart items will be automatically "
+                  "ordered every 27 days to be delivered on the 30th day",
+              style: TextStyle(
+                color: Colors.blueGrey,
+              )
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,

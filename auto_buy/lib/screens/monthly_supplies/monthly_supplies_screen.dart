@@ -76,6 +76,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                                     isMonthlyCart: true,
                                     productIDs: widget.bloc.productIDs,
                                     productIdsAndQuantity: widget.bloc.productIdsAndQuantity,
+                                   productIdsAndPrices: widget.bloc.productIdsAndPrices,
                                   ))
                           ).then((value) =>  Navigator.of(context).pop(false));
                         } else
