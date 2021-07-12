@@ -34,8 +34,14 @@ class orderModel {
         price: values["price"],
         productIDs: values['product_ids'],
         userID: values['user_id'],
+<<<<<<< HEAD
         productIdsAndQuantity: values['productid_quantity'],
         productIdsAndPrices: values['productid_prices']);
+=======
+        productIdsAndQuantity: values['productid_quantity']);
+        productIdsAndPrices:   values['productid_prices']
+    );
+>>>>>>> parent of 216bd77 (nothing special)
   }
 
   Map<String, dynamic> toMap() {
