@@ -251,9 +251,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                           "/shopping_carts/${auth.uid}/shopping_cart_items",
                                       deletePath:
                                           "/shopping_carts/${auth.uid}");
-                                } else
+                                } else{
                                   await MonthlyCartsBloc(uid: auth.uid)
                                       .setCheckedOut(widget.cartPath);
+                                  await CheckingOutServices().addMonthlyCartDemand(widget.productIdsAndQuantity)
+                                }
                                 showInSnackBar("checkout done!", context);
                                 Navigator.of(context).pop();
                               }

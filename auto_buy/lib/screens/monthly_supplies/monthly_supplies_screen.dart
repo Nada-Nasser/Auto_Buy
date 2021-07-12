@@ -60,31 +60,44 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                       products: widget.bloc.monthlyCartProducts,
                       quantities: widget.bloc.quantities,
                       onTap: _onTapProduct,
-                      onLongPress: widget.bloc.isCheckedOut? null : _onLongPressProduct,
+                      onLongPress:
+                          widget.bloc.isCheckedOut ? null : _onLongPressProduct,
                     ),
                   ),
-                  widget.bloc.isCheckedOut ? ElevatedButton(
-                    child: Text("Cancel Monthly Cart Order"),
-                  )
-                      :ElevatedButton(
-                      onPressed: () {  // CHECK OUT button
-                        if (!widget.bloc.monthlyCartProducts.isEmpty) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CartCheckoutScreen(
-                                    cartPath: widget.bloc.selectedCartName,
-                                    orderPrice: widget.bloc.totalPrice,
-                                    isMonthlyCart: true,
-                                    productIDs: widget.bloc.productIDs,
-                                    productIdsAndQuantity: widget.bloc.productIdsAndQuantity,
-                                   productIdsAndPrices: widget.bloc.productIdsAndPrices,
-                                  ))
-                          ).then((value) =>  Navigator.of(context).pop(false));
-                        } else
-                          showInSnackBar(
-                              "You need to add items first!", context);
-                      },
-                      child: Text("Check Out")
-                  )
+                  widget.bloc.isCheckedOut
+                      ? Column(
+                          children: [
+                            ElevatedButton(
+                                child: Text("Cancel Monthly Cart Order"),
+                                onPressed: () {
+                                    
+                                }),
+                          ],
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            // CHECK OUT button
+                            if (!widget.bloc.monthlyCartProducts.isEmpty) {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => CartCheckoutScreen(
+                                            cartPath:
+                                                widget.bloc.selectedCartName,
+                                            orderPrice: widget.bloc.totalPrice,
+                                            isMonthlyCart: true,
+                                            productIDs: widget.bloc.productIDs,
+                                            productIdsAndQuantity: widget
+                                                .bloc.productIdsAndQuantity,
+                                            productIdsAndPrices:
+                                                widget.bloc.productIdsAndPrices,
+                                          )))
+                                  .then((value) =>
+                                      Navigator.of(context).pop(false));
+                            } else
+                              showInSnackBar(
+                                  "You need to add items first!", context);
+                          },
+                          child: Text("Check Out"))
                 ],
               );
             }));
@@ -110,7 +123,10 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
             ],
           ),
           Row(
-            children: [Text("Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")],
+            children: [
+              Text(
+                  "Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")
+            ],
           ),
         ],
       ),
@@ -223,8 +239,9 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                         await widget.bloc.deleteProduct(product.id);
                         Navigator.of(context).pop(true);
                       } else {
-                        await widget.bloc.updateProductQuantityInSelectedMonthlyCart(
-                            product.id, q);
+                        await widget.bloc
+                            .updateProductQuantityInSelectedMonthlyCart(
+                                product.id, q);
                         Navigator.of(context).pop(true);
                       }
                     },

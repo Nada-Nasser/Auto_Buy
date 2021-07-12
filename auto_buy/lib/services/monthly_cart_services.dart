@@ -208,7 +208,5 @@ class MonthlyCartServices {
         documentId:cartName, builder: (Map<String, dynamic> data, String documentId) =>
         data["is_checkedout"]);
   }
-  Future<void> addMonthlyCartDemand(){
 
-  }
 }

@@ -84,4 +84,14 @@ class CheckingOutServices {
         data["number_in_stock"]);
   }
 
+/*  Future<void> addMonthlyCartDemand(Map<String,int> prodIdToQuantity) {
+    prodIdToQuantity.forEach((k,v) async => {
+      await ProductsBackendServices().addDemand(productID: k,quantity: v)
+    });
+  }
+  Future<void> removeMonthlyCartDemand(Map<String,int> prodIdToQuantity) {
+    prodIdToQuantity.forEach((k,v) async => {
+      await ProductsBackendServices().removeDemand(productID: k,quantity: v)
+    });
+  }*/
 }
