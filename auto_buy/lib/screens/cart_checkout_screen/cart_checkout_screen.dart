@@ -35,8 +35,7 @@ class CartCheckoutScreen extends StatefulWidget {
 
 class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   String governorate;
-  DateTime selectedDeliveryDate = DateTime(
-      DateTime.now().year, DateTime.now().month, DateTime.now().day + 3);
+  DateTime selectedDeliveryDate =  DateTime.now().add(new Duration(days:3));
 
   List listItem = [
     'Al Sharqia',
@@ -224,13 +223,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                     price: widget.orderPrice,
                                     uid: auth.uid,
                                     productIdAndQuantity:
-                                        widget.productIdsAndQuantity != null
-                                            ? widget.productIdsAndQuantity
-                                            : null,
+                                        widget.productIdsAndQuantity,
                                     productIdAndPrices:
-                                        widget.productIdsAndPrices != null
-                                            ? widget.productIdsAndPrices
-                                            : null,
+                                        widget.productIdsAndPrices,
+                                    isMonthlyCart: (widget.isMonthlyCart)?true : false,
+                                    cartName: widget.cartPath,
                                     address: {
                                       "building_number": userdata.data['adress']
                                           ['building_number'],
@@ -247,14 +244,19 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                     selectedDate: selectedDeliveryDate);
                                 if (widget.isMonthlyCart == false) {
                                   await CheckingOutServices().removeItemsFromCart(
-                                      cartPath:
-                                          "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                      deletePath:
-                                          "/shopping_carts/${auth.uid}");
+                                      shoppingCartPath:
+                                      "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                      productIdsAndQuantity: widget.productIdsAndQuantity
+                                  );
+
                                 } else{
                                   await MonthlyCartsBloc(uid: auth.uid)
-                                      .setCheckedOut(widget.cartPath);
-                                  await CheckingOutServices().addMonthlyCartDemand(widget.productIdsAndQuantity)
+                                      .setCheckedOut(widget.cartPath ,true);
+                                  await CheckingOutServices().removeItemsFromCart(
+                                      shoppingCartPath:"",
+                                      isShoppingCart: false,
+                                      productIdsAndQuantity: widget.productIdsAndQuantity
+                                  );
                                 }
                                 showInSnackBar("checkout done!", context);
                                 Navigator.of(context).pop();

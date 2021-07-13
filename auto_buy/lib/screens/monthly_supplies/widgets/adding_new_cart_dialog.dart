@@ -2,6 +2,7 @@ import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../cart_supplies_screen_bloc.dart';
 import '../monthly_carts_bloc.dart';
 
 void addNewCartDialog(
@@ -87,6 +88,9 @@ void addNewCartDialog(
                     if (editCart)
                       ElevatedButton(
                         onPressed: () async {
+                          bool isCheckedOut = await bloc.getChecekOutStat(uid: bloc.uid, cartName: cartName);
+                          if(isCheckedOut)
+                            await MonthlyCartsScreenBloc().cancelCheckedOutMonthlyCart(cartName,bloc.uid);
                           await bloc.deleteMonthlyCart(cartName);
                           showInSnackBar("Cart Deleted", screenContext);
                           Navigator.of(context).pop(false);

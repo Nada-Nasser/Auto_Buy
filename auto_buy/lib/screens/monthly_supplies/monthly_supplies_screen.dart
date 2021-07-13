@@ -39,6 +39,11 @@ class MonthlySuppliesScreen extends StatefulWidget {
 
 class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
   @override
+  void initState() {
+    widget.bloc.getCheckedOutStat();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(context),
@@ -69,8 +74,9 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                           children: [
                             ElevatedButton(
                                 child: Text("Cancel Monthly Cart Order"),
-                                onPressed: () {
-                                    
+                                onPressed: () async{
+                                  await widget.bloc.cancelCheckedOutMonthlyCart(widget.bloc.selectedCartName,widget.bloc.uid);
+                                  setState(() {});
                                 }),
                           ],
                         )

@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class MonthlyCartsScreenBloc {
   MonthlyCartsScreenBloc({@required this.uid, this.selectedCartName}) {
-    getCartProducts();
+    if(uid != null)
+     getCartProducts();
   }
 
   final String uid;
@@ -98,4 +99,10 @@ class MonthlyCartsScreenBloc {
       rethrow;
     }
   }
+  Future<void> cancelCheckedOutMonthlyCart(String cartName,String uid) async {
+      await _monthlyCartServices.setCheckedOut(uid, cartName,false);
+      await _monthlyCartServices.deleteCheckedOutMonthlyCart(uid: uid,cartName: cartName);
+  }
+  Future<void> getCheckedOutStat() async => isCheckedOut =
+  await _monthlyCartServices.getIsCheckedOut(uid, selectedCartName);
 }

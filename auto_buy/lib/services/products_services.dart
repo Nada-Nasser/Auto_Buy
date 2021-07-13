@@ -86,18 +86,5 @@ class ProductsBackendServices {
     return products;
   }
 
-  Future <void> addDemand({String productID, int quantity}) async {
-    Product product = await readProduct(productID);
-    product.demand += quantity;
-    await _firestoreService.setDocument(
-        documentPath: APIPath.productPath(productID: productID), data: product.toMap());
-  }
-
-  Future <void> removeDemand({String productID, int quantity}) async {
-    Product product = await readProduct(productID);
-    product.demand -= quantity;
-    await _firestoreService.setDocument(
-        documentPath: APIPath.productPath(productID: productID), data: product.toMap());
-  }
 
 }

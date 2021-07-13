@@ -61,4 +61,6 @@ class APIPath {
       "/monthly_carts/$uid/monthly_carts/$cartName";
 
   static String userOrdersIDs(String uid) => "/users_orders/$uid";
+
+  static String checkedOutMonthlyCart(String uid,String cartName) => "/checked_out_monthly_carts/$uid$cartName";
 }

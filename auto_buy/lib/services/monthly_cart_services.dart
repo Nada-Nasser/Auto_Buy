@@ -1,5 +1,6 @@
 import 'package:auto_buy/models/monthly_cart_model.dart';
 import 'package:auto_buy/models/monthly_cart_product_item.dart';
+import 'package:auto_buy/models/order_model.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/products_services.dart';
 
@@ -194,12 +195,12 @@ class MonthlyCartServices {
     return mp;
   }
   Future<void> setCheckedOut(
-      String uid, String cartName) async {
+      String uid, String cartName , bool val) async {
     await _firestoreService.updateDocumentField(
       collectionPath: APIPath.userMonthlyCartsPath(uid),
       documentID: cartName,
       fieldName: "is_checkedout",
-      updatedValue: true,
+      updatedValue: val,
     );
   }
 
@@ -208,5 +209,14 @@ class MonthlyCartServices {
         documentId:cartName, builder: (Map<String, dynamic> data, String documentId) =>
         data["is_checkedout"]);
   }
+
+  Future<void> createCheckedOutMonthlyCarts({orderModel oneOrderModel,String cartName,String uid}) async{
+    await _firestoreService.setDocument(
+        documentPath: APIPath.checkedOutMonthlyCart(uid,cartName), data: oneOrderModel.toMap());
+  }
+  Future<void> deleteCheckedOutMonthlyCart({String uid, String cartName}) async{
+    await _firestoreService.deleteDocument(path: APIPath.checkedOutMonthlyCart(uid,cartName));
+  }
+
 
 }
