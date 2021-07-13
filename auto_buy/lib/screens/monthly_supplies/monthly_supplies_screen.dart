@@ -6,6 +6,7 @@ import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/products_grid_view/products_grid_view.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,34 +52,37 @@ class MonthlySuppliesScreen extends StatelessWidget {
                   ),
                   buildHeader(),
                   Expanded(
-                    child: ProductsGridView(
-                      products: bloc.monthlyCartProducts,
+                    child: VerticalProductsListView(
+                      productsList: bloc.monthlyCartProducts,
                       quantities: bloc.quantities,
                       onTap: _onTapProduct,
                       onLongPress: _onLongPressProduct,
                     ),
                   ),
-                  bloc.isCheckedOut ? ElevatedButton(
-                    child: Text("Cancel Monthly Cart Order"),
-                  )
-                      :ElevatedButton(
-                      onPressed: () {  // CHECK OUT button
-                        if (!bloc.monthlyCartProducts.isEmpty) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CartCheckoutScreen(
-                                    cartPath: bloc.selectedCartName,
-                                    orderPrice: bloc.totalPrice,
-                                    isMonthlyCart: true,
-                                    productIDs: bloc.productIDs,
-                                    productIdsAndQuantity: bloc.productIdsAndQuantity,
-                                  ))
-                          ).then((val){});
-                        } else
-                          showInSnackBar(
-                              "You need to add items first!", context);
-                      },
-                      child: Text("Check Out")
-                  )
+                  bloc.isCheckedOut
+                      ? ElevatedButton(
+                          child: Text("Cancel Monthly Cart Order"),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            // CHECK OUT button
+                            if (!bloc.monthlyCartProducts.isEmpty) {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => CartCheckoutScreen(
+                                            cartPath: bloc.selectedCartName,
+                                            orderPrice: bloc.totalPrice,
+                                            isMonthlyCart: true,
+                                            productIDs: bloc.productIDs,
+                                            productIdsAndQuantity:
+                                                bloc.productIdsAndQuantity,
+                                          )))
+                                  .then((val) {});
+                            } else
+                              showInSnackBar(
+                                  "You need to add items first!", context);
+                          },
+                          child: Text("Check Out")),
                 ],
               );
             }));
