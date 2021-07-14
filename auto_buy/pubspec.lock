@@ -327,7 +327,7 @@ packages:
       name: flutter_spinkit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.2+1"
+    version: "5.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -402,13 +402,6 @@ packages:
     source: hosted
     version: "0.13.3"
   http2:
-    dependency: transitive
-    description:
-      name: http2
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  http_parser:
     dependency: transitive
     description:
       name: http2
@@ -653,6 +646,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   rxdart:
     dependency: transitive
     description:
@@ -776,14 +776,14 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.19"
   translator:
     dependency: "direct main"
     description:
       name: translator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.1.7"
   typed_data:
     dependency: transitive
     description:
@@ -811,7 +811,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.5"
+    version: "2.0.5"
   xdg_directories:
     dependency: "direct main"
     description:
@@ -827,5 +827,5 @@ packages:
     source: hosted
     version: "5.1.2"
 sdks:
-  dart: ">=2.13.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=2.0.0"
