@@ -196,6 +196,8 @@ class _TextInputOptioState extends State<TextInputOptio> {
           onPressed: () async{
             //TODO: make sure spaces aren't taken into input
             if(_textEditingController.text.isNotEmpty){
+              String translation = await translator.translate(_textEditingController.text);
+              print(translation);
               Provider.of<OptioChangeNotifier>(context, listen: false).userCommandInsert(input:_textEditingController.text,who: 1);
               _textEditingController.text = "";
             }else{
