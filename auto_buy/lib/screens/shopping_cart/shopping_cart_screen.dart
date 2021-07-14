@@ -33,7 +33,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             children: [
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.only(left: 5, top: 10,right: 5),
+                padding: EdgeInsets.only(left: 5, top: 10, right: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -54,19 +54,23 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     StreamBuilder(
                       stream: _cartScreenBloc.totalPriceStream,
                       builder: (context, reset) {
-                        return  FutureBuilder(
-                            future: _cartScreenBloc.calculateTotalPrice("/shopping_carts/${auth.uid}/shopping_cart_items","/products/"),
-                            builder:(context,price){
-                              if(price.hasData){
+                        return FutureBuilder(
+                            future: _cartScreenBloc.calculateTotalPrice(
+                                "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                "/products/"),
+                            builder: (context, price) {
+                              if (price.hasData) {
                                 widget.totalPrice = price.data;
-                                return Text("total cost is ${widget.totalPrice.toStringAsFixed(2)} \$",style: TextStyle(
-                                  fontSize: 18,
-                                ),);
-                              }else{
+                                return Text(
+                                  "total cost is ${widget.totalPrice.toStringAsFixed(2)} \$",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                );
+                              } else {
                                 return Text("Your cost is 0.00\$");
                               }
-                            }
-                        );
+                            });
                       },
                     ),
                   ],
@@ -94,37 +98,35 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             return FutureBuilder(
                               future: CloudFirestoreService.instance
                                   .readOnceDocumentData(
-                                  collectionPath: "/products/",
-                                  documentId:
-                                  "${alldata.data[index]['data']['product_id']}",
-                                  builder: (data, documentId) {
-                                    Map<String, dynamic> output = {
-                                      "data": data,
-                                      "id": documentId
-                                    };
-                                    return output;
-                                  }),
+                                      collectionPath: "/products/",
+                                      documentId:
+                                          "${alldata.data[index]['data']['product_id']}",
+                                      builder: (data, documentId) {
+                                        Map<String, dynamic> output = {
+                                          "data": data,
+                                          "id": documentId
+                                        };
+                                        return output;
+                                      }),
                               builder: (context, snapshot) {
-                                if(snapshot.hasData){
-                                  Product product =
-                                  Product.fromMap(
+                                if (snapshot.hasData) {
+                                  Product product = Product.fromMap(
                                       snapshot.data['data'],
                                       snapshot.data['id']);
-                                  if(!widget.productIds.contains(product.id))
-                                  {
+                                  if (!widget.productIds.contains(product.id)) {
                                     print("adding product");
                                     widget.productIds.add(product.id);
                                   }
                                   return GestureDetector(
-                                      onLongPress: () async {
-                                        await onLongPressProduct(
-                                          context,
-                                          product,
-                                          "/shopping_carts/${auth.uid}/shopping_cart_items/",
-                                          "${alldata.data[index]['id']}",
-                                          _cartScreenBloc,
-                                        );
-                                      },
+                                    onLongPress: () async {
+                                      await onLongPressProduct(
+                                        context,
+                                        product,
+                                        "/shopping_carts/${auth.uid}/shopping_cart_items/",
+                                        "${alldata.data[index]['id']}",
+                                        _cartScreenBloc,
+                                      );
+                                    },
                                     child: Container(
                                       padding: EdgeInsets.all(8),
                                       margin: EdgeInsets.all(8),
@@ -133,7 +135,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.5),
+                                            color:
+                                                Colors.black.withOpacity(0.5),
                                             blurRadius: 3,
                                             offset: Offset(0, 3),
                                           )
@@ -145,8 +148,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                               future: FirebaseStorageService
                                                   .instance
                                                   .downloadURL(
-                                                  snapshot.data['data']
-                                                  ['pic_path']),
+                                                      snapshot.data['data']
+                                                          ['pic_path']),
                                               builder: (context, image) {
                                                 if (image.hasData) {
                                                   return GestureDetector(
@@ -155,38 +158,40 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                           .push(
                                                         MaterialPageRoute(
                                                           fullscreenDialog:
-                                                          true,
+                                                              true,
                                                           builder: (context) =>
                                                               ProductInfoScreen
                                                                   .create(
-                                                                context,
-                                                                product,
-                                                                image.data,
-                                                              ),
+                                                            context,
+                                                            product,
+                                                            image.data,
+                                                          ),
                                                         ),
-                                                      ).then((value) {setState(() {});});
-
+                                                      )
+                                                          .then((value) {
+                                                        setState(() {});
+                                                      });
                                                     },
                                                     child: CachedNetworkImage(
                                                       imageUrl: image.data,
                                                       placeholder:
                                                           (context, url) =>
-                                                          LoadingImage(),
+                                                              LoadingImage(),
                                                       errorWidget: (context,
-                                                          url, error) =>
+                                                              url, error) =>
                                                           Icon(Icons.error),
                                                       height: 100,
                                                     ),
-
                                                   );
                                                 } else {
                                                   return CircularProgressIndicator();
                                                 }
-                                              }
-                                              ),
+                                              }),
                                           Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               ///product name
@@ -195,70 +200,88 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                 child: Text(
                                                   product.name,
                                                   softWrap: true,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
                                                     fontSize: 15,
                                                   ),
                                                 ),
                                               ),
+
                                               ///product price
                                               Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        5, 0, 5, 0),
                                                 child: Text(
-                                                  "EGP ${product.hasDiscount?product.priceAfterDiscount.toStringAsFixed(2):product.price.toStringAsFixed(2)}",
+                                                  "EGP ${product.hasDiscount ? product.priceAfterDiscount.toStringAsFixed(2) : product.price.toStringAsFixed(2)}",
                                                   textAlign: TextAlign.start,
                                                   //    softWrap: true,
-                                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                                                ),
-                                              ),
-                                              ///product discount
-                                              if (product.hasDiscount) Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "EGP ${product.price}",
-                                                      style: TextStyle(
-                                                        decoration: TextDecoration.lineThrough,
-                                                        fontWeight: FontWeight.w200,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      "-${product.discountPercentage.toStringAsFixed(2)}%",
-                                                      style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              ///product quantity
-                                              if(alldata.data[index]['data']['quantity']!= null) Container(
-                                                padding: EdgeInsets.all(5),
-                                                child: Text(
-                                                  "${alldata.data[index]['data']['quantity']} pcs",
-                                                  softWrap: true,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
                                                   style: TextStyle(
-                                                    fontSize: 15,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+
+                                              ///product discount
+                                              if (product.hasDiscount)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          5, 0, 5, 0),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "EGP ${product.price}",
+                                                        style: TextStyle(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        "-${product.discountPercentage.toStringAsFixed(2)}%",
+                                                        style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              )
+
+                                              ///product quantity
+                                              if (alldata.data[index]['data']
+                                                      ['quantity'] !=
+                                                  null)
+                                                Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Text(
+                                                    "${alldata.data[index]['data']['quantity']} pcs",
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                )
                                             ],
                                           )
                                         ],
-
-
                                       ),
                                     ),
                                   );
-                                }else{
+                                } else {
                                   return CircularProgressIndicator();
                                 }
                               },
@@ -287,21 +310,28 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           borderRadius: new BorderRadius.circular(25.0),
                         ),
                       ),
-                      onPressed: () async{
-                          if(_cartScreenBloc.productIds.length == 0)
-                              showInSnackBar("your cart is empty", context);
-                            else{
-                            await _cartScreenBloc.calculateTotalPrice("/shopping_carts/${auth.uid}/shopping_cart_items","/products/");
-                            print('in cart screen');
-                            print(_cartScreenBloc.productIdsAndQuantity);
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => CartCheckoutScreen(
-                                  orderPrice: widget.totalPrice,
-                                  productIDs: widget.productIds,
-                                  productIdsAndQuantity: _cartScreenBloc.productIdsAndQuantity,
-                                  productIdsAndPrices: _cartScreenBloc.productIdsAndPrices,
-                                  isMonthlyCart: false,))).then((value) => _cartScreenBloc.resetState());
-                          }
+                      onPressed: () async {
+                        if (_cartScreenBloc.productIds.length == 0)
+                          showInSnackBar("your cart is empty", context);
+                        else {
+                          await _cartScreenBloc.calculateTotalPrice(
+                              "/shopping_carts/${auth.uid}/shopping_cart_items",
+                              "/products/");
+                          print('in cart screen');
+                          print(_cartScreenBloc.productIdsAndQuantity);
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => CartCheckoutScreen(
+                                        orderPrice: widget.totalPrice,
+                                        productIDs: widget.productIds,
+                                        productIdsAndQuantity: _cartScreenBloc
+                                            .productIdsAndQuantity,
+                                        productIdsAndPrices:
+                                            _cartScreenBloc.productIdsAndPrices,
+                                        isMonthlyCart: false,
+                                      )))
+                              .then((value) => _cartScreenBloc.resetState());
+                        }
                       },
                       child: Text(
                         "Check Out",
@@ -424,7 +454,7 @@ Future<void> onLongPressProduct(
                           .deleteDocument(path: collectionPath + documentId);
                       bloc.resetState();
                       Navigator.of(context).pop(true);
-                    } else if (quantityInCart<=productNumberInStock) {
+                    } else if (quantityInCart <= productNumberInStock) {
                       ///update user's order quantity
                       await CloudFirestoreService.instance.updateDocumentField(
                           collectionPath: collectionPath,
@@ -433,8 +463,7 @@ Future<void> onLongPressProduct(
                           updatedValue: quantityInCart);
                       bloc.resetState();
                       Navigator.of(context).pop();
-                    }
-                    else if (quantityInCart > productNumberInStock) {
+                    } else if (quantityInCart > productNumberInStock) {
                       showInSnackBar("Quantity is more than in stock", context);
                       bloc.resetState();
                     }

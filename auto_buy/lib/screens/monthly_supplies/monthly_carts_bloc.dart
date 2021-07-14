@@ -47,20 +47,28 @@ class MonthlyCartsBloc {
   Future<void> addNewMonthlyCart(String name, DateTime selectedDate) async {
     await _monthlyCartServices.addNewMonthlyCart(uid, name, selectedDate);
     monthlyCartsScreenModel.monthlyCarts
-        .add(MonthlyCartModel(name: name, deliveryDate: selectedDate));
+        .add(MonthlyCartModel(name: name, deliveryDate: selectedDate,isCheckedOut: false));
     await fetchUserMonthlyCarts();
   }
 
   Future<void> editCartDate(String cartName, DateTime selectedDate) async {
     try {
       await _monthlyCartServices.updateDeliveryDateInMonthlyCart(uid, cartName, selectedDate);
-      monthlyCartsScreenModel.monthlyCarts
-          .add(MonthlyCartModel(name: cartName, deliveryDate: selectedDate));
       await fetchUserMonthlyCarts();
     } on Exception catch (e) {
       rethrow;
     }
   }
+
+  Future<void> setCheckedOut(String cartName , bool val) async {
+    try {
+      await _monthlyCartServices.setCheckedOut(uid, cartName , val);
+      await fetchUserMonthlyCarts();
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
+  Future<bool> getChecekOutStat({String cartName,String uid}) async => await _monthlyCartServices.getIsCheckedOut(uid, cartName);
 
   Future<void> deleteMonthlyCart(String cartName) async {
     try {
@@ -70,4 +78,5 @@ class MonthlyCartsBloc {
       rethrow;
     }
   }
+
 }

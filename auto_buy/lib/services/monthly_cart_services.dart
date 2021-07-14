@@ -1,5 +1,6 @@
 import 'package:auto_buy/models/monthly_cart_model.dart';
 import 'package:auto_buy/models/monthly_cart_product_item.dart';
+import 'package:auto_buy/models/order_model.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/products_services.dart';
 
@@ -27,8 +28,8 @@ class MonthlyCartServices {
     return _firestoreService.getCollectionData(
         collectionPath: APIPath.userMonthlyCartsPath(uid),
         builder: (data, documentId) =>
-            MonthlyCartModel.fromMap(data, documentId));
-  }
+            MonthlyCartModel.fromMap(data, documentId));}
+
 
   Future<List<MonthlyCartItem>> readMonthlyCartProducts(
           String uid, String cartName) async =>
@@ -127,7 +128,7 @@ class MonthlyCartServices {
   Future<void> addNewMonthlyCart(
       String uid, String name, DateTime selectedDate) async {
     MonthlyCartModel monthlyCartModel =
-        MonthlyCartModel(name: name, deliveryDate: selectedDate);
+        MonthlyCartModel(name: name, deliveryDate: selectedDate ,isCheckedOut: false);
 
     await _firestoreService.setDocument(
         documentPath: APIPath.userMonthlyCartDocument(uid, name),
@@ -137,8 +138,7 @@ class MonthlyCartServices {
   Future<void> deleteProductFromMonthlyCart(
       String uid, String selectedCartName, String productId) async {
     await _firestoreService.deleteDocument(
-        path: APIPath.userMonthlyCartProductDocumentPath(
-            uid, selectedCartName, productId));
+        path: APIPath.userMonthlyCartProductDocumentPath(uid, selectedCartName, productId));
   }
 
   Future<void> updateProductQuantityInMonthlyCart(
@@ -153,8 +153,11 @@ class MonthlyCartServices {
   }
 
   Future<void> deleteMonthlyCart(String uid, String selectedCartName) async {
+    await _firestoreService.deleteCollection(
+        path: APIPath.userMonthlyCartProductsCollectionPath(uid, selectedCartName));
     await _firestoreService.deleteDocument(
         path: APIPath.userMonthlyCartDocument(uid, selectedCartName));
+
   }
 
   Future<void> updateDeliveryDateInMonthlyCart(
@@ -179,4 +182,41 @@ class MonthlyCartServices {
     }
     return totalPrice;
   }
+  Future<  Map<String, double>> getMonthlyCartProductsPrice(String uid, String cartName) async {
+    Map<String, double> mp = Map<String, double>() ;
+    List<MonthlyCartItem> monthlyCartItems =
+    await readMonthlyCartProducts(uid, cartName);
+    for (int i = 0; i < monthlyCartItems.length; i++) {
+      final item = monthlyCartItems[i];
+      double price =
+      await _productsBackendServices.getProductPrice(item.productId);
+      mp[item.productId] = price;
+    }
+    return mp;
+  }
+  Future<void> setCheckedOut(
+      String uid, String cartName , bool val) async {
+    await _firestoreService.updateDocumentField(
+      collectionPath: APIPath.userMonthlyCartsPath(uid),
+      documentID: cartName,
+      fieldName: "is_checkedout",
+      updatedValue: val,
+    );
+  }
+
+  Future<bool> getIsCheckedOut(String uid,String cartName) async{
+    return await  _firestoreService.readOnceDocumentData(collectionPath: APIPath.userMonthlyCartsPath(uid) ,
+        documentId:cartName, builder: (Map<String, dynamic> data, String documentId) =>
+        data["is_checkedout"]);
+  }
+
+  Future<void> createCheckedOutMonthlyCarts({orderModel oneOrderModel,String cartName,String uid}) async{
+    await _firestoreService.setDocument(
+        documentPath: APIPath.checkedOutMonthlyCart(uid,cartName), data: oneOrderModel.toMap());
+  }
+  Future<void> deleteCheckedOutMonthlyCart({String uid, String cartName}) async{
+    await _firestoreService.deleteDocument(path: APIPath.checkedOutMonthlyCart(uid,cartName));
+  }
+
+
 }

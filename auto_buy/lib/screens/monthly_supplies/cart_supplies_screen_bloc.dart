@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class MonthlyCartsScreenBloc {
   MonthlyCartsScreenBloc({@required this.uid, this.selectedCartName}) {
-    getCartProducts();
+    if(uid != null)
+     getCartProducts();
   }
 
   final String uid;
@@ -21,6 +22,9 @@ class MonthlyCartsScreenBloc {
   List<Product> monthlyCartProducts = [];
   List<int> quantities = [];
   List<String> productIDs = [];
+  Map<String, int> productIdsAndQuantity = new Map<String, int>();
+  Map<String, double> productIdsAndPrices = new Map<String, double>();
+  bool isCheckedOut;
 
   StreamController<bool> _streamController = StreamController.broadcast();
   bool reload = false;
@@ -33,9 +37,14 @@ class MonthlyCartsScreenBloc {
   Future<void> getCartProducts() async {
     List<MonthlyCartItem> items = await _monthlyCartServices
         .readMonthlyCartProducts(uid, selectedCartName);
+
     monthlyCartProducts.clear();
     quantities.clear();
+    if (productIdsAndQuantity.isNotEmpty) productIdsAndQuantity.clear();
+    if (productIdsAndPrices.isNotEmpty) productIdsAndPrices.clear();
+
     for (int i = 0; i < items.length; i++) {
+      productIdsAndQuantity[items[i].productId] = items[i].quantity;
       quantities.add(items[i].quantity);
       final product =
           await _productsBackendServices.readProduct(items[i].productId);
@@ -43,7 +52,13 @@ class MonthlyCartsScreenBloc {
     }
     totalPrice = await _monthlyCartServices.getMonthlyCartTotalPrice(
         uid, selectedCartName);
+    productIdsAndPrices = await _monthlyCartServices
+        .getMonthlyCartProductsPrice(uid, selectedCartName);
+    isCheckedOut =
+        await _monthlyCartServices.getIsCheckedOut(uid, selectedCartName);
+
     print("TOTAL PRICE $totalPrice");
+    print("IS CHECKED OUT? $isCheckedOut");
     getProductIDs();
     reload = !reload;
     _streamController.add(reload);
@@ -60,7 +75,7 @@ class MonthlyCartsScreenBloc {
   List<String> getProductIDs() {
     int i;
     for (i = 0; i < monthlyCartProducts.length; i++)
-        productIDs.add(monthlyCartProducts[i].id);
+      productIDs.add(monthlyCartProducts[i].id);
     return productIDs;
   }
 
@@ -84,4 +99,10 @@ class MonthlyCartsScreenBloc {
       rethrow;
     }
   }
+  Future<void> cancelCheckedOutMonthlyCart(String cartName,String uid) async {
+      await _monthlyCartServices.setCheckedOut(uid, cartName,false);
+      await _monthlyCartServices.deleteCheckedOutMonthlyCart(uid: uid,cartName: cartName);
+  }
+  Future<void> getCheckedOutStat() async => isCheckedOut =
+  await _monthlyCartServices.getIsCheckedOut(uid, selectedCartName);
 }

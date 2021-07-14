@@ -45,6 +45,8 @@ dependencies:
   image_cropper: ^1.4.0
   shared_preferences:
   commons:
+  charts_flutter: ^0.10.0
+  connectivity: ^3.0.6
   flutter_sound: ^8.1.9
   permission_handler: ^8.1.2
   google_speech: ^2.0.1
@@ -91,7 +93,6 @@ flutter:
     - assets/images/Tony.png
     - assets/images/optio_gift.png
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

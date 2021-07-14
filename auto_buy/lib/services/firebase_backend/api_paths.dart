@@ -31,7 +31,8 @@ class APIPath {
 
   static String userShoppingCartProductsCollectionPath(
     String uid,
-  ) => "/shopping_carts/$uid/shopping_cart_items";
+  ) =>
+      "/shopping_carts/$uid/shopping_cart_items";
 
   static String userWishListProductPath(String uid, String productID) =>
       "/wish_lists/$uid/wish_list_products/$productID";
@@ -59,5 +60,7 @@ class APIPath {
   static String userMonthlyCartDocument(String uid, String cartName) =>
       "/monthly_carts/$uid/monthly_carts/$cartName";
 
+  static String userOrdersIDs(String uid) => "/users_orders/$uid";
 
+  static String checkedOutMonthlyCart(String uid,String cartName) => "/checked_out_monthly_carts/$uid$cartName";
 }

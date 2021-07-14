@@ -43,13 +43,18 @@ class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
   }
 
   Future<bool> enterUsingGoogle() async {
-    updateModelWith(isEnable: false);
-    final user = await auth.signInWithGoogle();
-    updateModelWith(isEnable: true);
-    if (user != null) {
-      return true;
-    } else {
-      return false;
+    try {
+      updateModelWith(isEnable: false);
+      final user = await auth.signInWithGoogle();
+      updateModelWith(isEnable: true);
+      if (user != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      updateModelWith(isEnable: true);
+      rethrow;
     }
   }
 

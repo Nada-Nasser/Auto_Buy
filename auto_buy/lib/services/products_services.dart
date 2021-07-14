@@ -23,8 +23,8 @@ class ProductsBackendServices {
     return rates;
   }
 
-  Future<void> rateProductWithNStars(
-      int n, String uid, String productID) async {
+  Future<void> rateProductWithNStars(int n, String uid,
+      String productID) async {
     try {
       Rate rate = Rate(nStars: n, id: uid);
       await _firestoreService.setDocument(
@@ -72,6 +72,7 @@ class ProductsBackendServices {
 
     return products;
   }
+
   Future<List<Product>> ReadProductsFromFirestore() async {
     List<Product> products = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
@@ -84,4 +85,6 @@ class ProductsBackendServices {
     }
     return products;
   }
+
+
 }
