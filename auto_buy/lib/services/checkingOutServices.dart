@@ -54,10 +54,6 @@ class CheckingOutServices {
   {
     ///get user's cart items
     dynamic cartItems  = await _firestoreService.getCollectionData(collectionPath: cartPath, builder: (Map<String, dynamic> data, String documentId){
-      // Map<String, dynamic> output = {
-      //   "data": data,
-      //   "id": documentId
-      // };
       return data;
     });
     ///reduce the quantity in stock
@@ -73,14 +69,6 @@ class CheckingOutServices {
       ///empty te user's cart
       await _firestoreService.deleteDocument(path: cartPath+"/${cartItems[i]["product_id"]}");
     }
-
-    //
-    // try {
-    //   await _firestoreService.deleteDocument(path: deletePath);
-    // }catch(e){
-    //   print(e);
-    // }
-
   }
 
   Future<int> getProductNumber(String productId) async {

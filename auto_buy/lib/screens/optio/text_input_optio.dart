@@ -202,6 +202,7 @@ class _TextInputOptioState extends State<TextInputOptio> {
               if(_myRecorder.isRecording)
               {
                 _textEditingController.text = await stopRecorder();
+                setState(() {});
                 print(_textEditingController.text);
                 String translation = await translator.translate(_textEditingController.text);
                 print(translation);
@@ -216,5 +217,3 @@ class _TextInputOptioState extends State<TextInputOptio> {
     );
   }
 }
-
-

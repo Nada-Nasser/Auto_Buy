@@ -4,6 +4,7 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
@@ -59,6 +60,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               'Something went wrong xxxxxxxxxxx, ${userdata.error.toString()}');
         }
         if (userdata.hasData) {
+          print("in checkout screen");
+          print(widget.productIDs);
+          print(widget.productIdsAndPrices);
+          print(widget.productIdsAndQuantity);
           TextEditingController cityController = TextEditingController(
               text: ("${userdata.data['adress']['city']}" != null
                   ? "${userdata.data['adress']['city']}"
@@ -100,7 +105,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  Row(
+                  if(widget.isGift==true)Image.asset("assets/images/optio_gift.png"),
+                  if(widget.isGift==true)Text(
+                    "You are Sending a Gift to ${userdata.data['name']}, the gift will be delivered to the address provided by him",
+                    textAlign: TextAlign.center,
+                  ),
+                  widget.isGift==false?Row(
                     children: [
                       Expanded(
                         child: buildTextFormField("Apt Number",
@@ -122,16 +132,16 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               bNumberController, widget.enabledEditing),
                           flex: 1),
                     ],
-                  ),
-                  buildTextFormField(
-                      "Street", streetController, widget.enabledEditing),
-                  buildTextFormField(
-                      "City", cityController, widget.enabledEditing),
-                  buildDropDownMenu(userdata.data['adress']['governorate'],
-                      widget.enabledEditing),
-                  SizedBox(
+                  ):Container(),
+                  widget.isGift==false?buildTextFormField(
+                      "Street", streetController, widget.enabledEditing):Container(),
+                  widget.isGift==false?buildTextFormField(
+                      "City", cityController, widget.enabledEditing):Container(),
+                  widget.isGift==false?buildDropDownMenu(userdata.data['adress']['governorate'],
+                      widget.enabledEditing):Container(),
+                  widget.isGift==false?SizedBox(
                     height: 20,
-                  ),
+                  ):Container(),
                   widget.isGift==false?Container(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -190,8 +200,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                   productIDs: widget.productIDs,
                                   price: widget.orderPrice,
                                   uid: auth.uid,
-                                  productIdAndQuantity: widget.productIdsAndQuantity!=null?widget.productIdsAndQuantity:null,
-                                  productIdAndPrices: widget.productIdsAndPrices!=null?widget.productIdsAndPrices:null,
+                                  productIdAndQuantity: widget.productIdsAndQuantity,
+                                  productIdAndPrices: widget.productIdsAndPrices,
                                   address: {
                                     "building_number": userdata.data['adress']
                                         ['building_number'],

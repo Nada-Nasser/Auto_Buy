@@ -49,7 +49,7 @@ class ShoppingCartScreenBloc {
       productIdsAndQuantity.update(product.id, (existingValue) => cartItems[i]['data']['quantity'],
         ifAbsent: () => cartItems[i]['data']['quantity'],);
 
-      productIdsAndPrices.update(product.id, (existingValue) => product.priceAfterDiscount==null?product.price:product.priceAfterDiscount,
+      productIdsAndPrices.update(product.id, (existingValue) => product.hasDiscount?product.priceAfterDiscount:product.price,
         ifAbsent: () => product.priceAfterDiscount==null?product.price:product.priceAfterDiscount,);
     }
     print('in bloc');
