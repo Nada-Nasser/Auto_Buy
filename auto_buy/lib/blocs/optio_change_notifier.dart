@@ -45,11 +45,12 @@ class OptioChangeNotifier extends ChangeNotifier {
     var url = Uri.parse(
         'https://d9bef0df0cd7.ngrok.io/classifytext?text=$translation');
     var response = await http.get(url);
+    print(response.body.toString());
 
     Command command = _commandGenerator.generateCommand(response);
+
+    /// generate command that contain the needed arguments to execute it
     if (command.isValidCommand) {
-      // TODO (OPTIO): create error response
-    } else {
       try {
         /**
          * 1- (if the command was add/delete something from cart)
@@ -70,27 +71,16 @@ class OptioChangeNotifier extends ChangeNotifier {
          *    only text message = "failure message"
          * */
         await command.run();
-
-        optioResponse = Container(
-          width: double.infinity,
-          child: Center(
-            child: Text(
-              response.body.toString(),
-            ),
-          ),
-        );
+        String successMessage = response.body.toString(); //TODO
+        optioResponse = _createOptioResponse(successMessage, true);
       } on Exception catch (e) {
-        // TODO (OPTIO): create error response
-        optioResponse = Container(
-          width: double.infinity,
-          child: Center(
-            child: Text(
-              response.body.toString(),
-            ),
-          ),
-        );
+        String errorMessage = response.body.toString(); //TODO
+        optioResponse = _createOptioResponse(errorMessage, false);
         throw e;
       }
+    } else {
+      String errorMessage = response.body.toString(); //TODO
+      optioResponse = _createOptioResponse(errorMessage, false);
     }
 
     chatWidgets.add(listWidget(optioResponse, 0));
@@ -103,6 +93,17 @@ class OptioChangeNotifier extends ChangeNotifier {
         curve: Curves.easeOut,
       );
     });
+  }
+
+  Container _createOptioResponse(String response, bool isSuccessfulResponse) {
+    return Container(
+      width: double.infinity,
+      child: Center(
+        child: Text(
+          response,
+        ),
+      ),
+    );
   }
 
   ///this function builds a widget that is inserted into the chat screen, its

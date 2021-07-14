@@ -4,6 +4,9 @@ class MonthlyCartCommand implements Command {
   @override
   final CommandArguments commandArguments;
 
+  /// contains the parameters needed to execute run function
+  /// ex. uid, productName, ...
+
   MonthlyCartCommand(this.commandArguments);
 
   @override
@@ -12,12 +15,11 @@ class MonthlyCartCommand implements Command {
     throw UnimplementedError();
   }
 
-  Future<void> addToMonthlyCart() async {}
+  Future<void> _addToMonthlyCart(String productID) async {}
 
-  Future<void> deleteFromMonthlyCart() async {}
+  Future<void> _deleteFromMonthlyCart(String productID) async {}
 
   @override
-  // TODO: implement isValidCommand
   bool get isValidCommand =>
       commandArguments.commandType != CommandType.INVALID;
 }
