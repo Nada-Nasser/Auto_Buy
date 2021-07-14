@@ -202,6 +202,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               uid: auth.uid,
                               productIdAndQuantity: widget.productIdsAndQuantity,
                               productIdAndPrices: widget.productIdsAndPrices,
+                              isMonthlyCart: (widget.isMonthlyCart)? true : false,
+                              cartName: widget.cartPath,
                               address: {
                                 "building_number": userdata.data['adress']
                                 ['building_number'],
