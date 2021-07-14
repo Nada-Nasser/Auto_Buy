@@ -127,7 +127,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                                   fullscreenDialog: true,
                                                   builder: (context) => OrderDetailsScreen(productIds:snapshotOrderDetail.data['product_ids'],
                                                     productIdsAndQuantity: snapshotOrderDetail.data['productid_quantity'],
-                                                    price: snapshotOrderDetail.data['price'],
+                                                    price: snapshotOrderDetail.data['price'].toDouble(),
                                                   )
                                                 ),
                                               );

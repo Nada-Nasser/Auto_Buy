@@ -72,7 +72,7 @@ class ExpensesTrackerBloc {
     for (int i = 0; i < ids.length; i++) {
       String name = expense.productsName[i];
       int quantity = expense.quantities[ids[i]];
-      double price = expense.prices[ids[i]];
+      double price = expense.prices[ids[i]].toDouble();
       output.add(InvoiceEntry(name, price, quantity));
     }
 

@@ -48,7 +48,7 @@ class ExpenseTrackerServices {
         order.productCategoryNames.add(category);
         order.productsName.add(productName);
 
-        final price = order.prices[productId] * order.quantities[productId];
+        final double price = order.prices[productId] .toDouble() * order.quantities[productId];
         if (order.categoryAndPrice[category] != null)
           order.categoryAndPrice[category] += price;
         else
