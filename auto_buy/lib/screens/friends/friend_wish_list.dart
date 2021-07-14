@@ -15,6 +15,8 @@ class FriendWishList extends StatefulWidget {
   int checkListLength;
   List<bool> checkedOrNot;
   List<String> itemIds = [];
+  Map<String,int> productIdsAndQuantity={};
+  Map<String,double> productIdsAndPrices ={};
   FriendWishList({this.friendId,this.name,this.checkListLength}){
     checkedOrNot = List.filled(checkListLength, false);
   }
@@ -23,6 +25,7 @@ class FriendWishList extends StatefulWidget {
 }
 
 class _FriendWishListState extends State<FriendWishList> {
+  double totalPrice = 0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +56,10 @@ class _FriendWishListState extends State<FriendWishList> {
                       fontSize: 12,
                     ),
                   ),
+                  Spacer(),
+                  Text(
+                    "Your cost is ${totalPrice.toStringAsFixed(2)}\$"
+                  )
                 ],
               ),
             ),
@@ -104,19 +111,16 @@ class _FriendWishListState extends State<FriendWishList> {
                                         children: [
                                           Checkbox(
                                               value: widget.checkedOrNot[index],
-                                              onChanged: (bool value) {
-                                                setState((){
+                                              onChanged: (bool value) async{
                                                   widget.checkedOrNot[index]=value;
                                                   if(!widget.itemIds.contains(alldata.data[index]))
                                                   {
                                                     widget.itemIds.add(alldata.data[index]);
-                                                    print(widget.itemIds);
                                                   }else{
                                                     widget.itemIds.remove(alldata.data[index]);
-                                                    print(widget.itemIds);
                                                   }
-                                                }
-                                                );
+                                                  totalPrice = await calculatePriceAndQuantity();
+                                                  setState(() {});
                                               }
                                             ),
                                         ],
@@ -160,6 +164,7 @@ class _FriendWishListState extends State<FriendWishList> {
                                           }),
                                       Text(
                                         snapshot.data['data']['name'],
+                                        overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
                                       ),
                                     ],
@@ -202,18 +207,29 @@ class _FriendWishListState extends State<FriendWishList> {
                   showInSnackBar("Please choose a gift", context);
                 }
                 else{
-                  double totalPrice = await calculatePriceAndQuantity();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartCheckoutScreen(
+                  totalPrice = await calculatePriceAndQuantity();
+                  print("in wishlist");
+                  print(widget.itemIds);
+                  print(widget.productIdsAndPrices);
+                  print(widget.productIdsAndQuantity);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => CartCheckoutScreen(
                         orderPrice: totalPrice,
                         productIDs: widget.itemIds,
-                        // productIdsAndQuantity: _cartScreenBloc.productIdsAndQuantity,
+                        productIdsAndPrices: widget.productIdsAndPrices,
+                        productIdsAndQuantity: widget.productIdsAndQuantity,
                         isMonthlyCart: false,
                         isGift: true,
                         friendId: widget.friendId,
                   )));
-                  setState(() {
-                    widget.checkedOrNot = List.filled(widget.checkListLength, false);
-                  });
+                  // then((value) {
+                  //   setState(() {
+                  //     widget.checkedOrNot = List.filled(widget.checkListLength, false);
+                  //     totalPrice = 0.0;
+                  //     for(int i= 0 ; i < widget.itemIds.length ; i++)
+                  //       widget.itemIds.removeAt(i);
+                  //   });
+                  // });
+
                 }
               },
               child: Text(
@@ -234,18 +250,24 @@ class _FriendWishListState extends State<FriendWishList> {
   Future<double> calculatePriceAndQuantity() async{
     double total = 0.0;
     Map<String, int> productIdsAndQuantity ={};
+    Map<String, double> productIdsAndPrices = {};
     for(int i = 0 ; i < widget.itemIds.length ; i++)
     {
         dynamic productMap = await CloudFirestoreService.instance.readOnceDocumentData(collectionPath: "/products",
             documentId: widget.itemIds[i].toString(), builder: (Map<String, dynamic> data, String documentId)=>data);
-        if(productMap['price_after_discount']==null)
-            total += productMap['price'];
+        Product product = Product.fromMap(productMap, widget.itemIds[i]);
+        if(product.hasDiscount==false)
+            total += product.price;
         else
-            total +=productMap['price_after_discount'];
-        // productIdsAndQuantity.update(widget.itemIds[i].toString(), (existingValue) => 1,
-        //   ifAbsent: () => 1,);
+            total +=product.priceAfterDiscount;
+
+        productIdsAndQuantity.update(widget.itemIds[i].toString(), (existingValue) => 1,
+          ifAbsent: () => 1,);
+        productIdsAndPrices.update(product.id, (existingValue) => product.hasDiscount?product.priceAfterDiscount:product.price,
+          ifAbsent: () => product.hasDiscount?product.priceAfterDiscount:product.price);
     }
-    print(total);
+    widget.productIdsAndPrices = productIdsAndPrices;
+    widget.productIdsAndQuantity = productIdsAndQuantity;
     return total;
   }
 }

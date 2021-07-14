@@ -4,6 +4,7 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
@@ -82,6 +83,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               'Something went wrong xxxxxxxxxxx, ${userdata.error.toString()}');
         }
         if (userdata.hasData) {
+          print("in checkout screen");
+          print(widget.productIDs);
+          print(widget.productIdsAndPrices);
+          print(widget.productIdsAndQuantity);
           TextEditingController cityController = TextEditingController(
               text: ("${userdata.data['adress']['city']}" != null
                   ? "${userdata.data['adress']['city']}"
@@ -114,79 +119,128 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             ),
             body: Container(
               padding: EdgeInsets.all(30),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text(
-                      "Shipping information",
-                      style: TextStyle(fontSize: 30),
+              child: Column(
+                children: [
+                  Text(
+                    "Shipping information",
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  if(widget.isGift==true)Image.asset("assets/images/optio_gift.png"),
+                  if(widget.isGift==true)Text(
+                    "You are Sending a Gift to ${userdata.data['name']}, the gift will be delivered to the address provided by him",
+                    textAlign: TextAlign.center,
+                  ),
+                  widget.isGift==false?Row(
+                    children: [
+                      Expanded(
+                        child: buildTextFormField("Apt Number",
+                            aNumberController, widget.enabledEditing),
+                        flex: 1,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                          child: buildTextFormField("floor Number",
+                              fNumberController, widget.enabledEditing),
+                          flex: 1),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                          child: buildTextFormField("building Number",
+                              bNumberController, widget.enabledEditing),
+                          flex: 1),
+                    ],
+                  ):Container(),
+                  widget.isGift==false?buildTextFormField(
+                      "Street", streetController, widget.enabledEditing):Container(),
+                  widget.isGift==false?buildTextFormField(
+                      "City", cityController, widget.enabledEditing):Container(),
+                  widget.isGift==false?buildDropDownMenu(userdata.data['adress']['governorate'],
+                      widget.enabledEditing):Container(),
+                  widget.isGift==false?SizedBox(
+                    height: 20,
+                  ):Container(),
+                  widget.isGift==false?Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (widget.enabledEditing == false) {
+                          widget.enabledEditing = true;
+                          print(widget.enabledEditing);
+                          setState(() {});
+                        } else {
+                          if(cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
+                          && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty)
+                          {
+                            update(
+                                context,
+                                auth,
+                                bNumberController,
+                                cityController,
+                                streetController,
+                                aNumberController,
+                                fNumberController);
+                            widget.enabledEditing = false;
+                            print(widget.enabledEditing);
+                            setState(() {});
+                          }else {
+                            showInSnackBar("please fill in all the fields", context);
+                          }
+
+                        }
+                      },
+                      child: Text(
+                          widget.enabledEditing == false
+                              ? "Edit address"
+                              : "Confirm editing",
+                          style: TextStyle(fontSize: 16)),
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                        primary: Colors.white,
+                        padding: EdgeInsets.all(10),
+                      ),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: buildTextFormField("Apt Number",
-                              aNumberController, widget.enabledEditing),
-                          flex: 1,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                            child: buildTextFormField("floor Number",
-                                fNumberController, widget.enabledEditing),
-                            flex: 1),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                            child: buildTextFormField("building Number",
-                                bNumberController, widget.enabledEditing),
-                            flex: 1),
-                      ],
-                    ),
-                    buildTextFormField(
-                        "Street", streetController, widget.enabledEditing),
-                    buildTextFormField(
-                        "City", cityController, widget.enabledEditing),
-                    buildDropDownMenu(userdata.data['adress']['governorate'],
-                        widget.enabledEditing),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    widget.isGift == false
-                        ? Container(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (widget.enabledEditing == false) {
-                                  widget.enabledEditing = true;
-                                  print(widget.enabledEditing);
-                                  setState(() {});
-                                } else {
-                                  if (cityController.text.isNotEmpty &&
-                                      bNumberController.text.isNotEmpty &&
-                                      fNumberController.text.isNotEmpty &&
-                                      aNumberController.text.isNotEmpty &&
-                                      streetController.text.isNotEmpty) {
-                                    update(
-                                        context,
-                                        auth,
-                                        bNumberController,
-                                        cityController,
-                                        streetController,
-                                        aNumberController,
-                                        fNumberController);
-                                    widget.enabledEditing = false;
-                                    print(widget.enabledEditing);
-                                    setState(() {});
-                                  } else {
-                                    showInSnackBar(
-                                        "please fill in all the fields",
-                                        context);
-                                  }
+                  ):Container(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(child: monthlyCartWidgets(auth.uid)),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: widget.enabledEditing == false
+                          ? () async {
+                        ///changed prouctIDs to productIdsAndQuantity
+                              await CheckingOutServices().addNewOrder(
+                                  productIDs: widget.productIDs,
+                                  price: widget.orderPrice,
+                                  uid: auth.uid,
+                                  productIdAndQuantity: widget.productIdsAndQuantity,
+                                  productIdAndPrices: widget.productIdsAndPrices,
+                                  address: {
+                                    "building_number": userdata.data['adress']
+                                        ['building_number'],
+                                    "city": userdata.data['adress']['city'],
+                                    "street": userdata.data['adress']['street'],
+                                    "governorate": userdata.data['adress']
+                                        ['governorate'],
+                                    "apartment_number": userdata.data['adress']
+                                        ['apartment_number'],
+                                    "floor_number": userdata.data['adress']
+                                        ['floor_number']
+                                  },
+                                  selectedDate: selectedDate);
+                              if(widget.isMonthlyCart == false)
+                                {
+                                  await CheckingOutServices().removeItemsFromCart(cartPath:"/shopping_carts/${auth.uid}/shopping_cart_items",deletePath: "/shopping_carts/${auth.uid}");
                                 }
                               },
                               child: Text(

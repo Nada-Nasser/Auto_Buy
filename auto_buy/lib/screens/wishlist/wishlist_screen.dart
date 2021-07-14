@@ -134,6 +134,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                           Text(
                                             snapshot.data['data']['name'],
                                             textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                             ),
                                           ),

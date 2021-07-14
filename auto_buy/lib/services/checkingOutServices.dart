@@ -11,17 +11,16 @@ class CheckingOutServices {
   final ProductsBackendServices _productsBackendServices =
       ProductsBackendServices();
 
-  Future<void> addNewOrder({
-    String uid,
-    Map<String, dynamic> address,
-    DateTime selectedDate,
-    List<String> productIDs,
-    double price,
-    Map<String, int> productIdAndQuantity,
-    Map<String, double> productIdAndPrices,
-    isMonthlyCart = false,
-    cartName
-  }) async {
+  Future<void> addNewOrder(
+      {String uid,
+      Map<String, dynamic> address,
+      DateTime selectedDate,
+      List<String> productIDs,
+      double price,
+      Map<String, int> productIdAndQuantity,
+      Map<String, double> productIdAndPrices,
+      isMonthlyCart = false,
+      cartName}) async {
     orderModel oneOrderModel = orderModel(
       userID: uid,
       address: address,
@@ -38,8 +37,9 @@ class CheckingOutServices {
     String ID = await _firestoreService.addDocument(
         documentPath: APIPath.ordersDocuemtPath(), data: oneOrderModel.toMap());
 
-    if(isMonthlyCart)
-      await MonthlyCartServices().createCheckedOutMonthlyCarts(oneOrderModel: oneOrderModel,uid: uid,cartName: cartName);
+    if (isMonthlyCart)
+      await MonthlyCartServices().createCheckedOutMonthlyCarts(
+          oneOrderModel: oneOrderModel, uid: uid, cartName: cartName);
 
     bool flag = false;
     flag = await _firestoreService.checkExist(
@@ -69,7 +69,6 @@ class CheckingOutServices {
       {String shoppingCartPath,
       bool isShoppingCart = true,
       Map<String, int> productIdsAndQuantity}) async {
-
     ///reduce the quantity in stock
     productIdsAndQuantity.forEach((productID, quantity) async {
       int productNumberInStock = await getProductNumberInStock(productID);

@@ -48,6 +48,7 @@ class OptioChangeNotifier extends ChangeNotifier {
         ),
       ),
     );
+
     chatWidgets.add(listWidget(OptioResponse, 0));
     notifyListeners();
 

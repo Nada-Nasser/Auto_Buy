@@ -12,7 +12,6 @@ class ChattingScreen extends StatefulWidget {
 class _ChattingScreenState extends State<ChattingScreen> {
 
 
-
   @override
   Widget build(BuildContext context) {
     return

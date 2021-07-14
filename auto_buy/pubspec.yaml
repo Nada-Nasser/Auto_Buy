@@ -43,7 +43,7 @@ dependencies:
   cached_network_image: ^3.0.0
   material_floating_search_bar: ^0.2.6
   image_cropper: ^1.4.0
-  shared_preferences: ^2.0.5
+  shared_preferences:
   commons:
   charts_flutter: ^0.10.0
   connectivity: ^3.0.6
@@ -88,6 +88,7 @@ flutter:
     - assets/images/optiobodyhi.svg
     - assets/gifs/loading_2.gif
     - assets/images/Tony.png
+    - assets/images/optio_gift.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
