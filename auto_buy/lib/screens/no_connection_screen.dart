@@ -18,7 +18,7 @@ class NoInternetConnectionScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons
-                        .signal_wifi_statusbar_connected_no_internet_4_outlined,
+                        .signal_wifi_off,
                     size: 100,
                   ),
                   SizedBox(

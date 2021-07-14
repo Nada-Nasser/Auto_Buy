@@ -6,6 +6,7 @@ import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/products_grid_view/products_grid_view.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -128,7 +129,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
             ],
           ),
           Row(
-            children: [Text("Total Price = \$${bloc.totalPrice.toStringAsFixed(3)}")],
+            children: [Text("Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")],
           ),
         ],
       ),
@@ -151,7 +152,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
 
   Future<void> _onLongPressProduct(
       BuildContext context, Product product) async {
-    int q = bloc.getProductQuantityInTheCart(product.id);
+    int q = widget.bloc.getProductQuantityInTheCart(product.id);
     showDialog(
         context: context,
         builder: (context) {
@@ -163,13 +164,13 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "You can delete this product from your ${bloc.selectedCartName} monthly cart",
+                    "You can delete this product from your ${widget.bloc.selectedCartName} monthly cart",
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
-                      await bloc.deleteProduct(product.id);
+                      await widget.bloc.deleteProduct(product.id);
                       Navigator.of(context).pop(true);
                     },
                     child: Text("Delete"),
@@ -238,10 +239,10 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       if (q == 0) {
-                        await bloc.deleteProduct(product.id);
+                        await widget.bloc.deleteProduct(product.id);
                         Navigator.of(context).pop(true);
                       } else {
-                        await bloc.updateProductQuantityInSelectedMonthlyCart(
+                        await widget.bloc.updateProductQuantityInSelectedMonthlyCart(
                             product.id, q);
                         Navigator.of(context).pop(true);
                       }

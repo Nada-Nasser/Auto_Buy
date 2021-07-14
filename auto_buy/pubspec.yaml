@@ -89,6 +89,7 @@ flutter:
     - assets/images/optiobodyhi.svg
     - assets/gifs/loading_2.gif
     - assets/images/Tony.png
+    - assets/images/optio_gift.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
