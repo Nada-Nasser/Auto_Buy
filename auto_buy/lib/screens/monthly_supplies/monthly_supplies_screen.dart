@@ -61,12 +61,11 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                   ),
                   buildHeader(),
                   Expanded(
-                    child: ProductsGridView(
-                      products: widget.bloc.monthlyCartProducts,
+                    child: VerticalProductsListView(
+                      productsList: widget.bloc.monthlyCartProducts,
                       quantities: widget.bloc.quantities,
                       onTap: _onTapProduct,
-                      onLongPress:
-                          widget.bloc.isCheckedOut ? null : _onLongPressProduct,
+                      onLongPress: _onLongPressProduct,
                     ),
                   ),
                   widget.bloc.isCheckedOut
@@ -129,10 +128,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
             ],
           ),
           Row(
-            children: [
-              Text(
-                  "Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")
-            ],
+            children: [Text("Total Price = \$${bloc.totalPrice.toStringAsFixed(3)}")],
           ),
         ],
       ),
@@ -155,7 +151,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
 
   Future<void> _onLongPressProduct(
       BuildContext context, Product product) async {
-    int q = widget.bloc.getProductQuantityInTheCart(product.id);
+    int q = bloc.getProductQuantityInTheCart(product.id);
     showDialog(
         context: context,
         builder: (context) {
@@ -167,13 +163,13 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "You can delete this product from your ${widget.bloc.selectedCartName} monthly cart",
+                    "You can delete this product from your ${bloc.selectedCartName} monthly cart",
                     textAlign: TextAlign.justify,
                   ),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
-                      await widget.bloc.deleteProduct(product.id);
+                      await bloc.deleteProduct(product.id);
                       Navigator.of(context).pop(true);
                     },
                     child: Text("Delete"),
@@ -242,12 +238,11 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       if (q == 0) {
-                        await widget.bloc.deleteProduct(product.id);
+                        await bloc.deleteProduct(product.id);
                         Navigator.of(context).pop(true);
                       } else {
-                        await widget.bloc
-                            .updateProductQuantityInSelectedMonthlyCart(
-                                product.id, q);
+                        await bloc.updateProductQuantityInSelectedMonthlyCart(
+                            product.id, q);
                         Navigator.of(context).pop(true);
                       }
                     },

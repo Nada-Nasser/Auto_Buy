@@ -5,10 +5,11 @@
     <!-- Optional, you'll have to check this permission by yourself. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <application
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <application
         android:label="auto_buy"
         android:icon="@mipmap/ic_launcher">
-        android:usesCleartextTraffic="true"
+		android:usesCleartextTraffic="true"
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
