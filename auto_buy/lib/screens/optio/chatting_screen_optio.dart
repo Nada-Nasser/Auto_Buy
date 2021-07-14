@@ -1,8 +1,6 @@
 import 'package:auto_buy/blocs/optio_change_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'optio_screen.dart';
-
 
 class ChattingScreen extends StatefulWidget {
   @override
@@ -10,7 +8,6 @@ class ChattingScreen extends StatefulWidget {
 }
 
 class _ChattingScreenState extends State<ChattingScreen> {
-
 
   @override
   Widget build(BuildContext context) {

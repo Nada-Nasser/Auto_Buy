@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:translator/translator.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
 import 'package:translator/translator.dart';
@@ -9,16 +8,6 @@ class GoogleTranslate {
 
   final translator = GoogleTranslator();
   final _apiKey = 'AIzaSyBRdkpVjQlF0nhdk6nkrKLDiXWJusrB80o';
-
-
-  // Future<String> translate(String input) async {
-  //   var translation = await translator
-  //       .translate(input, from: 'ar', to: 'en');
-  //
-  //   print(input);
-  //   return translation.text;
-  // }
-
 
    Future<String> translate(String message) async {
     final response = await http.post(

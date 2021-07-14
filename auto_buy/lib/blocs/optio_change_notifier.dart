@@ -1,33 +1,38 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:auto_buy/screens/optio/optio_body_screen.dart';
+
+import 'package:auto_buy/screens/optio/optio_image.dart';
+import 'package:auto_buy/services/firebase_backend/google_translate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:http/http.dart' as http;
 
 class OptioChangeNotifier extends ChangeNotifier {
   List<Widget> chatWidgets = [];
   final controller = ScrollController();
 
   OptioChangeNotifier() {
-    chatWidgets.add(Optio());
+    chatWidgets.add(optioImage());
   }
 
+  GoogleTranslate translator = GoogleTranslate();
 
   ///this function is used to insert the user command and process it by the
   ///Optio api, then calls the listWidget function to add the response to the
   ///chat screen.
-  void userCommandInsert({String input, int who}) async{
+  void insertUserCommand({String input, int who}) async {
+    String translation = await translator.translate(input);
+    print("Translated Command $translation");
+
     // adds the user text to chat
     chatWidgets.add(listWidget(
         Text(
           input,
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         who));
     notifyListeners();
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       controller.animateTo(
         controller.position.maxScrollExtent,
@@ -96,5 +101,11 @@ class OptioChangeNotifier extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  Future<void> insertUserCommandFromVoice(String text) async {
+    String translation = await translator.translate(text);
+    print(translation);
+    insertUserCommand(input: translation, who: 1);
   }
 }
