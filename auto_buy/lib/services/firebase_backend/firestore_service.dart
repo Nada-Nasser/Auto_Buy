@@ -98,7 +98,7 @@ class CloudFirestoreService {
     @required String documentPath,
     @required Map<String, dynamic> data,
   }) async {
-    final reference = await FirebaseFirestore.instance.collection(documentPath).add(data);
+    final reference = await  FirebaseFirestore.instance.collection(documentPath).add(data);
     print('$documentPath: $data');
     return reference.id;
   }

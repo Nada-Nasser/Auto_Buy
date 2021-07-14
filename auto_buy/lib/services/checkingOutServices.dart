@@ -28,8 +28,7 @@ class CheckingOutServices {
       productIDs: productIDs,
       deliveryDate: selectedDate,
       productIdsAndQuantity: productIdAndQuantity,
-      orderDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      orderDate: DateTime.now(),
       status: "pending",
       productIdsAndPrices: productIdAndPrices,
     );
