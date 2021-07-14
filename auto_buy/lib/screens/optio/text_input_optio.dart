@@ -84,7 +84,6 @@ class _TextInputOptioState extends State<TextInputOptio> {
       if (recorder.isRecording) {
         _textEditingController.text = await recorder.stopRecorder();
         print(_textEditingController.text);
-        optio.insertUserCommandFromVoice(_textEditingController.text);
       } else {
         await recorder.record();
       }

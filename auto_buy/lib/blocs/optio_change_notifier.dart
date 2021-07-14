@@ -42,7 +42,7 @@ class OptioChangeNotifier extends ChangeNotifier {
     });
 
     //TODO: process the user command then add optio response to the chatWidgets
-    var url = Uri.parse('https://51d107406eec.ngrok.io/classifytext?text=$input');
+    var url = Uri.parse('https://d9bef0df0cd7.ngrok.io/classifytext?text=$translation');
     var response = await http.get(url);
     
     Widget OptioResponse = Container(
