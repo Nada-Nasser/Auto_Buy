@@ -28,6 +28,10 @@ class RequestsList extends StatelessWidget {
                 return CircularProgressIndicator();
               } else {
                 List<dynamic> requests = mySnapShot.data['requests'];
+                if(requests.length == 0)
+                {
+                  return Text("It's the time to share your ID among your friends 🤗");
+                }
                 return ListView.builder(
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
@@ -116,7 +120,7 @@ class RequestsList extends StatelessWidget {
                                             text: TextSpan(
                                               text: snapShot.data['id'],
                                               style: TextStyle(
-                                                  color: Colors.black),
+                                                  color: Colors.black, fontSize: 12),
                                             ),
                                             maxLines: 3,
                                             softWrap: true,

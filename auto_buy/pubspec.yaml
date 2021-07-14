@@ -44,6 +44,7 @@ dependencies:
   material_floating_search_bar: ^0.2.6
   image_cropper: ^1.4.0
   shared_preferences:
+  badges: ^2.0.1
   commons:
   charts_flutter: ^0.10.0
   connectivity: ^3.0.6
