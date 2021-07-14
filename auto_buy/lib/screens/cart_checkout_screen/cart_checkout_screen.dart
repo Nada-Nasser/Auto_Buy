@@ -14,8 +14,8 @@ class CartCheckoutScreen extends StatefulWidget {
     @required this.orderPrice,
     this.isMonthlyCart = false,
     this.productIdsAndQuantity,
-    this.isGift = false,
-    this.friendId = false,
+    this.isGift=false,
+    this.friendId=false,
     this.productIdsAndPrices,
   });
 
@@ -25,8 +25,8 @@ class CartCheckoutScreen extends StatefulWidget {
   final bool isMonthlyCart;
   final bool isGift;
   final List<String> productIDs;
-  final Map<String, int> productIdsAndQuantity;
-  final Map<String, double> productIdsAndPrices;
+  final Map<String,int> productIdsAndQuantity;
+  final Map<String,double> productIdsAndPrices;
   final friendId;
   bool enabledEditing = false;
 
@@ -39,33 +39,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   DateTime selectedDeliveryDate =  DateTime.now().add(new Duration(days:3));
 
   List listItem = [
-    'Al Sharqia',
-    'Alexandria',
-    'Aswan',
-    'Asyut',
-    'Behira',
-    'Beni Suef',
-    'Cairo',
-    'Dakahlia',
-    'Damietta',
-    'Faiyum',
-    'Gharbia',
-    'Giza',
-    'Ismalia',
-    'Kafr el-Sheikh',
-    'Luxor',
-    'Matruh',
-    'Minya',
-    'Monufia',
-    'New Valley',
-    'North Sinai',
-    'Port Said',
-    'Qalyubia',
-    'Qena',
-    'Red Sea',
-    'Sohag',
-    'South Sinai',
-    'Suez'
+    'Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia',
+    'Giza', 'Ismalia', 'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said',
+    'Qalyubia', 'Qena', 'Red Sea', 'Sohag', 'South Sinai', 'Suez'
   ];
 
   @override
@@ -175,7 +151,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           setState(() {});
                         } else {
                           if(cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
-                          && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty)
+                              && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty)
                           {
                             update(
                                 context,
@@ -219,116 +195,62 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                       onPressed: widget.enabledEditing == false
                           ? () async {
                         ///changed prouctIDs to productIdsAndQuantity
-                              await CheckingOutServices().addNewOrder(
-                                  productIDs: widget.productIDs,
-                                  price: widget.orderPrice,
-                                  uid: auth.uid,
-                                  productIdAndQuantity: widget.productIdsAndQuantity,
-                                  productIdAndPrices: widget.productIdsAndPrices,
-                                  address: {
-                                    "building_number": userdata.data['adress']
-                                        ['building_number'],
-                                    "city": userdata.data['adress']['city'],
-                                    "street": userdata.data['adress']['street'],
-                                    "governorate": userdata.data['adress']
-                                        ['governorate'],
-                                    "apartment_number": userdata.data['adress']
-                                        ['apartment_number'],
-                                    "floor_number": userdata.data['adress']
-                                        ['floor_number']
-                                  },
-                                  selectedDate: selectedDate);
-                              if(widget.isMonthlyCart == false)
-                                {
-                                  await CheckingOutServices().removeItemsFromCart(cartPath:"/shopping_carts/${auth.uid}/shopping_cart_items",deletePath: "/shopping_carts/${auth.uid}");
-                                }
-                              },
-                              child: Text(
-                                  widget.enabledEditing == false
-                                      ? "Edit address"
-                                      : "Confirm editing",
-                                  style: TextStyle(fontSize: 16)),
-                              style: ElevatedButton.styleFrom(
-                                elevation: 4,
-                                primary: Colors.white,
-                                padding: EdgeInsets.all(10),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(child: monthlyCartWidgets(auth.uid)),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: widget.enabledEditing == false
-                            ? () async {
-                                ///changed prouctIDs to productIdsAndQuantity
-                                await CheckingOutServices().addNewOrder(
-                                    productIDs: widget.productIDs,
-                                    price: widget.orderPrice,
-                                    uid: auth.uid,
-                                    productIdAndQuantity:
-                                        widget.productIdsAndQuantity,
-                                    productIdAndPrices:
-                                        widget.productIdsAndPrices,
-                                    isMonthlyCart: (widget.isMonthlyCart)?true : false,
-                                    cartName: widget.cartPath,
-                                    address: {
-                                      "building_number": userdata.data['adress']
-                                          ['building_number'],
-                                      "city": userdata.data['adress']['city'],
-                                      "street": userdata.data['adress']
-                                          ['street'],
-                                      "governorate": userdata.data['adress']
-                                          ['governorate'],
-                                      "apartment_number": userdata
-                                          .data['adress']['apartment_number'],
-                                      "floor_number": userdata.data['adress']
-                                          ['floor_number']
-                                    },
-                                    selectedDate: selectedDeliveryDate);
-                                if (widget.isMonthlyCart == false) {
-                                  await CheckingOutServices().removeItemsFromCart(
-                                      shoppingCartPath:
-                                      "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                      productIdsAndQuantity: widget.productIdsAndQuantity
-                                  );
+                        await CheckingOutServices().addNewOrder(
+                            productIDs: widget.productIDs,
+                            price: widget.orderPrice,
+                            uid: auth.uid,
+                            productIdAndQuantity: widget.productIdsAndQuantity,
+                            productIdAndPrices: widget.productIdsAndPrices,
+                            address: {
+                              "building_number": userdata.data['adress']
+                              ['building_number'],
+                              "city": userdata.data['adress']['city'],
+                              "street": userdata.data['adress']['street'],
+                              "governorate": userdata.data['adress']
+                              ['governorate'],
+                              "apartment_number": userdata.data['adress']
+                              ['apartment_number'],
+                              "floor_number": userdata.data['adress']
+                              ['floor_number']
+                            },
+                            selectedDate: selectedDeliveryDate);
+                        if (widget.isMonthlyCart == false) {
+                          await CheckingOutServices().removeItemsFromCart(
+                              shoppingCartPath:
+                              "/shopping_carts/${auth.uid}/shopping_cart_items",
+                              productIdsAndQuantity: widget.productIdsAndQuantity
+                          );
 
-                                } else{
-                                  await MonthlyCartsBloc(uid: auth.uid)
-                                      .setCheckedOut(widget.cartPath ,true);
-                                  await CheckingOutServices().removeItemsFromCart(
-                                      shoppingCartPath:"",
-                                      isShoppingCart: false,
-                                      productIdsAndQuantity: widget.productIdsAndQuantity
-                                  );
-                                }
-                                showInSnackBar("checkout done!", context);
-                                Navigator.of(context).pop();
-                              }
-                            : null,
-                        child: Text(
-                          "Proceed to Checkout",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          elevation: 4,
-                          primary: Colors.orange,
-                          padding: EdgeInsets.all(20),
-                        ),
+                        }
+                        else{
+                          await MonthlyCartsBloc(uid: auth.uid)
+                              .setCheckedOut(widget.cartPath ,true);
+                          await CheckingOutServices().removeItemsFromCart(
+                              shoppingCartPath:"",
+                              isShoppingCart: false,
+                              productIdsAndQuantity: widget.productIdsAndQuantity
+                          );
+                        }
+                        showInSnackBar("checkout done!", context);
+                        Navigator.of(context).pop();
+                      }
+                          : null,
+
+                      child: Text(
+                        "Proceed to Checkout",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                        primary: Colors.orange,
+                        padding: EdgeInsets.all(20),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
@@ -343,72 +265,70 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     if (widget.isMonthlyCart) {
       return Container(
           child: Column(
-        children: [
-
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-              "Please note that your monthly cart items will be automatically "
-                  "ordered every 27 days to be delivered on the 30th day",
-              style: TextStyle(
-                color: Colors.blueGrey,
-              )
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Text(
-                "Delivery Date:",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
+                  "Please note that your monthly cart items will be automatically "
+                      "ordered every 27 days to be delivered on the 30th day",
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                  )
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Delivery Date:",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black54),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Text('${selectedDeliveryDate.month} / ${selectedDeliveryDate.day}')),
+                  SizedBox(height: 5),
+                  Expanded(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          final DateTime picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime(DateTime.now().year,
+                                  DateTime.now().month, DateTime.now().day + 3),
+                              firstDate: DateTime(DateTime.now().year,
+                                  DateTime.now().month, DateTime.now().day + 3),
+                              lastDate: DateTime(2101));
+                          if (picked != null && picked != selectedDeliveryDate) {
+                            setState(() {
+                              selectedDeliveryDate = picked;
+                            });
+                            await MonthlyCartsBloc(uid: uid)
+                                .editCartDate(widget.cartPath, selectedDeliveryDate);
+                          }
+                        },
+                        child: Text(
+                          "Change Date",
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 4,
+                          primary: Colors.white,
+                          padding: EdgeInsets.all(20),
+                        )),
+                  ),
+                ],
               ),
             ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Text(
-                      '${selectedDeliveryDate.month} / ${selectedDeliveryDate.day}')),
-              SizedBox(height: 5),
-              Expanded(
-                child: ElevatedButton(
-                    onPressed: () async {
-                      final DateTime picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime(DateTime.now().year,
-                              DateTime.now().month, DateTime.now().day + 3),
-                          firstDate: DateTime(DateTime.now().year,
-                              DateTime.now().month, DateTime.now().day + 3),
-                          lastDate: DateTime(2101));
-                      if (picked != null && picked != selectedDeliveryDate) {
-                        setState(() {
-                          selectedDeliveryDate = picked;
-                        });
-                        await MonthlyCartsBloc(uid: uid).editCartDate(
-                            widget.cartPath, selectedDeliveryDate);
-                      }
-                    },
-                    child: Text(
-                      "Change Date",
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 4,
-                      primary: Colors.white,
-                      padding: EdgeInsets.all(20),
-                    )),
-              ),
-            ],
-          ),
-        ],
-      ));
+          ));
     }
   }
 
@@ -425,7 +345,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
+          const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
           labelText: labelText,
           enabledBorder: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -461,7 +381,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             filled: true,
             fillColor: Colors.white,
             contentPadding:
-                const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
+            const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
             labelText: (data == null) ? "Governorate" : data,
             enabledBorder: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
@@ -525,12 +445,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 }
 
 Widget makeSure(
-  BuildContext context,
-) {
+    BuildContext context,
+    ) {
   showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+          builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text("Are you sure you want to checkout??"),
               actions: [
