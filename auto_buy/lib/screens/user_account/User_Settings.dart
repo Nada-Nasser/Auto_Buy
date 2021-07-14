@@ -17,9 +17,9 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
-  String governorate;
+  String governorate , initGovernorate;
   /*Static List that contains all governorates of egypt to allow the user to choose one of them */ 
-  List listItem = ['Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia', 'Giza', 'Ismalia'
+  List listItem = ['Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia', 'Giza', 'Ismalia',
                     'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said', 'Qalyubia', 'Qena', 'Red Sea', 'Sohag',
                     'South Sinai', 'Suez'];
   
@@ -118,10 +118,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             FocusScope.of(context).unfocus();
           },
           /* This future builder is used to get user's data */
-          child: FutureBuilder(
-            future: CloudFirestoreService.instance.readOnceDocumentData(
-                collectionPath: "users/",
-                documentId: auth.uid,
+          child: StreamBuilder(
+            stream: CloudFirestoreService.instance.documentStream(
+                path: "users/${auth.uid}",
                 builder: (Map<String, dynamic> data, String documentId) {
                   return data;
                 }),
@@ -134,6 +133,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != null ? "${snapShot.data['adress']['floor_number']}" : ""));
                 TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != null ? "${snapShot.data['adress']['apartment_number']}" : ""));
                 TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != null ? "${snapShot.data['adress']['street']}" : ""));
+                initGovernorate = snapShot.data['adress']['governorate'];
+                print(initGovernorate);
                 return ListView(
                   children: [
                     Center(
@@ -230,9 +231,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               onTap: () {
                                                 getImage(ImageSource.gallery);
                                                 Navigator.of(context).pop();
-                                                setState(() {
-                                                  
-                                                });
                                               },
                                             ),
                                           ),
@@ -251,9 +249,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               onTap: () {
                                                 getImage(ImageSource.camera);
                                                 Navigator.of(context).pop();
-                                                setState(() {
-                                                  
-                                                });
                                               },
                                             ),
                                           )
@@ -341,10 +336,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController aNumberController, TextEditingController fNumberController) async{
 
     Map <String, dynamic> newAdress;
+    String newGov;
     // Image.
     if(_image != null)
     {
       uploadPic(context, auth);
+    }
+    // Dealing with governorate.
+    if(governorate == null)
+    {
+      newGov = initGovernorate;
+    }else
+    {
+      newGov = governorate;
     }
     // Update name.
     await CloudFirestoreService.instance.updateDocumentField(
@@ -353,7 +357,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         fieldName: 'name',
         updatedValue: nameController.text);
 
-    newAdress = {"building_number" : bNumberController.text, "city" : cityController.text, "street" : streetController.text, "governorate" : governorate, "apartment_number" : aNumberController.text, "floor_number" : fNumberController.text};
+    newAdress = {"building_number" : bNumberController.text, "city" : cityController.text, "street" : streetController.text, "governorate" : newGov, "apartment_number" : aNumberController.text, "floor_number" : fNumberController.text};
 
     // Update adress.
     await CloudFirestoreService.instance.updateDocumentField(

@@ -23,6 +23,10 @@ class FriendsList extends StatelessWidget {
                 return CircularProgressIndicator();
               } else {
                 List<dynamic> friends = snapShot.data['friends'];
+                if(friends.length == 0)
+                {
+                  return Text("You do not have a friend? Optio can be your friend 🥰");
+                }
                 return ListView.builder(
                   itemCount: friends.length,
                   itemBuilder: (context, index) {
@@ -110,7 +114,7 @@ class FriendsList extends StatelessWidget {
                                           text: TextSpan(
                                             text: snapShot.data['id'],
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Colors.black, fontSize: 12),
                                           ),
                                           maxLines: 3,
                                           softWrap: true,

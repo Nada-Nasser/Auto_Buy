@@ -1,4 +1,6 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:auto_buy/screens/friends/friends_screen.dart';
+import 'package:auto_buy/screens/my_orders/my_orders_screen.dart';
+import 'package:auto_buy/screens/user_account/help_support.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
@@ -27,13 +29,12 @@ class ProfileScreen extends StatelessWidget {
     ScreenUtil.init(context, height: 896, width: 414, allowFontScaling: true);
 
     var profileInfo = Expanded(
-      child: FutureBuilder(
-        future: CloudFirestoreService.instance.readOnceDocumentData(
-            collectionPath: "users/",
-            documentId: auth.uid,
-            builder: (Map<String, dynamic> data, String documentId) {
-              return data;
-            }),
+      child: StreamBuilder(
+            stream: CloudFirestoreService.instance.documentStream(
+                path: "users/${auth.uid}",
+                builder: (Map<String, dynamic> data, String documentId) {
+                  return data;
+                }),
         builder: (ctx, snapShot) {
           if (snapShot.hasData) {
             return Column(
@@ -73,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: kSpacingUnit.w * 2),
                 Text(snapShot.data['name'], style: kTitleTextStyle),
                 SizedBox(height: kSpacingUnit.w * 0.5),
-                Text(auth.user.email, style: kCaptionTextStyle),
+                SelectableText(' '+snapShot.data['id'], style: kCaptionTextStyle),
                 SizedBox(height: kSpacingUnit.w * 2),
               ],
             );
@@ -133,14 +134,38 @@ class ProfileScreen extends StatelessWidget {
                 ProfileListItem(
                   icon: LineAwesomeIcons.history,
                   text: 'Purchase History',
+                  Navigate_To: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => MyOrdersScreen(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileListItem(
-                  icon: LineAwesomeIcons.user_plus,
-                  text: 'Invite a Friend',
+                  icon: LineAwesomeIcons.user_friends,
+                  text: 'Friends',
+                  Navigate_To: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AllScreens(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileListItem(
                   icon: LineAwesomeIcons.question_circle,
                   text: 'Help & Support',
+                  Navigate_To: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => Support(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileListItem(
                   icon: LineAwesomeIcons.alternate_sign_out,
@@ -169,6 +194,7 @@ class ProfileListItem extends StatelessWidget {
     this.Navigate_To,
   }) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -203,7 +229,7 @@ class ProfileListItem extends StatelessWidget {
             icon: Icon(
               LineAwesomeIcons.angle_right,
             ),
-            onPressed: Navigate_To,
+          onPressed: Navigate_To
           ),
         ],
       ),

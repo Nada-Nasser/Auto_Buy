@@ -55,13 +55,6 @@ class AllScreens extends StatelessWidget {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-            ),
-            IconButton(
               icon: Icon(
                 LineAwesomeIcons.user_plus,
                 color: Colors.white,
