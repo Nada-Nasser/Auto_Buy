@@ -2,7 +2,9 @@ import 'package:auto_buy/blocs/register_screen_change_notifier.dart';
 import 'package:auto_buy/screens/register_page/register_using_email_form.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -79,11 +81,18 @@ class RegisterScreen extends StatelessWidget {
 
   _registerUsingGoogle(
       BuildContext context, RegisterChangeNotifier notifier) async {
-    bool flag = await notifier.registerUsingGoogle();
-    if (flag) {
-      Navigator.of(context).pop();
-    } else {
-      return null;
+    try {
+      bool flag = await notifier.registerUsingGoogle();
+      if (flag) {
+        Navigator.of(context).pop();
+      }
+    } on FirebaseException catch (e) {
+      showAlertDialog(
+        context,
+        titleText: "register failed",
+        content: e.message,
+        actionButtonString: "OK",
+      );
     }
   }
 }

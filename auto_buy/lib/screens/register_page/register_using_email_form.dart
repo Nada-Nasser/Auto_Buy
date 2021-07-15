@@ -78,17 +78,6 @@ class RegisterForm extends StatelessWidget {
             : notifier.emailErrorMessage);
   }
 
-  CustomRaisedButton _createSubmitButton(BuildContext context) {
-    final notifier =
-        Provider.of<RegisterChangeNotifier>(context, listen: false);
-    return CustomRaisedButton(
-      text: "Register",
-      onPressed: notifier.canSave ? () => _submit(context) : null,
-      textColor: Colors.black,
-      backgroundColor: Colors.white,
-    );
-  }
-
   TextFormField _createPasswordTextFormField(BuildContext context) {
     final notifier =
         Provider.of<RegisterChangeNotifier>(context, listen: false);
@@ -107,6 +96,17 @@ class RegisterForm extends StatelessWidget {
     );
   }
 
+  CustomRaisedButton _createSubmitButton(BuildContext context) {
+    final notifier =
+        Provider.of<RegisterChangeNotifier>(context, listen: false);
+    return CustomRaisedButton(
+      text: "Register",
+      onPressed: notifier.canSave ? () => _submit(context) : null,
+      textColor: Colors.black,
+      backgroundColor: Colors.white,
+    );
+  }
+
   Future<void> _submit(BuildContext context) async {
     final notifier =
         Provider.of<RegisterChangeNotifier>(context, listen: false);
@@ -117,7 +117,7 @@ class RegisterForm extends StatelessWidget {
       } on FirebaseException catch (e) {
         showAlertDialog(
           context,
-          titleText: "Sign in failed",
+          titleText: "register failed",
           content: e.message,
           actionButtonString: "OK",
         );

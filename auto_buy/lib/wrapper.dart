@@ -19,12 +19,22 @@ class WrapperPage extends StatelessWidget {
             if (user != null) {
               print("uid:${user.uid}");
               if (firebaseAuth.emailVerified) {
+                //firebaseAuth.disposeVerificationStream();
                 return HomePageWrapper();
               } else {
-                return VerificationNeeded();
+                return StreamBuilder<bool>(
+                    stream: firebaseAuth.verificationStream,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      if (snapshot.data == false)
+                        return VerificationNeeded();
+                      else {
+                        //     firebaseAuth.disposeVerificationStream();
+                        return HomePageWrapper();
+                      }
+                    });
               }
             } else {
-              print("NULL USER");
               return WelcomePage();
             }
           } else {

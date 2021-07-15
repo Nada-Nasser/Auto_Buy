@@ -45,54 +45,97 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
   }
 
   Future<bool> registerUsingGoogle() async {
-    updateModelWith(isEnable: false);
-    final user = await auth.registerWithGoogle();
-    Map <String, dynamic> data = {
-      "name" : auth.user.displayName == "" ? "" : auth.user.displayName,
-      "friends" : [],
-      "requests": [],
-      "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
-      "pic_path" : auth.user.photoURL == "" ? "auto_buy/assets/images/optiologo.png" : auth.user.photoURL,
-      "id": name + '#' + auth.uid.substring(0,5),
-    };
     try {
-      await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
-    } catch (e){
+      updateModelWith(isEnable: false);
+      final user = await auth.registerWithGoogle();
+
+      if (user == null) {
+        updateModelWith(isEnable: true);
+        return false;
+      }
+
+      user.sendEmailVerification();
+      user.reload();
+
+      Map<String, dynamic> data = {
+        "name": auth.user.displayName,
+        "friends": [],
+        "requests": [],
+        "adress": {
+          "building_number": "",
+          "city": "",
+          "street": "",
+          "governorate": "",
+          "apartment_number": "",
+          "floor_number": ""
+        },
+        "pic_path": auth.user.photoURL == ""
+            ? "auto_buy/assets/images/optiologo.png"
+            : auth.user.photoURL,
+        "id": user.displayName ?? "" + '#' + auth.uid.substring(0, 5),
+      };
+
+      await CloudFirestoreService.instance
+          .setDocument(documentPath: "/users/${auth.uid}", data: data);
+
+      updateModelWith(isEnable: true);
+
+      if (user != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } on FirebaseException catch (e) {
       print(e);
-    }
-    updateModelWith(isEnable: true);
-    if (user != null) {
-      return true;
-    } else {
-      return false;
+      updateModelWith(isEnable: true);
+      rethrow;
     }
   }
 
   Future<bool> submitForm() async {
     updateModelWith(isLoading: true);
+    updateModelWith(isEnable: false);
     try {
       final user = await auth.createUserWithEmail(
         email: email,
         password: password,
       );
-      user.sendEmailVerification();
-      // TODO: Add user to DB
-      String s = auth.uid.substring(0,5);
+      if ((user == null)) {
+        updateModelWith(isLoading: false);
+        updateModelWith(isEnable: true);
+        return false;
+      }
+      user.sendEmailVerification(); // TODO sendEmailVerification
+
+      String s = auth.uid.substring(0, 5);
       print(s);
-      Map <String, dynamic> data = {
-        "name" : name == "" ? "" : name,
-        "friends" : [],
+      Map<String, dynamic> data = {
+        "name": name == "" ? "" : name,
+        "friends": [],
         "requests": [],
-        "adress" : {"building_number" : "", "city" : "", "street" : "", "governorate" : "", "apartment_number" : "", "floor_number" : ""},
-        "pic_path" : auth.user.photoURL == null ? "/images/optiologo.png" : auth.user.photoURL,
-        "id": name + '#' + auth.uid.substring(0,5),
+        "adress": {
+          "building_number": "",
+          "city": "",
+          "street": "",
+          "governorate": "",
+          "apartment_number": "",
+          "floor_number": ""
+        },
+        "pic_path": auth.user.photoURL == null
+            ? "/images/optiologo.png"
+            : auth.user.photoURL,
+        "id": name + '#' + auth.uid.substring(0, 5),
       };
-      await CloudFirestoreService.instance.setDocument(documentPath: "/users/${auth.uid}", data: data);
+      await CloudFirestoreService.instance
+          .setDocument(documentPath: "/users/${auth.uid}", data: data);
 
       updateModelWith(isLoading: false);
+      updateModelWith(isEnable: true);
       return true;
     } on FirebaseException catch (e) {
+      print(e.message);
       updateModelWith(isLoading: false);
+      updateModelWith(isEnable: true);
       rethrow;
     }
   }

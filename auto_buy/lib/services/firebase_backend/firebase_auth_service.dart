@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -19,16 +21,16 @@ class FirebaseAuthService {
 
   String get uid => instance.currentUser.uid;
 
-  bool get emailVerified => true;
+  //bool get emailVerified => true;
+  bool get emailVerified => user.emailVerified; // TODO email verification
 
-  //TODO: bool get emailVerified => user.emailVerified;
   Future<User> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -55,7 +57,7 @@ class FirebaseAuthService {
 
   Future<User> signInWithEmail({String email, String password}) async {
     final userCredential =
-        await instance.signInWithCredential(EmailAuthProvider.credential(
+    await instance.signInWithCredential(EmailAuthProvider.credential(
       email: email,
       password: password,
     ));
@@ -67,6 +69,14 @@ class FirebaseAuthService {
     user.reload();
     if (user.emailVerified) {
       print("Verified");
+      if (!verificationStreamController.isClosed)
+        verificationStreamController.add(true);
     }
   }
+
+  StreamController<bool> verificationStreamController = StreamController();
+
+  disposeVerificationStream() => verificationStreamController.close();
+
+  Stream<bool> get verificationStream => verificationStreamController.stream;
 }

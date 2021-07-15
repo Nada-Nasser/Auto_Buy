@@ -16,8 +16,12 @@ class _VerificationNeededState extends State<VerificationNeeded> {
   @override
   void initState() {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
-    timer = Timer.periodic(Duration(seconds: 10), (timer) async {
-      await auth.checkEmailVerification();
+    timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      if (auth.user.emailVerified)
+        timer.cancel();
+      else
+        await auth.checkEmailVerification();
+      if (auth.user.emailVerified) timer.cancel();
     });
     super.initState();
   }
