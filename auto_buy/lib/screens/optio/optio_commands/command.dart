@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 enum CommandPlace {
@@ -20,12 +21,15 @@ class CommandArguments {
   final int quantity;
   final String productsName;
   String errorMessage;
+  final BuildContext context;
+
   /// used it to add a reason why the command is invalid
 
   /// add any needed parameters
   /// ex. BuildContext context
 
   CommandArguments({
+    this.context,
     @required this.commandType,
     @required this.commandPlace,
     this.uid,

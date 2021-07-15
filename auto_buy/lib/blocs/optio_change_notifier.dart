@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command_generator.dart';
@@ -13,8 +12,9 @@ class OptioChangeNotifier extends ChangeNotifier {
   List<Widget> chatWidgets = [];
   final controller = ScrollController();
   final CommandGenerator _commandGenerator = CommandGenerator();
+  final String uid;
 
-  OptioChangeNotifier() {
+  OptioChangeNotifier(this.uid) {
     chatWidgets.add(optioImage());
   }
 
@@ -44,10 +44,12 @@ class OptioChangeNotifier extends ChangeNotifier {
       );
     });
 
-    var url = Uri.parse(
-        'https://033967e011e0.ngrok.io/classifytext/$input');
+    var url = Uri.parse('https://a87818b92bdd.ngrok.io/classifytext/$input');
     var response = await http.get(url);
-    Command command = _commandGenerator.generateCommand(response);
+    Command command = _commandGenerator.generateCommand(response, uid);
+
+    print(response.body.toString());
+    print("COMMAND GENERATED");
 
     /// generate command that contain the needed arguments to execute it
     if (command.isValidCommand) {
@@ -71,6 +73,7 @@ class OptioChangeNotifier extends ChangeNotifier {
          *    only text message = "failure message"
          * */
         await command.run();
+
         String successMessage = response.body.toString(); //TODO
         optioResponse = _createOptioResponse(successMessage, true);
       } on Exception catch (e) {

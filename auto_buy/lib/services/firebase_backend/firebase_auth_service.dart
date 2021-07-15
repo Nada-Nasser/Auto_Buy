@@ -21,8 +21,9 @@ class FirebaseAuthService {
 
   String get uid => instance.currentUser.uid;
 
-  //bool get emailVerified => true;
-  bool get emailVerified => user.emailVerified; // TODO email verification
+  bool get emailVerified => true;
+
+  //bool get emailVerified => user.emailVerified; // TODO email verification
 
   Future<User> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =

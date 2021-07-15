@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+import '../../../main.dart';
 import 'command.dart';
 
 class MonthlyCartCommand implements Command {
@@ -10,9 +13,19 @@ class MonthlyCartCommand implements Command {
   MonthlyCartCommand(this.commandArguments);
 
   @override
-  Future<void> run() {
-    // TODO: implement run
-    throw UnimplementedError();
+  Future<void> run() async {
+    //await showMyDialog();
+  }
+
+  Future<void> showMyDialog() async {
+    return await showDialog(
+        context: navigatorKey.currentContext,
+        builder: (context) => Center(
+              child: Material(
+                color: Colors.red,
+                child: Text('Hello'),
+              ),
+            ));
   }
 
   Future<void> _addToMonthlyCart(String productID) async {}
