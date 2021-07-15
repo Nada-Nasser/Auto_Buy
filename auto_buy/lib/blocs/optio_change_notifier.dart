@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command_generator.dart';
 import 'package:auto_buy/screens/optio/optio_image.dart';
@@ -43,10 +45,8 @@ class OptioChangeNotifier extends ChangeNotifier {
     });
 
     var url = Uri.parse(
-        'https://d9bef0df0cd7.ngrok.io/classifytext?text=$translation');
+        'https://033967e011e0.ngrok.io/classifytext/$input');
     var response = await http.get(url);
-    print(response.body.toString());
-
     Command command = _commandGenerator.generateCommand(response);
 
     /// generate command that contain the needed arguments to execute it

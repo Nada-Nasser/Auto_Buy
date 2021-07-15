@@ -5,7 +5,9 @@ enum CommandPlace {
   ShoppingCart,
   WishList,
   FriendsSystem,
-  ProductsSearching
+  ProductsSearching,
+  Invalid,
+  ExpenseTracker,
 }
 enum CommandType { ADD, DELETE, SEARCH, OPEN, INVALID }
 
@@ -18,7 +20,6 @@ class CommandArguments {
   final int quantity;
   final String productsName;
   String errorMessage;
-
   /// used it to add a reason why the command is invalid
 
   /// add any needed parameters
