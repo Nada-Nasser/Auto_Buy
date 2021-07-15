@@ -23,14 +23,19 @@ class CommandGenerator {
 
     try {
       if (commandBody[0] == 'add') {
+        print("ADD COMMAND");
         commandType = CommandType.ADD;
         if (commandBody.length == 5) {
-          productName = commandBody[3];
-          quantity = commandBody[1] ?? 1;
-          if (commandBody.last == 'shopping')
+          print("which COMMAND");
+          productName = '${commandBody[3]}';
+          quantity = commandBody[1].toInt() ?? 1;
+          if (commandBody.last == 'shopping') {
+            print("SHOPPING CART");
             commandPlace = CommandPlace.ShoppingCart;
-          else
+          } else {
             commandPlace = CommandPlace.MonthlyCart;
+            print("SHOPPING CART");
+          }
         } else {
           commandPlace = CommandPlace.FriendsSystem;
         }
@@ -97,6 +102,7 @@ class CommandGenerator {
 
     if (commandPlace == CommandPlace.MonthlyCart) {
       command = MonthlyCartCommand(commandArguments);
+      print("MONTHLY");
     } else if (commandPlace == CommandPlace.ShoppingCart) {
     } else if (commandPlace == CommandPlace.ExpenseTracker) {
     } else if (commandPlace == CommandPlace.FriendsSystem) {

@@ -76,6 +76,8 @@ class OptioChangeNotifier extends ChangeNotifier {
 
         String successMessage = response.body.toString(); //TODO
         optioResponse = _createOptioResponse(successMessage, true);
+
+        print("Command executed successfully");
       } on Exception catch (e) {
         String errorMessage = response.body.toString(); //TODO
         optioResponse = _createOptioResponse(errorMessage, false);
@@ -84,6 +86,7 @@ class OptioChangeNotifier extends ChangeNotifier {
     } else {
       String errorMessage = response.body.toString(); //TODO
       optioResponse = _createOptioResponse(errorMessage, false);
+      print("Command Failed");
     }
 
     chatWidgets.add(listWidget(optioResponse, 0));

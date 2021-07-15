@@ -15,6 +15,7 @@ class MonthlyCartCommand implements Command {
   @override
   Future<void> run() async {
     //await showMyDialog();
+    print("monthly cart command is running");
   }
 
   Future<void> showMyDialog() async {
