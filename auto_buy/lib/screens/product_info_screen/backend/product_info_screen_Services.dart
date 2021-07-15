@@ -43,7 +43,7 @@ class ProductInfoScreenServices {
 
   Future<List<MonthlyCartItem>> readMonthlyCartProducts(
           String uid, String cartName) async =>
-      await _monthlyCartServices.readMonthlyCartProducts(uid, cartName);
+      await _monthlyCartServices.readMonthlyCartItems(uid, cartName);
 
   Future<void> addProductToMonthlyCart(
           String uid, String cartName, MonthlyCartItem product) async =>

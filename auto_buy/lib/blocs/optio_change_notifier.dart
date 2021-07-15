@@ -44,12 +44,11 @@ class OptioChangeNotifier extends ChangeNotifier {
       );
     });
 
-    var url = Uri.parse('https://a87818b92bdd.ngrok.io/classifytext/$input');
+    var url = Uri.parse('https://e36ca0bfbf05.ngrok.io/classifytext/$input');
     var response = await http.get(url);
-    Command command = _commandGenerator.generateCommand(response, uid);
-
     print(response.body.toString());
-    print("COMMAND GENERATED");
+
+    Command command = _commandGenerator.generateCommand(response, uid);
 
     /// generate command that contain the needed arguments to execute it
     if (command.isValidCommand) {
@@ -72,24 +71,29 @@ class OptioChangeNotifier extends ChangeNotifier {
          *    response widget:
          *    only text message = "failure message"
          * */
+
         await command.run();
 
-        String successMessage = response.body.toString(); //TODO
+        String successMessage = "Command executed successfully"; //TODO
         optioResponse = _createOptioResponse(successMessage, true);
 
         print("Command executed successfully");
       } on Exception catch (e) {
         String errorMessage = response.body.toString(); //TODO
-        optioResponse = _createOptioResponse(errorMessage, false);
-        throw e;
+        optioResponse = _createOptioResponse("Something went wrong", false);
+
+        print(e);
       }
     } else {
       String errorMessage = response.body.toString(); //TODO
-      optioResponse = _createOptioResponse(errorMessage, false);
+      optioResponse = _createOptioResponse("Command Failed", false);
       print("Command Failed");
     }
 
+    chatWidgets.add(
+        listWidget(_createOptioResponse(response.body.toString(), false), 0));
     chatWidgets.add(listWidget(optioResponse, 0));
+
     notifyListeners();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {

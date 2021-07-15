@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-void selectionDialog(
+Future<void> selectionDialog(
   BuildContext screenContext,
   Future<void> Function(BuildContext context, String name) onClickDone,
   List<String> options,
   String title,
   String content,
-) {
+) async {
   String _chosenValue;
-  showDialog(
+  return showDialog(
     context: screenContext,
     builder: (BuildContext context) {
       return StatefulBuilder(

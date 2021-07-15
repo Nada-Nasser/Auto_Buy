@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:auto_buy/screens/optio/optio_commands/monthly_cart_commands.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,19 +24,14 @@ class CommandGenerator {
 
     try {
       if (commandBody[0] == 'add') {
-        print("ADD COMMAND");
         commandType = CommandType.ADD;
         if (commandBody.length == 5) {
-          print("which COMMAND");
           productName = '${commandBody[3]}';
           quantity = commandBody[1].toInt() ?? 1;
-          if (commandBody.last == 'shopping') {
-            print("SHOPPING CART");
+          if (commandBody.last == 'shopping')
             commandPlace = CommandPlace.ShoppingCart;
-          } else {
+          else
             commandPlace = CommandPlace.MonthlyCart;
-            print("SHOPPING CART");
-          }
         } else {
           commandPlace = CommandPlace.FriendsSystem;
         }
@@ -53,15 +49,15 @@ class CommandGenerator {
       } else if (commandBody[0] == 'open') {
         commandType = CommandType.OPEN;
         if (commandBody.length == 2) {
-          if (commandBody.last.toString().contains('cart') ||
-              commandBody.last.toString().contains('shopping'))
-            commandPlace = CommandPlace.ShoppingCart;
-          else if (commandBody.last.toString().contains('monthly'))
+          if (commandBody.last.toString().contains('monthly'))
             commandPlace = CommandPlace.MonthlyCart;
-          else if (commandBody.last.toString().contains('friend'))
-            commandPlace = CommandPlace.FriendsSystem;
           else if (commandBody.last.toString().contains('wish list'))
             commandPlace = CommandPlace.WishList;
+          else if (commandBody.last.toString().contains('cart') ||
+              commandBody.last.toString().contains('shopping'))
+            commandPlace = CommandPlace.ShoppingCart;
+          else if (commandBody.last.toString().contains('friend'))
+            commandPlace = CommandPlace.FriendsSystem;
           else if (commandBody.last.toString().contains('expense') ||
               commandBody.last.toString().contains('tracker'))
             commandPlace = CommandPlace.ExpenseTracker;
@@ -102,15 +98,34 @@ class CommandGenerator {
 
     if (commandPlace == CommandPlace.MonthlyCart) {
       command = MonthlyCartCommand(commandArguments);
-      print("MONTHLY");
-    } else if (commandPlace == CommandPlace.ShoppingCart) {
-    } else if (commandPlace == CommandPlace.ExpenseTracker) {
-    } else if (commandPlace == CommandPlace.FriendsSystem) {
-    } else if (commandPlace == CommandPlace.ProductsSearching) {
-    } else {
-      ///invalid command
+    } else if (commandPlace == CommandPlace.ShoppingCart) {} else
+    if (commandPlace == CommandPlace.ExpenseTracker) {} else
+    if (commandPlace == CommandPlace.FriendsSystem) {} else
+    if (commandPlace == CommandPlace.ProductsSearching) {} else {
+      command = InvalidCommand(commandArguments);
     }
 
     return command;
+  }
+}
+
+class InvalidCommand implements Command {
+  @override
+  final CommandArguments commandArguments;
+
+  InvalidCommand(this.commandArguments);
+
+  @override
+  bool get isValidCommand =>
+      commandArguments.commandType != CommandType.INVALID;
+
+  @override
+  Future<void> run() async {
+    await showAlertDialog(
+      commandArguments.context,
+      titleText: "Error",
+      content: "Something went wrong",
+      actionButtonString: "OK",
+    );
   }
 }

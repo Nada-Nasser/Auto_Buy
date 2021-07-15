@@ -10,6 +10,7 @@ class VerticalProductsListView extends StatelessWidget {
 
   final bool isPriceHidden;
   final double listHeight;
+  final bool smallPic;
 
   const VerticalProductsListView({
     Key key,
@@ -19,6 +20,7 @@ class VerticalProductsListView extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.listHeight,
+    this.smallPic = false,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,9 @@ class VerticalProductsListView extends StatelessWidget {
     List<Widget> content = _buildContent(context);
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      padding: smallPic
+          ? const EdgeInsets.all(0)
+          : const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: ListView.builder(
         itemCount: content.length,
         itemBuilder: (BuildContext context, int index) {
@@ -41,10 +45,11 @@ class VerticalProductsListView extends StatelessWidget {
 
     for (int i = 0; i < productsList.length; i++) {
       ProductTile tile = ProductTile(
+          smallPic: smallPic,
           product: productsList[i],
           onTap: () => onTap(context, productsList[i]),
           onLongPress: () => onLongPress(context, productsList[i]),
-          quantity: quantities[i],
+          quantity: quantities != null ? quantities[i] : null,
           isPriceHidden: isPriceHidden,
           height: listHeight);
       w.add(tile);
@@ -61,6 +66,8 @@ class ProductTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onLongPress;
   final double height;
+  final double width;
+  final bool smallPic;
 
   const ProductTile(
       {Key key,
@@ -69,15 +76,21 @@ class ProductTile extends StatelessWidget {
       this.isPriceHidden = false,
       this.onTap,
       this.onLongPress,
-      this.height})
+      this.height,
+      this.smallPic,
+      this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double mywidth = width ?? MediaQuery.of(context).size.width;
+    double myheight = height ?? MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
+        width: mywidth,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           color: Colors.white,
@@ -97,9 +110,10 @@ class ProductTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _productImage(),
-            SizedBox(
-              width: 10,
-            ),
+            if (!smallPic)
+              SizedBox(
+                width: 10,
+              ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +121,8 @@ class ProductTile extends StatelessWidget {
               children: [
                 _buildProductName(),
                 if (!isPriceHidden) _productPrice(),
-                if (product.hasDiscount) _buildProductPriceBeforeDiscount(),
+                if (product.hasDiscount && !isPriceHidden)
+                  _buildProductPriceBeforeDiscount(),
                 if (quantity != null) _productQuantity()
               ],
             )
@@ -149,7 +164,7 @@ class ProductTile extends StatelessWidget {
   Widget _productImage() {
     return CachedNetworkImage(
       imageUrl: this.product.picturePath,
-      height: 100,
+      height: smallPic ? 50 : 100,
       placeholder: (context, url) => SizedBox(
         child: CircularProgressIndicator(),
         height: 10,
@@ -160,16 +175,16 @@ class ProductTile extends StatelessWidget {
     );
   }
 
-  Container _buildProductName() {
+  Widget _buildProductName() {
     return Container(
       padding: EdgeInsets.all(5),
       child: Text(
         product.name,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
+        overflow: TextOverflow.clip,
+        maxLines: 1,
         textAlign: TextAlign.start,
         style: TextStyle(
-          fontSize: 15,
+          fontSize: smallPic ? 10 : 15,
         ),
       ),
     );

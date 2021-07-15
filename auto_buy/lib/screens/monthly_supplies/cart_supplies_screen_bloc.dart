@@ -35,8 +35,8 @@ class MonthlyCartsScreenBloc {
   Stream<bool> get stream => _streamController.stream;
 
   Future<void> getCartProducts() async {
-    List<MonthlyCartItem> items = await _monthlyCartServices
-        .readMonthlyCartProducts(uid, selectedCartName);
+    List<MonthlyCartItem> items =
+        await _monthlyCartServices.readMonthlyCartItems(uid, selectedCartName);
 
     monthlyCartProducts.clear();
     quantities.clear();

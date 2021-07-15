@@ -32,7 +32,7 @@ class MonthlyCartsBloc {
     for (int i = 0; i < monthlyCartsScreenModel.numberOfMonthlyCarts; i++) {
       print(monthlyCartsScreenModel.monthlyCarts[i].name);
       List<MonthlyCartItem> items =
-          await _monthlyCartServices.readMonthlyCartProducts(
+          await _monthlyCartServices.readMonthlyCartItems(
               uid, monthlyCartsScreenModel.monthlyCarts[i].name);
       monthlyCartsScreenModel.monthlyCartsItems.addAll({
         monthlyCartsScreenModel.monthlyCarts[i].name: items,
