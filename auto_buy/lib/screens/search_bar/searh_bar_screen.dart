@@ -1,4 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import '../../../services/product_search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
@@ -255,11 +256,11 @@ class SearchBarState extends State<SearchBarScreen> {
 
   @override
   Future<void> initState() {
+    super.initState();
     FirstSearch = false;
     controller = FloatingSearchBarController();
     _readHistorySharedPrefrence();
     search(selectedTerm);
-    super.initState();
   }
 
   @override
@@ -271,11 +272,6 @@ class SearchBarState extends State<SearchBarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ProductsListView PLV = ProductsListView(
-      height: MediaQuery.of(context).size.height,
-      productsList: chosenProduct,
-      isHorizontal: false,
-    );
     return Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButton: SafeArea(child: FSB()),
@@ -287,6 +283,6 @@ class SearchBarState extends State<SearchBarScreen> {
         ),
         body: (chosenProduct.isEmpty && selectedTerm != null && selectedTerm != "")
             ? ErrorMsg()
-            : gridList(chosenProduct));
+            : VerticalProductsListView(productsList: chosenProduct));
   }
 }

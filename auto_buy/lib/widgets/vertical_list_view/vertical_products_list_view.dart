@@ -29,17 +29,15 @@ class VerticalProductsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> content = _buildContent(context);
 
-    return Flexible(
-      child: Container(
-        padding: smallPic
-            ? const EdgeInsets.all(0)
-            : const EdgeInsets.fromLTRB(8, 0, 8, 8),
-        child: ListView.builder(
-          itemCount: content.length,
-          itemBuilder: (BuildContext context, int index) {
-            return content[index];
-          },
-        ),
+    return Container(
+      padding: smallPic
+          ? const EdgeInsets.all(0)
+          : const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: ListView.builder(
+        itemCount: content.length,
+        itemBuilder: (BuildContext context, int index) {
+          return content[index];
+        },
       ),
     );
   }
