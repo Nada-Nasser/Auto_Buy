@@ -3,7 +3,7 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:string_similarity/string_similarity.dart';
 
-class searchServices {
+class ProductSearchServices {
 
   List<Product> _allProducts = [];
   List<String> _productNamesList = [];

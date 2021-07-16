@@ -1,5 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
-import '../../../services/search_services.dart';
+import '../../../services/product_search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +10,16 @@ import 'BackEnd/UI_for_search_results.dart';
 
 class SearchBarScreen extends StatefulWidget {
   String term;
-  searchServices sv;
+  ProductSearchServices sv;
 
-  SearchBarScreen({String this.term = "", searchServices this.sv});
+  SearchBarScreen({String this.term = "", ProductSearchServices this.sv});
 
   @override
   SearchBarState createState() => SearchBarState(s: term , sv: sv);
 }
 
 class SearchBarState extends State<SearchBarScreen> {
-  SearchBarState({String s = "" , searchServices sv}){
+  SearchBarState({String s = "" , ProductSearchServices sv}){
     selectedTerm = s;
     searchService = sv;
   }
@@ -34,7 +34,7 @@ class SearchBarState extends State<SearchBarScreen> {
   final Map<String, Product> fromNameToProduct = {};
   bool FirstSearch = true;
 
-  searchServices searchService;
+  ProductSearchServices searchService;
 
 
   Future<void> _readHistorySharedPrefrence() async {
