@@ -1,5 +1,5 @@
-import 'package:auto_buy/screens/SearchBar/searhBar.dart';
 import 'package:auto_buy/screens/optio/optio_screen.dart';
+import 'package:auto_buy/screens/search_bar/search_bar.dart';
 import 'package:flutter/material.dart';
 
 Widget customSearchBar(BuildContext context) {

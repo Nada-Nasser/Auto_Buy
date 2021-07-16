@@ -25,11 +25,6 @@ class GetCategories extends StatefulWidget {
 }
 
 class _GetCategoriesState extends State<GetCategories> {
-  @override
-  void initState() {
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

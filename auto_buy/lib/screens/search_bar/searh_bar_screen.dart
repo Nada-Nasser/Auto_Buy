@@ -8,14 +8,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BackEnd/UI_for_search_results.dart';
 
-class SearchBar extends StatefulWidget {
+class SearchBarScreen extends StatefulWidget {
+  String term;
+  searchServices sv;
+
+  SearchBarScreen({String this.term = "", searchServices this.sv});
+
   @override
-  SearchBarState createState() => SearchBarState();
+  SearchBarState createState() => SearchBarState(s: term , sv: sv);
 }
 
-class SearchBarState extends State<SearchBar> {
-  SearchBarState({String s = "al-doha"}){
+class SearchBarState extends State<SearchBarScreen> {
+  SearchBarState({String s = "" , searchServices sv}){
     selectedTerm = s;
+    searchService = sv;
   }
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
@@ -30,12 +36,11 @@ class SearchBarState extends State<SearchBar> {
 
   searchServices searchService;
 
+
   Future<void> _readHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'searchHistory';
-    setState(() {
-      _searchHistory = prefs.getStringList(key) ?? [];
-    });
+    _searchHistory = prefs.getStringList(key) ?? [];
     _filteredSearchHistory = await filterSearchTerms(filter: null);
   }
 
@@ -45,10 +50,10 @@ class SearchBarState extends State<SearchBar> {
     prefs.setStringList(key, _searchHistory);
   }
 
-  Future<void> search(selectedTerm) async {
+  Future<void> search(selectedTerm) {
     chosenProduct.clear();
     if (selectedTerm != "" && selectedTerm != Null) {
-      chosenProduct = await searchService.search(selectedTerm);
+      chosenProduct = searchService.search(selectedTerm);
     }
   }
 
@@ -252,8 +257,8 @@ class SearchBarState extends State<SearchBar> {
   Future<void> initState() {
     FirstSearch = false;
     controller = FloatingSearchBarController();
-    searchService = searchServices();
     _readHistorySharedPrefrence();
+    search(selectedTerm);
     super.initState();
   }
 
@@ -280,7 +285,7 @@ class SearchBarState extends State<SearchBar> {
           backgroundColor: Colors.orange,
           elevation: 4.0,
         ),
-        body: ((chosenProduct.isEmpty && selectedTerm != null))
+        body: (chosenProduct.isEmpty && selectedTerm != null && selectedTerm != "")
             ? ErrorMsg()
             : gridList(chosenProduct));
   }

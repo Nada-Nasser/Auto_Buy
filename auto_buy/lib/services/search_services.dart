@@ -11,19 +11,23 @@ class searchServices {
 
   searchServices() {
     print("search service intilised");
-    _readAllProducts();
+    readAllProducts();
   }
 
-  Future<void> _readAllProducts() async{
+  bool hasProducts(){
+    return _allProducts.isNotEmpty;
+  }
+  Future<List<Product>> readAllProducts() async{
     _allProducts = await ProductsBackendServices().ReadProductsFromFirestore();
       for (Product prod in _allProducts) {
         _fromNameToProduct[prod.name.toLowerCase()] = prod;
         _productNamesList.add(prod.name.toLowerCase());
       }
       print(_fromNameToProduct);
+      return _allProducts;
   }
-  Future<List<Product>> search(String searchTerm) async {
-    List<String> similarStrings = await searchReturnsNames(searchTerm);
+  List<Product> search(String searchTerm) {
+    List<String> similarStrings = searchReturnsNames(searchTerm);
     List<Product> products = [];
     if(similarStrings.isNotEmpty)
       products = convertFromNameToProduct(similarStrings);
@@ -31,7 +35,7 @@ class searchServices {
     return products;
   }
 
-  Future<List<String>> searchReturnsNames(String searchTerm) async{
+  List<String> searchReturnsNames(String searchTerm) {
     Set<String> similarStrings =  new Set<String>();
     List<Pair<double,String>> pairs = [];
 
