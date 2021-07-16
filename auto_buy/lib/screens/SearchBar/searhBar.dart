@@ -14,7 +14,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class SearchBarState extends State<SearchBar> {
-  // _SearchBarState({@required this.Products});TODO get already fetched products
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
@@ -50,11 +49,6 @@ class SearchBarState extends State<SearchBar> {
     }
   }
 
-  Future<List<Product>> ReadProducts() async {
-    //TODO get already fitched products
-    Products = await ProductsBackendServices().ReadProductsFromFirestore();
-    CreateFromNameToProductMap();
-  }
 
   CreateFromNameToProductMap() {
     for (Product prod in Products) {
@@ -255,7 +249,6 @@ class SearchBarState extends State<SearchBar> {
   Future<void> initState() {
     FirstSearch = false;
     controller = FloatingSearchBarController();
-    ReadProducts();
     _readHistorySharedPrefrence();
     super.initState();
   }

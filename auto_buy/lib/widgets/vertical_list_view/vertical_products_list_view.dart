@@ -10,6 +10,7 @@ class VerticalProductsListView extends StatelessWidget {
 
   final bool isPriceHidden;
   final double listHeight;
+  final double listWidth;
   final bool smallPic;
 
   const VerticalProductsListView({
@@ -20,6 +21,7 @@ class VerticalProductsListView extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.listHeight,
+    this.listWidth,
     this.smallPic = false,
   }) : super(key: key);
 
@@ -27,15 +29,17 @@ class VerticalProductsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> content = _buildContent(context);
 
-    return Container(
-      padding: smallPic
-          ? const EdgeInsets.all(0)
-          : const EdgeInsets.fromLTRB(8, 0, 8, 8),
-      child: ListView.builder(
-        itemCount: content.length,
-        itemBuilder: (BuildContext context, int index) {
-          return content[index];
-        },
+    return Flexible(
+      child: Container(
+        padding: smallPic
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        child: ListView.builder(
+          itemCount: content.length,
+          itemBuilder: (BuildContext context, int index) {
+            return content[index];
+          },
+        ),
       ),
     );
   }
@@ -51,7 +55,8 @@ class VerticalProductsListView extends StatelessWidget {
           onLongPress: () => onLongPress(context, productsList[i]),
           quantity: quantities != null ? quantities[i] : null,
           isPriceHidden: isPriceHidden,
-          height: listHeight);
+          height: listHeight,
+      width: listWidth,);
       w.add(tile);
     }
 
@@ -84,15 +89,16 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double mywidth = width ?? MediaQuery.of(context).size.width;
-    double myheight = height ?? MediaQuery.of(context).size.height;
+    double myheight = height ?? null;
 
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
         width: mywidth,
+        height: myheight,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(5),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -114,17 +120,19 @@ class ProductTile extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildProductName(),
-                if (!isPriceHidden) _productPrice(),
-                if (product.hasDiscount && !isPriceHidden)
-                  _buildProductPriceBeforeDiscount(),
-                if (quantity != null) _productQuantity()
-              ],
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildProductName(),
+                  if (!isPriceHidden) _productPrice(),
+                  if (product.hasDiscount && !isPriceHidden)
+                    _buildProductPriceBeforeDiscount(),
+                  if (quantity != null) _productQuantity()
+                ],
+              ),
             )
           ],
         ),
@@ -176,15 +184,19 @@ class ProductTile extends StatelessWidget {
   }
 
   Widget _buildProductName() {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Text(
-        product.name,
-        overflow: TextOverflow.clip,
-        maxLines: 1,
-        textAlign: TextAlign.start,
-        style: TextStyle(
-          fontSize: smallPic ? 10 : 15,
+    return Flexible(
+      child: Container(
+        padding: EdgeInsets.all(5),
+        child: Flexible(
+          child: Text(
+            product.name,
+            overflow: TextOverflow.clip,
+            maxLines: 1,
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              fontSize: smallPic ? 10 : 15,
+            ),
+          ),
         ),
       ),
     );

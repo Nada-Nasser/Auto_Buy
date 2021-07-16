@@ -45,7 +45,8 @@ class searchServices {
     pairs.sort((a,b)=> a.element1 < b.element1? 1 : 0);
 
     for(Pair<double,String> p in pairs ) {
-      if (p.element1 > .4) similarStrings.add(p.element2);
+      if (p.element1 > .4)
+        similarStrings.add(p.element2);
       else break;
     }
 

@@ -1,4 +1,3 @@
-import 'package:auto_buy/screens/home_page/SearchBar/searhBar.dart';
 import 'package:auto_buy/screens/no_connection_screen.dart';
 import 'package:auto_buy/services/conntections_notifier.dart';
 import 'package:flutter/material.dart';
