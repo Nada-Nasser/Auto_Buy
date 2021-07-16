@@ -10,6 +10,7 @@ class searchServices {
   final Map<String, Product> _fromNameToProduct = {};
 
   searchServices() {
+    print("search service intilised");
     _readAllProducts();
   }
 
@@ -21,9 +22,8 @@ class searchServices {
       }
       print(_fromNameToProduct);
   }
-  List<Product> search(String searchTerm){
-
-    List<String> similarStrings = searchReturnsNames(searchTerm);
+  Future<List<Product>> search(String searchTerm) async {
+    List<String> similarStrings = await searchReturnsNames(searchTerm);
     List<Product> products = [];
     if(similarStrings.isNotEmpty)
       products = convertFromNameToProduct(similarStrings);
@@ -31,7 +31,7 @@ class searchServices {
     return products;
   }
 
-  List<String> searchReturnsNames(String searchTerm){
+  Future<List<String>> searchReturnsNames(String searchTerm) async{
     Set<String> similarStrings =  new Set<String>();
     List<Pair<double,String>> pairs = [];
 

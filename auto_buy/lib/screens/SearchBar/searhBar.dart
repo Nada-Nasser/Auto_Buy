@@ -14,9 +14,12 @@ class SearchBar extends StatefulWidget {
 }
 
 class SearchBarState extends State<SearchBar> {
+  SearchBarState({String s = "al-doha"}){
+    selectedTerm = s;
+  }
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
-  List<String> _filteredSearchHistory;
+  List<String> _filteredSearchHistory = [];
   List<String> _productNamesList = [];
 
   List<Product> Products = [];
@@ -25,7 +28,7 @@ class SearchBarState extends State<SearchBar> {
   final Map<String, Product> fromNameToProduct = {};
   bool FirstSearch = true;
 
-  searchServices searchService =searchServices();
+  searchServices searchService;
 
   Future<void> _readHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,7 +36,7 @@ class SearchBarState extends State<SearchBar> {
     setState(() {
       _searchHistory = prefs.getStringList(key) ?? [];
     });
-    _filteredSearchHistory = filterSearchTerms(filter: null);
+    _filteredSearchHistory = await filterSearchTerms(filter: null);
   }
 
   _saveHistorySharedPrefrence() async {
@@ -42,10 +45,10 @@ class SearchBarState extends State<SearchBar> {
     prefs.setStringList(key, _searchHistory);
   }
 
-  void search(selectedTerm) {
+  Future<void> search(selectedTerm) async {
     chosenProduct.clear();
     if (selectedTerm != "" && selectedTerm != Null) {
-      chosenProduct = searchService.search(selectedTerm);
+      chosenProduct = await searchService.search(selectedTerm);
     }
   }
 
@@ -58,19 +61,19 @@ class SearchBarState extends State<SearchBar> {
     print(fromNameToProduct);
   }
 
-  List<String> filterSearchTerms({
+  Future<List<String>> filterSearchTerms({
     @required String filter,
-  }) {
+  }) async {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
       filter = filter.toLowerCase();
-      return searchService.searchReturnsNames(filter);
+      return await searchService.searchReturnsNames(filter);
     } else {
       return _searchHistory.reversed.toList();
     }
   }
 
-  void addSearchTerm(String term) {
+  Future<void> addSearchTerm(String term) async {
     if (_searchHistory.contains(term)) {
       putSearchTermFirst(term);
       return;
@@ -79,12 +82,12 @@ class SearchBarState extends State<SearchBar> {
     if (_searchHistory.length > HistoryLenght) {
       _searchHistory.removeRange(0, _searchHistory.length - HistoryLenght);
     }
-    _filteredSearchHistory = filterSearchTerms(filter: null);
+    _filteredSearchHistory = await filterSearchTerms(filter: null);
   }
 
-  void deleteSearchTerm(String term) {
+  Future<void> deleteSearchTerm(String term) async {
     _searchHistory.removeWhere((t) => t == term);
-    _filteredSearchHistory = filterSearchTerms(filter: null);
+    _filteredSearchHistory = await filterSearchTerms(filter: null);
   }
 
   void putSearchTermFirst(String term) {
@@ -116,8 +119,8 @@ class SearchBarState extends State<SearchBar> {
       ],
 
       onQueryChanged: (query) {
-        setState(() {
-          _filteredSearchHistory = filterSearchTerms(filter: query);
+        setState(() async {
+          _filteredSearchHistory = await filterSearchTerms(filter: query);
         });
       },
       onSubmitted: (query) {
@@ -249,6 +252,7 @@ class SearchBarState extends State<SearchBar> {
   Future<void> initState() {
     FirstSearch = false;
     controller = FloatingSearchBarController();
+    searchService = searchServices();
     _readHistorySharedPrefrence();
     super.initState();
   }
