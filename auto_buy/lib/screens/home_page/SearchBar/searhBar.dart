@@ -1,7 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/services/firebase_backend/api_paths.dart';
-import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
-import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import '../../../services/search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +10,11 @@ import 'BackEnd/UI_for_search_results.dart';
 
 class SearchBar extends StatefulWidget {
   @override
-  _SearchBarState createState() => _SearchBarState();
+  SearchBarState createState() => SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class SearchBarState extends State<SearchBar> {
   // _SearchBarState({@required this.Products});TODO get already fetched products
-
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
   List<String> _filteredSearchHistory;
@@ -26,10 +23,10 @@ class _SearchBarState extends State<SearchBar> {
   List<Product> Products = [];
   List<Product> chosenProduct = [];
   String selectedTerm;
-  final _firestoreService = CloudFirestoreService.instance;
-  final _storageService = FirebaseStorageService.instance;
   final Map<String, Product> fromNameToProduct = {};
   bool FirstSearch = true;
+
+  searchServices searchService =searchServices();
 
   Future<void> _readHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
@@ -49,14 +46,7 @@ class _SearchBarState extends State<SearchBar> {
   void search(selectedTerm) {
     chosenProduct.clear();
     if (selectedTerm != "" && selectedTerm != Null) {
-      if (fromNameToProduct.containsKey(selectedTerm)) {
-        chosenProduct.add(fromNameToProduct[selectedTerm]);
-      } else {
-        List<String> temp = filterSearchTerms(filter: selectedTerm);
-        for (String s in temp) {
-          chosenProduct.add(fromNameToProduct[s]);
-        }
-      }
+      chosenProduct = searchService.search(selectedTerm);
     }
   }
 
@@ -80,7 +70,7 @@ class _SearchBarState extends State<SearchBar> {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
       filter = filter.toLowerCase();
-      return _productNamesList.where((term) => term.contains(filter)).toList();
+      return searchService.searchReturnsNames(filter);
     } else {
       return _searchHistory.reversed.toList();
     }
