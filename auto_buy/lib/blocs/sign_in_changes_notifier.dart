@@ -29,7 +29,6 @@ class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
     String password,
     bool secure,
     bool isLoading,
-    String name,
   }) {
     _model = _model.updateWith(
       isEnable: isEnable,
@@ -37,7 +36,6 @@ class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       password: password,
       secure: secure,
       isLoading: isLoading,
-      name: name,
     );
     notifyListeners();
   }
@@ -54,22 +52,28 @@ class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       }
     } on Exception catch (e) {
       updateModelWith(isEnable: true);
-      rethrow;
+      print(e);
+      return false;
     }
   }
 
   Future<bool> submitForm() async {
     updateModelWith(isLoading: true);
+    updateModelWith(isEnable: false);
+
     try {
-      final user = await auth.signInWithEmail(
+      await auth.signInWithEmail(
         email: email,
         password: password,
       );
+
       updateModelWith(isLoading: false);
+      updateModelWith(isEnable: true);
       return true;
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       updateModelWith(isLoading: false);
-      rethrow;
+      updateModelWith(isEnable: true);
+      return false;
     }
   }
 }

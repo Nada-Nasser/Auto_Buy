@@ -102,7 +102,13 @@ class SignInForm extends StatelessWidget {
     if (_validateForm()) {
       try {
         final flag = await notifier.submitForm();
-        if (flag) Navigator.of(context).pop();
+        if (flag)
+          Navigator.of(context).pop();
+        else
+          showAlertDialog(context,
+              titleText: "Sign in Failed",
+              content: "make sure you write a right email and password",
+              actionButtonString: "Ok");
       } on FirebaseException catch (e) {
         showAlertDialog(
           context,

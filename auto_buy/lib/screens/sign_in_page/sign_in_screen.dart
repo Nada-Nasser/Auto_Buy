@@ -4,6 +4,7 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/common_styles.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:auto_buy/widgets/raised_button_with_icon.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -89,13 +90,14 @@ class SignInPage extends StatelessWidget {
         Navigator.of(context).pop();
       } else {
         showAlertDialog(context,
-            titleText: "Sign in Failed", content: "", actionButtonString: "Ok");
-        return null;
+            titleText: "Sign in Failed",
+            content: "Check your network Connection",
+            actionButtonString: "Ok");
       }
-    } on Exception catch (e) {
+    } on FirebaseException catch (e) {
       showAlertDialog(context,
           titleText: "Sign in Failed",
-          content: "Check your network Connection",
+          content: "Check your network Connection, or ${e.message}",
           actionButtonString: "Ok");
     }
   }
