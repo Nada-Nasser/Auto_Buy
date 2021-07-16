@@ -34,6 +34,8 @@ class MonthlyCartCommand implements Command {
         await _deleteFromMonthlyCart();
       } else if (commandArguments.commandType == CommandType.OPEN) {
         await _openMonthlyCart();
+      } else {
+        throw Exception("unknown command type in monthly cart");
       }
     } on Exception catch (e) {
       throw e;
@@ -45,11 +47,12 @@ class MonthlyCartCommand implements Command {
     try {
       List<Product> products =
           await _productsBackendServices.readCategoryProducts("Food");
+
       await productsListDialog(
         commandArguments.context,
         _onSelectProduct,
         products,
-        "Select Product you mean",
+        "Select the product you mean",
       );
       await _getSelectedCartName();
 

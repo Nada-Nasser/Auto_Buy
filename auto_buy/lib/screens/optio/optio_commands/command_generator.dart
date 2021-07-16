@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_buy/screens/optio/optio_commands/expense_tracker_commands.dart';
 import 'package:auto_buy/screens/optio/optio_commands/monthly_cart_commands.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,10 +99,12 @@ class CommandGenerator {
 
     if (commandPlace == CommandPlace.MonthlyCart) {
       command = MonthlyCartCommand(commandArguments);
-    } else if (commandPlace == CommandPlace.ShoppingCart) {} else
-    if (commandPlace == CommandPlace.ExpenseTracker) {} else
-    if (commandPlace == CommandPlace.FriendsSystem) {} else
-    if (commandPlace == CommandPlace.ProductsSearching) {} else {
+    } else if (commandPlace == CommandPlace.ShoppingCart) {
+    } else if (commandPlace == CommandPlace.ExpenseTracker) {
+      command = ExpenseTrackerCommand(commandArguments);
+    } else if (commandPlace == CommandPlace.FriendsSystem) {
+    } else if (commandPlace == CommandPlace.ProductsSearching) {
+    } else {
       command = InvalidCommand(commandArguments);
     }
 
