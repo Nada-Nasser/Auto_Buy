@@ -1,3 +1,4 @@
+import 'package:auto_buy/models/Pair.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -57,15 +58,5 @@ class searchServices {
       products.add(_fromNameToProduct[s]);
     }
     return products;
-  }
-}
-
-class Pair<T,Z>{
-  T element1;
-  Z element2;
-
-  Pair(T elem1, Z elemt2){
-    element1 = elem1;
-    element2 = elemt2;
   }
 }
