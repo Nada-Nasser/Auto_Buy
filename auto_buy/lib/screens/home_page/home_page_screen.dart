@@ -35,165 +35,167 @@ class HomePage extends StatelessWidget {
 Widget _drawer(BuildContext context) {
   final auth = Provider.of<FirebaseAuthService>(context, listen: false);
   return Drawer(
-    child: ListView(
-      // Important: Remove any padding from the ListView.
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-          child: Center(
-            child: Row(
-              children: [
-                Icon(
-                  Icons.menu_outlined,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Main Menu',
-                  style: TextStyle(
+    child: SafeArea(
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            child: Center(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.menu_outlined,
                     color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Main Menu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.orange,
             ),
           ),
-          decoration: BoxDecoration(
-            color: Colors.orange,
-          ),
-        ),
-        customTextStle(
-            'Expense Tracker',
-            Icon(
-              Icons.analytics_sharp,
-              color: Colors.green,
-              size: 30,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => ExpenseTrackerScreen.create(context),
-            ),
-          );
-        }),
-        customTextStle(
-            'Categories',
-            Icon(
-              Icons.category_sharp,
-              color: Colors.orange,
-              size: 30,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) =>Scaffold(body:GetCategories()),
-            ),
-          );
-        }),
-        customTextStle(
-            'Monthly Supplies',
-            Icon(
-              Icons.calendar_today_outlined,
-              color: Colors.orange,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => MonthlyCartsScreen.create(context),
-            ),
-          );
-        }),
-        customTextStle(
-            'My WishList',
-            Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => WishListScreen(),
-            ),
-          );
-        }),
-        customTextStle(
-            'Shopping Cart',
-            Icon(
-              Icons.add_shopping_cart_outlined,
-              color: Colors.blue,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => ShoppingCartScreen(),
-            ),
-          );
-        }),
-        customTextStle(
-            'User Account',
-            Icon(
-              Icons.person,
-              color: Colors.black,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => Profile(),
-            ),
-          );
-        }),
-        customTextStle(
-            'Friends',
-            Icon(
-              Icons.people,
-              color: Colors.black,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => AllScreens(),
-            ),
-          );
-        }),
-        customTextStle(
-            'My Orders',
-            Icon(
-              Icons.list_alt,
-              color: Colors.purpleAccent,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => MyOrdersScreen(),
-            ),
-          );
-        }),
-        customTextStle(
-            'Record',
-            Icon(
-              Icons.record_voice_over,
-              color: Colors.redAccent,
-            ), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => TestRecord(),
-            ),
-          );
-        }),
-        customTextStle(
-            'LogOut',
-            Icon(
-              Icons.logout,
-              color: Colors.redAccent,
-            ), () {
-          auth.signOut();
-        }),
-      ],
+          customTextStle(
+              'Expense Tracker',
+              Icon(
+                Icons.analytics_sharp,
+                color: Colors.green,
+                size: 30,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => ExpenseTrackerScreen.create(context),
+              ),
+            );
+          }),
+          customTextStle(
+              'Categories',
+              Icon(
+                Icons.category_sharp,
+                color: Colors.orange,
+                size: 30,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => Scaffold(body: GetCategories()),
+              ),
+            );
+          }),
+          customTextStle(
+              'Monthly Supplies',
+              Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.orange,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => MonthlyCartsScreen.create(context),
+              ),
+            );
+          }),
+          customTextStle(
+              'My WishList',
+              Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => WishListScreen(),
+              ),
+            );
+          }),
+          customTextStle(
+              'Shopping Cart',
+              Icon(
+                Icons.add_shopping_cart_outlined,
+                color: Colors.blue,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => ShoppingCartScreen(),
+              ),
+            );
+          }),
+          customTextStle(
+              'User Account',
+              Icon(
+                Icons.person,
+                color: Colors.black,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => Profile(),
+              ),
+            );
+          }),
+          customTextStle(
+              'Friends',
+              Icon(
+                Icons.people,
+                color: Colors.black,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => AllScreens(),
+              ),
+            );
+          }),
+          customTextStle(
+              'My Orders',
+              Icon(
+                Icons.list_alt,
+                color: Colors.purpleAccent,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => MyOrdersScreen(),
+              ),
+            );
+          }),
+          customTextStle(
+              'Record',
+              Icon(
+                Icons.record_voice_over,
+                color: Colors.redAccent,
+              ), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => TestRecord(),
+              ),
+            );
+          }),
+          customTextStle(
+              'LogOut',
+              Icon(
+                Icons.logout,
+                color: Colors.redAccent,
+              ), () {
+            auth.signOut();
+          }),
+        ],
+      ),
     ),
   );
 }

@@ -28,7 +28,7 @@ class CommandGenerator {
         commandType = CommandType.ADD;
         if (commandBody.length == 5) {
           productName = '${commandBody[3]}';
-          quantity = commandBody[1].toInt() ?? 1;
+          quantity = commandBody[1] == "" ? 1 : commandBody[1].toInt();
           if (commandBody.last == 'shopping')
             commandPlace = CommandPlace.ShoppingCart;
           else
