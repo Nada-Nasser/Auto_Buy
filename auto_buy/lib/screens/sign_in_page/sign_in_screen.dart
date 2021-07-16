@@ -90,8 +90,8 @@ class SignInPage extends StatelessWidget {
         Navigator.of(context).pop();
       } else {
         showAlertDialog(context,
-            titleText: "Sign in Failed",
-            content: "Check your network Connection",
+            titleText: "Error",
+            content: "Sign in failed",
             actionButtonString: "Ok");
       }
     } on FirebaseException catch (e) {

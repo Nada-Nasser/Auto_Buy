@@ -23,61 +23,61 @@ class FirebaseAuthService {
 
   //bool get emailVerified => true;
 
-  bool get emailVerified => user.emailVerified; // TODO email verification
+  bool get emailVerified => user.emailVerified;
 
   Future<User> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount =
-        await _googleSignIn.signIn();
+    try {
+      final GoogleSignInAccount googleSignInAccount =
+          await _googleSignIn.signIn();
 
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
 
-      UserCredential result = await instance.signInWithCredential(credential);
-      User userDetails = result.user;
-      return userDetails;
-    }else{
-      return null;
+        UserCredential result = await instance.signInWithCredential(credential);
+        User userDetails = result.user;
+        return userDetails;
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      throw e;
     }
   }
 
-  Future<User> registerWithGoogle() async{
-    User userDetails = await signInWithGoogle();
-    return userDetails;
+  Future<User> registerWithGoogle() async {
+    try {
+      User userDetails = await signInWithGoogle();
+      return userDetails;
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await instance.signOut();
-  }
-
-  Future<User> signInWithEmail({String email, String password}) async {
-    final userCredential =
-    await instance.signInWithCredential(EmailAuthProvider.credential(
-      email: email,
-      password: password,
-    ));
-    return userCredential.user;
-  }
-
-  Future<void> checkEmailVerification() async {
-    print("${user.email} : checkEmailVerification");
-    user.reload();
-    if (user.emailVerified) {
-      print("Verified");
-      if (!verificationStreamController.isClosed)
-        verificationStreamController.add(true);
+    try {
+      await _googleSignIn.signOut();
+      await instance.signOut();
+    } on Exception catch (e) {
+      throw e;
     }
   }
 
-  StreamController<bool> verificationStreamController = StreamController();
-
-  disposeVerificationStream() => verificationStreamController.close();
-
-  Stream<bool> get verificationStream => verificationStreamController.stream;
+  Future<User> signInWithEmail({String email, String password}) async {
+    try {
+      final userCredential =
+          await instance.signInWithCredential(EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      ));
+      return userCredential.user;
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
 }
