@@ -1,8 +1,10 @@
 
+import 'package:auto_buy/main.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command_generator.dart';
 import 'package:auto_buy/screens/optio/optio_image.dart';
 import 'package:auto_buy/services/firebase_backend/google_translate.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -44,11 +46,24 @@ class OptioChangeNotifier extends ChangeNotifier {
       );
     });
 
-    var url = Uri.parse('https://e36ca0bfbf05.ngrok.io/classifytext/$input');
-    var response = await http.get(url);
-    print(response.body.toString());
+    Command command;
+    var response;
+    try {
+      var url = Uri.parse('https://92aba844cbe3.ngrok.io/classifytext/$input');
+      response = await http.get(url);
+      print(response.body.toString());
 
-    Command command = _commandGenerator.generateCommand(response, uid);
+      command = _commandGenerator.generateCommand(response, uid);
+    } on Exception catch (e) {
+      showAlertDialog(navigatorKey.currentContext,
+          titleText: "Error",
+          content: "Check your internet connection",
+          actionButtonString: "OK");
+      command = InvalidCommand(new CommandArguments(
+          commandType: CommandType.INVALID,
+          commandPlace: CommandPlace.Invalid));
+      throw e;
+    }
 
     /// generate command that contain the needed arguments to execute it
     if (command.isValidCommand) {
