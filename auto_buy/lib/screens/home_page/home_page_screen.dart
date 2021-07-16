@@ -10,9 +10,6 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
@@ -35,6 +32,7 @@ class HomePage extends StatelessWidget {
 Widget _drawer(BuildContext context) {
   final auth = Provider.of<FirebaseAuthService>(context, listen: false);
   return Drawer(
+    elevation: 10,
     child: SafeArea(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -174,19 +172,6 @@ Widget _drawer(BuildContext context) {
             );
           }),
           customTextStle(
-              'Record',
-              Icon(
-                Icons.record_voice_over,
-                color: Colors.redAccent,
-              ), () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => TestRecord(),
-              ),
-            );
-          }),
-          customTextStle(
               'LogOut',
               Icon(
                 Icons.logout,
@@ -206,106 +191,4 @@ Widget customTextStle(String text, Widget icon, VoidCallback onTap) {
     leading: icon,
     onTap: onTap,
   );
-}
-
-class TestRecord extends StatefulWidget {
-  @override
-  _TestRecordState createState() => _TestRecordState();
-}
-
-class _TestRecordState extends State<TestRecord> {
-  dynamic _recorderSubscription;
-  FlutterSoundRecorder _myRecorder = FlutterSoundRecorder();
-  bool _mRecorderIsInited, recording = false;
-
-  @override
-  void dispose() {
-    // Be careful : you must `close` the audio session when you have finished with it.
-    _myRecorder.closeAudioSession();
-    _myRecorder = null;
-
-    //**
-    if (myPlayer != null) {
-      myPlayer.closeAudioSession();
-      myPlayer = null;
-    }
-
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Be careful : openAudioSession return a Future.
-    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _myRecorder.openAudioSession().then((value) {
-      setState(() {
-        _mRecorderIsInited = true;
-      });
-    });
-    _recorderSubscription = _myRecorder.onProgress.listen((e) {
-      Duration maxDuration = e.duration;
-    });
-  }
-
-  Future<void> record() async {
-    print("Check Permission");
-    // Request Microphone permission if needed
-    PermissionStatus status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted)
-      throw RecordingPermissionException("Microphone permission not granted");
-
-    print("Start Recording");
-    _myRecorder.setAudioFocus(focus: AudioFocus.requestFocusAndStopOthers);
-
-    await _myRecorder.startRecorder(
-      toFile: "command_voice",
-      codec: Codec.aacADTS,
-    );
-  }
-
-  FlutterSoundPlayer myPlayer = FlutterSoundPlayer(); //*****
-
-  Future<void> stopRecorder() async {
-    String anURL = await _myRecorder.stopRecorder();
-    print(anURL);
-    /*if (_recorderSubscription != null)
-    {
-      _recorderSubscription.cancel();
-      _recorderSubscription = null;
-    }*/
-
-    print("READY START LISTENING");
-    myPlayer = await FlutterSoundPlayer().openAudioSession(
-        focus: AudioFocus.requestFocusAndDuckOthers,
-        audioFlags: outputToSpeaker | allowBlueTooth);
-    myPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
-    print("START LISTENING");
-    Duration d = await myPlayer.startPlayer(
-      fromURI: anURL,
-      codec: Codec.aacADTS,
-      whenFinished: () {
-        print('I hope you enjoyed listening to this song');
-      },
-    ); // Play a temporary file
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: RaisedButton(
-            onPressed: () async {
-              if (_myRecorder.isRecording)
-                await stopRecorder();
-              else
-                await record();
-            },
-            child: Text("Click"),
-          ),
-        ),
-      ),
-    );
-  }
 }
