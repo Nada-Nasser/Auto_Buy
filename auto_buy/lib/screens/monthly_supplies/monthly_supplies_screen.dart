@@ -2,6 +2,7 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/cart_checkout_screen/cart_checkout_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/products_grid_view/products_grid_view.dart';
@@ -39,6 +40,7 @@ class MonthlySuppliesScreen extends StatefulWidget {
 }
 
 class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
+
   @override
   void initState() {
     widget.bloc.getCheckedOutStat();

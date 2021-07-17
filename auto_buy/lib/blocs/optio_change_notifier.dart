@@ -1,8 +1,9 @@
-
+import 'package:auto_buy/main.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command_generator.dart';
 import 'package:auto_buy/screens/optio/optio_image.dart';
 import 'package:auto_buy/services/firebase_backend/google_translate.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -44,55 +45,71 @@ class OptioChangeNotifier extends ChangeNotifier {
       );
     });
 
-    var url = Uri.parse('https://f5c7eafc5baa.ngrok.io/classifytext/$translation');
-    var response = await http.get(url);
-    print(response.body.toString());
-    print(translation);
+    Command command;
+    var response;
+    try {
+      var url = Uri.parse('https://c7a45ea753ef.ngrok.io/classifytext/$input');
+      response = await http.get(url);
+      print(response.body.toString());
 
-    Command command = _commandGenerator.generateCommand(response, uid);
+      command = _commandGenerator.generateCommand(response, uid);
+    } on Exception catch (e) {
+      showAlertDialog(navigatorKey.currentContext,
+          titleText: "Error",
+          content: "Check your internet connection",
+          actionButtonString: "OK");
+      command = InvalidCommand(new CommandArguments(
+          commandType: CommandType.INVALID,
+          commandPlace: CommandPlace.Invalid));
+      throw e;
+    }
 
     /// generate command that contain the needed arguments to execute it
-    if (command.isValidCommand) {
-      try {
-        /**
-         * 1- (if the command was add/delete something from cart)
-         *    in run function:-
-         *    1- open dialog that contain list of products found from search
-         *    2- user just need to select on of the displayed products
-         *    3- if quantity = "", then quantity = 1
-         *    4- if cart type not mentioned => cart_type = shopping cart (Default value)
-         *    3- perform the add/delete process
-         *    response widget:
-         *    only text message = "Success Message" or "failure message"
-         * 2- if search/ Open
-         *     in run function:-
-         *     1- push new screen with the products/users found
-         *     response widget: no response widget
-         * 3- if invalid command:
-         *    response widget:
-         *    only text message = "failure message"
-         * */
+    if (command != null) {
+      if (command.isValidCommand) {
+        try {
+          /**
+           * 1- (if the command was add/delete something from cart)
+           *    in run function:-
+           *    1- open dialog that contain list of products found from search
+           *    2- user just need to select on of the displayed products
+           *    3- if quantity = "", then quantity = 1
+           *    4- if cart type not mentioned => cart_type = shopping cart (Default value)
+           *    3- perform the add/delete process
+           *    response widget:
+           *    only text message = "Success Message" or "failure message"
+           * 2- if search/ Open
+           *     in run function:-
+           *     1- push new screen with the products/users found
+           *     response widget: no response widget
+           * 3- if invalid command:
+           *    response widget:
+           *    only text message = "failure message"
+           * */
 
-        await command.run();
+          await command.run();
 
-        String successMessage = "Command executed successfully"; //TODO
-        optioResponse = _createOptioResponse(successMessage, true);
+          String successMessage = "Command executed successfully"; //TODO
+          optioResponse = _createOptioResponse(successMessage, true);
 
-        print("Command executed successfully");
-      } on Exception catch (e) {
+          print("Command executed successfully");
+        } on Exception catch (e) {
+          String errorMessage = response.body.toString(); //TODO
+          optioResponse = _createOptioResponse(e.toString(), false);
+          print(e);
+        }
+      } else {
         String errorMessage = response.body.toString(); //TODO
-        optioResponse = _createOptioResponse("Something went wrong", false);
-
-        print(e);
+        optioResponse = _createOptioResponse("Command Failed", false);
+        print("Command Failed");
       }
     } else {
       String errorMessage = response.body.toString(); //TODO
-      optioResponse = _createOptioResponse("Command Failed", false);
-      print("Command Failed");
+      optioResponse = _createOptioResponse("Something went wrong", false);
+      print("Command = NULL");
     }
-
-    chatWidgets.add(
-        listWidget(_createOptioResponse(response.body.toString(), false), 0));
+    //   chatWidgets.add(
+//        listWidget(_createOptioResponse(response.body.toString(), false), 0));
     chatWidgets.add(listWidget(optioResponse, 0));
 
     notifyListeners();

@@ -1,6 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
-import 'package:auto_buy/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart';
+import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -61,10 +60,9 @@ class _getAllProductsState extends State<getAllProducts> {
             ],
           ),
           Expanded(
-              child: ProductPrettyListView(
+              child: VerticalProductsListView(
                 productsList:widget.products,
-                height: 200,
-                width: 270,
+                listHeight: 80,
               )),
         ],
       ),

@@ -1,6 +1,5 @@
 import 'package:auto_buy/models/Category.dart';
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/home_page/SearchBar/BackEnd/UI_for_search_results.dart';
 import 'package:auto_buy/services/categoryServices.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
@@ -26,11 +25,6 @@ class GetCategories extends StatefulWidget {
 }
 
 class _GetCategoriesState extends State<GetCategories> {
-  @override
-  void initState() {
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

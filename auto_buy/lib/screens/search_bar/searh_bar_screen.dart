@@ -1,7 +1,6 @@
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/services/firebase_backend/api_paths.dart';
-import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
-import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
+import '../../../services/product_search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
@@ -10,34 +9,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BackEnd/UI_for_search_results.dart';
 
-class SearchBar extends StatefulWidget {
+class SearchBarScreen extends StatefulWidget {
+  String term;
+  ProductSearchServices sv;
+
+  SearchBarScreen({String this.term = "", ProductSearchServices this.sv});
+
   @override
-  _SearchBarState createState() => _SearchBarState();
+  SearchBarState createState() => SearchBarState(s: term , sv: sv);
 }
 
-class _SearchBarState extends State<SearchBar> {
-  // _SearchBarState({@required this.Products});TODO get already fetched products
-
+class SearchBarState extends State<SearchBarScreen> {
+  SearchBarState({String s = "" , ProductSearchServices sv}){
+    selectedTerm = s;
+    searchService = sv;
+  }
   static const HistoryLenght = 10;
   List<String> _searchHistory = [];
-  List<String> _filteredSearchHistory;
+  List<String> _filteredSearchHistory = [];
   List<String> _productNamesList = [];
 
   List<Product> Products = [];
   List<Product> chosenProduct = [];
   String selectedTerm;
-  final _firestoreService = CloudFirestoreService.instance;
-  final _storageService = FirebaseStorageService.instance;
   final Map<String, Product> fromNameToProduct = {};
   bool FirstSearch = true;
+
+  ProductSearchServices searchService;
+
 
   Future<void> _readHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'searchHistory';
-    setState(() {
-      _searchHistory = prefs.getStringList(key) ?? [];
-    });
-    _filteredSearchHistory = filterSearchTerms(filter: null);
+    _searchHistory = prefs.getStringList(key) ?? [];
+    _filteredSearchHistory = await filterSearchTerms(filter: null);
   }
 
   _saveHistorySharedPrefrence() async {
@@ -45,26 +50,13 @@ class _SearchBarState extends State<SearchBar> {
     final key = 'searchHistory';
     prefs.setStringList(key, _searchHistory);
   }
-
   void search(selectedTerm) {
     chosenProduct.clear();
     if (selectedTerm != "" && selectedTerm != Null) {
-      if (fromNameToProduct.containsKey(selectedTerm)) {
-        chosenProduct.add(fromNameToProduct[selectedTerm]);
-      } else {
-        List<String> temp = filterSearchTerms(filter: selectedTerm);
-        for (String s in temp) {
-          chosenProduct.add(fromNameToProduct[s]);
-        }
-      }
+      chosenProduct = searchService.search(selectedTerm);
     }
   }
 
-  Future<List<Product>> ReadProducts() async {
-    //TODO get already fitched products
-    Products = await ProductsBackendServices().ReadProductsFromFirestore();
-    CreateFromNameToProductMap();
-  }
 
   CreateFromNameToProductMap() {
     for (Product prod in Products) {
@@ -76,11 +68,11 @@ class _SearchBarState extends State<SearchBar> {
 
   List<String> filterSearchTerms({
     @required String filter,
-  }) {
+  })  {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
       filter = filter.toLowerCase();
-      return _productNamesList.where((term) => term.contains(filter)).toList();
+      return searchService.searchReturnsNames(filter);
     } else {
       return _searchHistory.reversed.toList();
     }
@@ -265,7 +257,6 @@ class _SearchBarState extends State<SearchBar> {
   Future<void> initState() {
     FirstSearch = false;
     controller = FloatingSearchBarController();
-    ReadProducts();
     _readHistorySharedPrefrence();
     super.initState();
   }
@@ -279,11 +270,6 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    ProductsListView PLV = ProductsListView(
-      height: MediaQuery.of(context).size.height,
-      productsList: chosenProduct,
-      isHorizontal: false,
-    );
     return Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButton: SafeArea(child: FSB()),
@@ -293,8 +279,8 @@ class _SearchBarState extends State<SearchBar> {
           backgroundColor: Colors.orange,
           elevation: 4.0,
         ),
-        body: ((chosenProduct.isEmpty && selectedTerm != null))
+        body: (chosenProduct.isEmpty && selectedTerm != null && selectedTerm != "")
             ? ErrorMsg()
-            : gridList(chosenProduct));
+            : VerticalProductsListView(productsList: chosenProduct));
   }
 }

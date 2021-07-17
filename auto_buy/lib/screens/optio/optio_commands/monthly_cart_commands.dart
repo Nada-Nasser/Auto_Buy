@@ -34,9 +34,11 @@ class MonthlyCartCommand implements Command {
         await _deleteFromMonthlyCart();
       } else if (commandArguments.commandType == CommandType.OPEN) {
         await _openMonthlyCart();
+      } else {
+        throw Exception("unknown command type in monthly cart");
       }
-    } on Exception catch (e) {
-      throw e;
+    } on Exception {
+      rethrow;
     }
   }
 
@@ -45,25 +47,36 @@ class MonthlyCartCommand implements Command {
     try {
       List<Product> products =
           await _productsBackendServices.readCategoryProducts("Food");
+
       await productsListDialog(
         commandArguments.context,
         _onSelectProduct,
         products,
-        "Select Product you mean",
+        "Select the product you mean",
       );
-      await _getSelectedCartName();
 
-      print("add ${_selectedProduct.name} to $_selectedCartName monthly cart");
-      MonthlyCartItem item = MonthlyCartItem(
-          productId: _selectedProduct.id,
-          quantity: commandArguments.quantity ?? 1);
+      if (_selectedProduct != null) {
+        await _getSelectedCartName();
 
-      await _monthlyCartServices.addProductToMonthlyCart(
-        commandArguments.uid,
-        _selectedCartName,
-        item,
-      );
-      print("Product added");
+        if (_selectedCartName != null) {
+          print(
+              "add ${_selectedProduct.name} to $_selectedCartName monthly cart");
+          MonthlyCartItem item = MonthlyCartItem(
+              productId: _selectedProduct.id,
+              quantity: commandArguments.quantity ?? 1);
+
+          await _monthlyCartServices.addProductToMonthlyCart(
+            commandArguments.uid,
+            _selectedCartName,
+            item,
+          );
+          print("Product added");
+        } else {
+          throw Exception("You didn't select a cart");
+        }
+      } else {
+        throw Exception("You didn't select a product");
+      }
     } on Exception catch (e) {
       throw e;
     }
@@ -107,11 +120,15 @@ class MonthlyCartCommand implements Command {
         "Select Product you mean",
       );
 
-      await _monthlyCartServices.deleteProductFromMonthlyCart(
-        commandArguments.uid,
-        _selectedCartName,
-        _selectedProduct.id,
-      );
+      if (_selectedProduct != null) {
+        await _monthlyCartServices.deleteProductFromMonthlyCart(
+          commandArguments.uid,
+          _selectedCartName,
+          _selectedProduct.id,
+        );
+      } else {
+        throw Exception("You didn't select a product");
+      }
     } on Exception catch (e) {
       throw e;
     }
