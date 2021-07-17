@@ -49,7 +49,9 @@ class ProfileScreen extends StatelessWidget {
                         future: FirebaseStorageService.instance
                             .downloadURL(snapShot.data['pic_path']),
                         builder: (ctx, image) {
-                          if (image.hasData) {
+                          if (image.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }else{
                             String pth;
                             if (snapShot.data['pic_path']
                                 .toString()
@@ -61,10 +63,8 @@ class ProfileScreen extends StatelessWidget {
                             return CircleAvatar(
                               radius: kSpacingUnit.w * 5,
                               backgroundImage:
-                                  NetworkImage(pth),
+                              NetworkImage(pth),
                             );
-                          }else{
-                            return CircularProgressIndicator();
                           }
                         },
                       ),
