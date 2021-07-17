@@ -54,8 +54,8 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
         return false;
       }
 
-      user.sendEmailVerification();
-      user.reload();
+      //user.sendEmailVerification();
+      //user.reload();
 
       Map<String, dynamic> data = {
         "name": auth.user.displayName,
@@ -72,7 +72,7 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
         "pic_path": auth.user.photoURL == ""
             ? "auto_buy/assets/images/optiologo.png"
             : auth.user.photoURL,
-        "id": user.displayName ?? "" + '#' + auth.uid.substring(0, 5),
+        "id": (user.displayName ?? "") + '#' + auth.uid.substring(0, 5),
       };
 
       await CloudFirestoreService.instance
