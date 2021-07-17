@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_buy/screens/optio/optio_commands/expense_tracker_commands.dart';
 import 'package:auto_buy/screens/optio/optio_commands/monthly_cart_commands.dart';
+import 'package:auto_buy/screens/optio/optio_commands/search_commands.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -104,6 +105,7 @@ class CommandGenerator {
       command = ExpenseTrackerCommand(commandArguments);
     } else if (commandPlace == CommandPlace.FriendsSystem) {
     } else if (commandPlace == CommandPlace.ProductsSearching) {
+      command = SearchCommand(commandArguments);
     } else {
       command = InvalidCommand(commandArguments);
     }

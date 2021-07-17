@@ -50,8 +50,7 @@ class SearchBarState extends State<SearchBarScreen> {
     final key = 'searchHistory';
     prefs.setStringList(key, _searchHistory);
   }
-
-  Future<void> search(selectedTerm) {
+  void search(selectedTerm) {
     chosenProduct.clear();
     if (selectedTerm != "" && selectedTerm != Null) {
       chosenProduct = searchService.search(selectedTerm);
@@ -67,19 +66,19 @@ class SearchBarState extends State<SearchBarScreen> {
     print(fromNameToProduct);
   }
 
-  Future<List<String>> filterSearchTerms({
+  List<String> filterSearchTerms({
     @required String filter,
-  }) async {
+  })  {
     if (filter != null && filter.isNotEmpty) {
       // Reversed because we want the last added items to appear first in the UI
       filter = filter.toLowerCase();
-      return await searchService.searchReturnsNames(filter);
+      return searchService.searchReturnsNames(filter);
     } else {
       return _searchHistory.reversed.toList();
     }
   }
 
-  Future<void> addSearchTerm(String term) async {
+  void addSearchTerm(String term) {
     if (_searchHistory.contains(term)) {
       putSearchTermFirst(term);
       return;
@@ -88,12 +87,12 @@ class SearchBarState extends State<SearchBarScreen> {
     if (_searchHistory.length > HistoryLenght) {
       _searchHistory.removeRange(0, _searchHistory.length - HistoryLenght);
     }
-    _filteredSearchHistory = await filterSearchTerms(filter: null);
+    _filteredSearchHistory = filterSearchTerms(filter: null);
   }
 
-  Future<void> deleteSearchTerm(String term) async {
+  void deleteSearchTerm(String term) {
     _searchHistory.removeWhere((t) => t == term);
-    _filteredSearchHistory = await filterSearchTerms(filter: null);
+    _filteredSearchHistory = filterSearchTerms(filter: null);
   }
 
   void putSearchTermFirst(String term) {
@@ -125,8 +124,8 @@ class SearchBarState extends State<SearchBarScreen> {
       ],
 
       onQueryChanged: (query) {
-        setState(() async {
-          _filteredSearchHistory = await filterSearchTerms(filter: query);
+        setState(() {
+          _filteredSearchHistory = filterSearchTerms(filter: query);
         });
       },
       onSubmitted: (query) {
@@ -256,11 +255,10 @@ class SearchBarState extends State<SearchBarScreen> {
 
   @override
   Future<void> initState() {
-    super.initState();
     FirstSearch = false;
     controller = FloatingSearchBarController();
     _readHistorySharedPrefrence();
-    search(selectedTerm);
+    super.initState();
   }
 
   @override

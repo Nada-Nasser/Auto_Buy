@@ -9,7 +9,7 @@ class ProductSearchServices {
   List<String> _productNamesList = [];
   final Map<String, Product> _fromNameToProduct = {};
 
-  searchServices() {
+  _searchServices() {
     print("search service intilised");
     readAllProducts();
   }
@@ -30,7 +30,7 @@ class ProductSearchServices {
     List<String> similarStrings = searchReturnsNames(searchTerm);
     List<Product> products = [];
     if(similarStrings.isNotEmpty)
-      products = convertFromNameToProduct(similarStrings);
+      products = _convertFromNameToProduct(similarStrings);
 
     return products;
   }
@@ -57,7 +57,7 @@ class ProductSearchServices {
     return similarStrings.toList();
   }
 
-  List<Product> convertFromNameToProduct(List<String> productNames){
+  List<Product> _convertFromNameToProduct(List<String> productNames){
     List<Product> products = [];
     for(String s in productNames){
       products.add(_fromNameToProduct[s]);
