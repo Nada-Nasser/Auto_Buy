@@ -86,8 +86,11 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                                   ),
                                   child: Text("Cancel Monthly Cart Order", style: TextStyle(color: Colors.white, fontSize: 18),),
                                   onPressed: () async{
-                                    await widget.bloc.cancelCheckedOutMonthlyCart(widget.bloc.selectedCartName,widget.bloc.uid).then((value) =>
-                                        Navigator.of(context).pop(false));
+                                    await widget.bloc.cancelCheckedOutMonthlyCart(widget.bloc.selectedCartName,widget.bloc.uid).then((value){
+                                        Navigator.of(context).pop(false);
+                                        showInSnackBar("cart cancelled!", context);
+                                  });
+
                                   }),
                             ],
                           )
