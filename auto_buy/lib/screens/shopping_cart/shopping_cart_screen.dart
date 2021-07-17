@@ -57,7 +57,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         return FutureBuilder(
                             future: _cartScreenBloc.calculateTotalPrice(
                                 "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                "/products/"),
+                                "/products/",
+                                "/shopping_carts/${auth.uid}"
+                            ),
                             builder: (context, price) {
                               if (price.hasData) {
                                 widget.totalPrice = price.data;
@@ -67,7 +69,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     fontSize: 18,
                                   ),
                                 );
-                              } else {
+                              } else{
                                 return Text("Your cost is 0.00\$");
                               }
                             });
@@ -90,7 +92,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         return output;
                       },
                     ),
-                    builder: (context, alldata) {
+                    builder: (context, alldata){
                       if (alldata.hasData) {
                         return ListView.builder(
                           itemCount: alldata.data.length,
@@ -312,26 +314,27 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         ),
                       ),
                       onPressed: () async {
+                        print('shopping cart length');
                         if (_cartScreenBloc.productIds.length == 0)
                           showInSnackBar("your cart is empty", context);
                         else {
                           await _cartScreenBloc.calculateTotalPrice(
                               "/shopping_carts/${auth.uid}/shopping_cart_items",
-                              "/products/");
+                              "/products/",
+                              "/shopping_carts/${auth.uid}"
+                          );
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => CartCheckoutScreen(
                                         orderPrice: widget.totalPrice,
-                                        productIDs: widget.productIds,
+                                        productIDs: _cartScreenBloc.productIds,
                                         productIdsAndQuantity: _cartScreenBloc
                                             .productIdsAndQuantity,
                                         productIdsAndPrices:
                                             _cartScreenBloc.productIdsAndPrices,
                                         isMonthlyCart: false,
-                                      )))
-                              .then((value) async {
-                                _cartScreenBloc.resetState();
-                              });
+                                      )));
+
                         }
                       },
                       child: Text(

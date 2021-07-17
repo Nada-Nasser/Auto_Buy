@@ -22,14 +22,14 @@ class ShoppingCartScreenBloc {
   }
 
   Future<double> calculateTotalPrice(
-      String cartPath, String productPath) async {
+      String shoppingCartItemsPath, String productPath,String shoppingCartPath) async {
     productIds = [];
     productIdsAndQuantity = {};
     productIdsAndPrices = {};
     double totalSum = 0.0;
 
     dynamic cartItems = await CloudFirestoreService.instance.getCollectionData(
-        collectionPath: cartPath,
+        collectionPath: shoppingCartItemsPath,
         builder: (Map<String, dynamic> data, String documentId) {
           Map<String, dynamic> output = {"data": data, "id": documentId};
           return output;

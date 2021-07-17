@@ -235,7 +235,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                             );
                           }
                           showInSnackBar("checkout done!", context);
-                          Navigator.of(context).pop();
+                          int count = 0;
+                          Navigator.of(context).popUntil((_) => count++ >= 2);
                         }
                             : null,
 
