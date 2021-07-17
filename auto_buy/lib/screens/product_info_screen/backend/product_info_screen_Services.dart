@@ -55,6 +55,6 @@ class ProductInfoScreenServices {
 
   Future<bool> isMonthlyCartCheckedOut(String uid,
       String monthlyCartName) async {
-    await _monthlyCartServices.getIsCheckedOut(uid, monthlyCartName);
+    return await _monthlyCartServices.getIsCheckedOut(uid, monthlyCartName);
   }
 }
