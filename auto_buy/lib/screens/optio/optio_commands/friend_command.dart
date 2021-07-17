@@ -1,5 +1,6 @@
 import 'package:auto_buy/screens/friends/add_friend.dart';
 import 'package:auto_buy/screens/friends/friends_list.dart';
+import 'package:auto_buy/screens/friends/friends_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/widgets/users_list_dialog.dart';
@@ -28,7 +29,12 @@ class FriendCommand implements Command {
       await _deleteFriend();
     }
     else if(commandArguments.commandType == CommandType.OPEN){
-      Navigator.of(commandArguments.context).push(MaterialPageRoute(builder: (context) => FriendsList()));
+      Navigator.of(commandArguments.context).push(
+        MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => AllScreens(),
+        ),
+      );
     }
     else {
       throw UnimplementedError();

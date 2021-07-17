@@ -28,7 +28,7 @@ class SearchCommand implements Command{
       _onSelectProduct,
       searchProducts,
       "Search Results",);
-    if(_selectedProduct == Null)
+    if(_selectedProduct == null)
       throw Exception("You didn't select a product");
     else goToProductInfo(commandArguments.context,_selectedProduct);
 

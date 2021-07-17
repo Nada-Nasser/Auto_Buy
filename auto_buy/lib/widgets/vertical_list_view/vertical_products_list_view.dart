@@ -192,7 +192,7 @@ class ProductTile extends StatelessWidget {
             maxLines: 1,
             textAlign: TextAlign.start,
             style: TextStyle(
-              fontSize: smallPic ? 10 : 15,
+              fontSize: 15,
             ),
           ),
         ),

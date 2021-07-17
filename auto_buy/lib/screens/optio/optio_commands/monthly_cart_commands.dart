@@ -2,6 +2,7 @@ import 'package:auto_buy/models/monthly_cart_product_item.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_screen.dart';
 import 'package:auto_buy/services/monthly_cart_services.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_dialog.dart';
 import 'package:auto_buy/widgets/selection_dialog.dart';
@@ -13,9 +14,7 @@ class MonthlyCartCommand implements Command {
   @override
   final CommandArguments commandArguments;
   final MonthlyCartServices _monthlyCartServices = MonthlyCartServices();
-  final ProductsBackendServices _productsBackendServices =
-      ProductsBackendServices();
-
+  final ProductSearchServices searchService = ProductSearchServices();
   /// contains the parameters needed to execute run function
   /// ex. uid, productName, ...
 
@@ -45,8 +44,7 @@ class MonthlyCartCommand implements Command {
   Future<void> _addToMonthlyCart() async {
     // TODO: search for the product using [commandArguments.productName] to get List<product>
     try {
-      List<Product> products =
-          await _productsBackendServices.readCategoryProducts("Food");
+      List<Product> products = await getSearchResults(commandArguments.productsName);
 
       await productsListDialog(
         commandArguments.context,
@@ -80,6 +78,11 @@ class MonthlyCartCommand implements Command {
     } on Exception catch (e) {
       throw e;
     }
+  }
+
+  Future<List<Product>> getSearchResults(String term) async{
+    await searchService.readAllProducts();
+    return searchService.search(term);
   }
 
   Future<void> _deleteFromMonthlyCart() async {

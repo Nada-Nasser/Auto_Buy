@@ -49,6 +49,8 @@ class ShoppingCartCommand implements Command{
       );
 
       ///check if there's still quantity in stock
+      if(selectedProduct == null)
+        throw Exception('you did not select a product');
       if(selectedProduct.numberInStock == 0)
         throw Exception('out of stock');
       if(commandArguments.quantity > selectedProduct.numberInStock)
@@ -73,7 +75,7 @@ class ShoppingCartCommand implements Command{
       }
 
     } on Exception catch (e) {
-      print(e);
+      throw e;
     }
   }
 
@@ -93,6 +95,8 @@ class ShoppingCartCommand implements Command{
             Map<String, dynamic> output = {"data": data, "id": documentId};
             return output;
           });
+      if(selectedProduct == null)
+        throw Exception('you did not select a product');
       //create products from cart
       if (cartItems.length > 0) {
         for (int i = 0; i < cartItems.length; i++) {
@@ -113,7 +117,7 @@ class ShoppingCartCommand implements Command{
       }
     } on Exception catch (e) {
       // TODO
-      print("failed during delete from cart function");
+      throw e;
     }
   }
   void _openShoppingCart(){
