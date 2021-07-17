@@ -64,13 +64,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                               if (price.hasData) {
                                 widget.totalPrice = price.data;
                                 return Text(
-                                  "total cost is ${widget.totalPrice.toStringAsFixed(2)} \$",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
+                                  ///Text("Total Price = EGP${widget.bloc.totalPrice.toStringAsFixed(3)}")
+                                  "Total Price = EGP ${widget.totalPrice.toStringAsFixed(2)}",
                                 );
                               } else{
-                                return Text("Your cost is 0.00\$");
+                                return Text("Total Price = EGP 0.00");
                               }
                             });
                       },
@@ -341,8 +339,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         "Check Out",
                         style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                          fontSize: 18,
                         ),
                       ),
                     ),

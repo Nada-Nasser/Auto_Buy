@@ -56,57 +56,73 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingImage();
               }
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  buildHeader(),
-                  Expanded(
-                    child: VerticalProductsListView(
-                      productsList: widget.bloc.monthlyCartProducts,
-                      quantities: widget.bloc.quantities,
-                      onTap: _onTapProduct,
-                      onLongPress: _onLongPressProduct,
+              return Container(
+                padding: EdgeInsets.only(left: 5, top: 10, right: 5,bottom: 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  widget.bloc.isCheckedOut
-                      ? Column(
-                          children: [
-                            ElevatedButton(
-                                child: Text("Cancel Monthly Cart Order"),
-                                onPressed: () async{
-                                  await widget.bloc.cancelCheckedOutMonthlyCart(widget.bloc.selectedCartName,widget.bloc.uid);
-                                  setState(() {});
-                                }),
-                          ],
-                        )
-                      : ElevatedButton(
-                          onPressed: () {
-                            // CHECK OUT button
-                            if (!widget.bloc.monthlyCartProducts.isEmpty) {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) => CartCheckoutScreen(
-                                            cartPath:
-                                                widget.bloc.selectedCartName,
-                                            orderPrice: widget.bloc.totalPrice,
-                                            isMonthlyCart: true,
-                                            productIDs: widget.bloc.productIDs,
-                                            productIdsAndQuantity: widget
-                                                .bloc.productIdsAndQuantity,
-                                            productIdsAndPrices:
-                                                widget.bloc.productIdsAndPrices,
-                                          )))
-                                  .then((value) =>
-                                      Navigator.of(context).pop(false));
-                            } else
-                              showInSnackBar(
-                                  "You need to add items first!", context);
-                          },
-                          child: Text("Check Out"))
-                ],
+                    buildHeader(),
+                    Expanded(
+                      child: VerticalProductsListView(
+                        productsList: widget.bloc.monthlyCartProducts,
+                        quantities: widget.bloc.quantities,
+                        onTap: _onTapProduct,
+                        onLongPress: _onLongPressProduct,
+                      ),
+                    ),
+                    widget.bloc.isCheckedOut
+                        ? Column(
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.orange,
+                                    padding: EdgeInsets.all(20),
+                                    shape: new RoundedRectangleBorder(
+                                      borderRadius: new BorderRadius.circular(25.0),
+                                    ),
+                                  ),
+                                  child: Text("Cancel Monthly Cart Order", style: TextStyle(color: Colors.white, fontSize: 18),),
+                                  onPressed: () async{
+                                    await widget.bloc.cancelCheckedOutMonthlyCart(widget.bloc.selectedCartName,widget.bloc.uid).then((value) =>
+                                        Navigator.of(context).pop(false));
+                                  }),
+                            ],
+                          )
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.orange,
+                              padding: EdgeInsets.all(20),
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              // CHECK OUT button
+                              if (!widget.bloc.monthlyCartProducts.isEmpty) {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => CartCheckoutScreen(
+                                              cartPath:
+                                                  widget.bloc.selectedCartName,
+                                              orderPrice: widget.bloc.totalPrice,
+                                              isMonthlyCart: true,
+                                              productIDs: widget.bloc.productIDs,
+                                              productIdsAndQuantity: widget
+                                                  .bloc.productIdsAndQuantity,
+                                              productIdsAndPrices:
+                                                  widget.bloc.productIdsAndPrices,
+                                            )));
+
+                              } else
+                                showInSnackBar(
+                                    "You need to add items first!", context);
+                            },
+                            child: Text("Check Out",style: TextStyle(color: Colors.white, fontSize: 18)))
+                  ],
+                ),
               );
             }));
   }
@@ -131,7 +147,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
             ],
           ),
           Row(
-            children: [Text("Total Price = \$${widget.bloc.totalPrice.toStringAsFixed(3)}")],
+            children: [Text("Total Price = EGP ${widget.bloc.totalPrice.toStringAsFixed(3)}")],
           ),
         ],
       ),
