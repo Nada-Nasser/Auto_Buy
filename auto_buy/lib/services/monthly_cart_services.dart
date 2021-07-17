@@ -60,6 +60,10 @@ class MonthlyCartServices {
           // check if product exists in the cart
           docPath: APIPath.userMonthlyCartProductDocumentPath(
               uid, cartName, product.productId));
+
+      bool isCartCheckedOut = await getIsCheckedOut(uid, cartName);
+      if (isCartCheckedOut) return;
+
       if (flag) {
         // if true
         // fetch the product from monthly cart to get the old quantity
