@@ -201,6 +201,7 @@ class ProductInfoScreenBloc {
       );
 
       bool flag = await _services.isMonthlyCartCheckedOut(uid, monthlyCartName);
+      print(' monthly cart name : $monthlyCartName');
       if (!flag) {
         return "You can not add to monthly carts after checking it out";
       }

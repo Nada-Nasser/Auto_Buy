@@ -19,7 +19,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:  Text("Order price : ${widget.price.toStringAsFixed(2)}\$"),
+        title:  Text("Order price : EGP ${widget.price.toStringAsFixed(2)}"),
       ),
       body: Container(
           child: GridView.builder(
