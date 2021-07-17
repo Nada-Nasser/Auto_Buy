@@ -29,7 +29,6 @@ class ProductInfoScreenBloc {
         await _services.readCategoryProducts(product.categoryID);
   }
 
-
   Future<void> checkProductInUserWishList() async =>
       await _wishListBloc.checkProductInUserWishList(uid, product.id);
 
@@ -57,8 +56,7 @@ class ProductInfoScreenBloc {
   void disposeQuantityAndPriceModelStream() =>
       _quantityAndPriceModelStreamController.close();
 
-  String get increasingQuantityErrorMessage =>
-      product.numberInStock > 0
+  String get increasingQuantityErrorMessage => product.numberInStock > 0
       ? "You cannot buy more than $quantity items from this product"
       : "The product is out of stock for now";
 
@@ -201,8 +199,7 @@ class ProductInfoScreenBloc {
       );
 
       bool flag = await _services.isMonthlyCartCheckedOut(uid, monthlyCartName);
-      print(' monthly cart name : $monthlyCartName');
-      if (!flag) {
+      if (flag) {
         return "You can not add to monthly carts after checking it out";
       }
 
