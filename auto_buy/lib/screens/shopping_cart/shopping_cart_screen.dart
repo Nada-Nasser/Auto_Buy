@@ -330,7 +330,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                             _cartScreenBloc.productIdsAndPrices,
                                         isMonthlyCart: false,
                                       )))
-                              .then((value) => _cartScreenBloc.resetState());
+                              .then((value) async {
+                                print('calculating');
+                                _cartScreenBloc.resetState();
+                              });
+
+
+
                         }
                       },
                       child: Text(

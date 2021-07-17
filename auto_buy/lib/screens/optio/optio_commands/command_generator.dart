@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:auto_buy/screens/optio/optio_commands/monthly_cart_commands.dart';
+import 'package:auto_buy/screens/optio/optio_commands/shopping_cart_commands.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../main.dart';
 import 'command.dart';
+import 'friend_command.dart';
 
 class CommandGenerator {
   /// using [response] parameter from optio api
@@ -27,7 +29,7 @@ class CommandGenerator {
         commandType = CommandType.ADD;
         if (commandBody.length == 5) {
           productName = '${commandBody[3]}';
-          quantity = commandBody[1].toInt() ?? 1;
+          quantity = commandBody[1] == "" ? 1 : commandBody[1].toInt();
           if (commandBody.last == 'shopping')
             commandPlace = CommandPlace.ShoppingCart;
           else
@@ -95,16 +97,19 @@ class CommandGenerator {
         quantity: quantity,
         uid: uid,
         context: context);
+    print('command arguments');
 
     if (commandPlace == CommandPlace.MonthlyCart) {
       command = MonthlyCartCommand(commandArguments);
-    } else if (commandPlace == CommandPlace.ShoppingCart) {} else
-    if (commandPlace == CommandPlace.ExpenseTracker) {} else
-    if (commandPlace == CommandPlace.FriendsSystem) {} else
-    if (commandPlace == CommandPlace.ProductsSearching) {} else {
+    } else if (commandPlace == CommandPlace.ShoppingCart) {
+      command = ShoppingCartCommand(commandArguments);
+    } else if (commandPlace == CommandPlace.ExpenseTracker) {}
+    else if (commandPlace == CommandPlace.FriendsSystem) {
+      command = FriendCommand(commandArguments);
+    }
+    else if (commandPlace == CommandPlace.ProductsSearching) {} else {
       command = InvalidCommand(commandArguments);
     }
-
     return command;
   }
 }

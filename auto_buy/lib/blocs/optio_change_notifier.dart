@@ -44,7 +44,7 @@ class OptioChangeNotifier extends ChangeNotifier {
       );
     });
 
-    var url = Uri.parse('https://e36ca0bfbf05.ngrok.io/classifytext/$input');
+    var url = Uri.parse('https://46c3464da7f7.ngrok.io/classifytext/$input');
     var response = await http.get(url);
     print(response.body.toString());
 
