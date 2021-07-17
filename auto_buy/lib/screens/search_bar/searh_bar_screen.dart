@@ -1,4 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import 'package:auto_buy/services/products_services.dart';
@@ -10,18 +11,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'BackEnd/UI_for_search_results.dart';
 
 class SearchBarScreen extends StatefulWidget {
-  String term;
   ProductSearchServices sv;
 
-  SearchBarScreen({String this.term = "", ProductSearchServices this.sv});
+  SearchBarScreen({ProductSearchServices this.sv});
 
   @override
-  SearchBarState createState() => SearchBarState(s: term , sv: sv);
+  SearchBarState createState() => SearchBarState(sv: sv);
 }
 
 class SearchBarState extends State<SearchBarScreen> {
-  SearchBarState({String s = "" , ProductSearchServices sv}){
-    selectedTerm = s;
+  SearchBarState({ProductSearchServices sv}){
     searchService = sv;
   }
   static const HistoryLenght = 10;
@@ -33,16 +32,14 @@ class SearchBarState extends State<SearchBarScreen> {
   List<Product> chosenProduct = [];
   String selectedTerm;
   final Map<String, Product> fromNameToProduct = {};
-  bool FirstSearch = true;
 
   ProductSearchServices searchService;
-
 
   Future<void> _readHistorySharedPrefrence() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'searchHistory';
     _searchHistory = prefs.getStringList(key) ?? [];
-    _filteredSearchHistory = await filterSearchTerms(filter: null);
+    _filteredSearchHistory = filterSearchTerms(filter: null);
   }
 
   _saveHistorySharedPrefrence() async {
@@ -56,7 +53,6 @@ class SearchBarState extends State<SearchBarScreen> {
       chosenProduct = searchService.search(selectedTerm);
     }
   }
-
 
   CreateFromNameToProductMap() {
     for (Product prod in Products) {
@@ -249,13 +245,22 @@ class SearchBarState extends State<SearchBarScreen> {
         ));
   }
 
-  ProductPrettyListView gridList(List<Product> productsList) {
-    return ProductPrettyListView(productsList: productsList,);
+  _onTapProduct(BuildContext context, Product product) {
+    //  Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => ProductInfoScreen.create(
+          context,
+          product,
+          product.picturePath,
+        ),
+      ),
+    );
   }
 
   @override
   Future<void> initState() {
-    FirstSearch = false;
     controller = FloatingSearchBarController();
     _readHistorySharedPrefrence();
     super.initState();
@@ -279,8 +284,8 @@ class SearchBarState extends State<SearchBarScreen> {
           backgroundColor: Colors.orange,
           elevation: 4.0,
         ),
-        body: (chosenProduct.isEmpty && selectedTerm != null && selectedTerm != "")
+        body: (chosenProduct.isEmpty && selectedTerm != null)
             ? ErrorMsg()
-            : VerticalProductsListView(productsList: chosenProduct));
+            : VerticalProductsListView(productsList: chosenProduct,_onTapProduct()));
   }
 }
