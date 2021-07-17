@@ -35,6 +35,7 @@ class ShoppingCartScreenBloc {
           return output;
         });
 
+
     for (int i = 0; i < cartItems.length; i++) {
       dynamic productMap = await CloudFirestoreService.instance
           .readOnceDocumentData(
@@ -61,8 +62,6 @@ class ShoppingCartScreenBloc {
             product.hasDiscount ? product.priceAfterDiscount : product.price,
       );
     }
-    // print('in bloc');
-    print(productIdsAndPrices);
     return totalSum;
   }
 

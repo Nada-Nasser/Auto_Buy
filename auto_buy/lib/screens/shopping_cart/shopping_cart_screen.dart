@@ -109,12 +109,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         return output;
                                       }),
                               builder: (context, snapshot) {
+                                print('what is going on');
+                                print(alldata.data[index]['data']);
                                 if (snapshot.hasData) {
                                   Product product = Product.fromMap(
                                       snapshot.data['data'],
                                       snapshot.data['id']);
                                   if (!widget.productIds.contains(product.id)) {
-                                    print("adding product");
                                     widget.productIds.add(product.id);
                                   }
                                   return GestureDetector(
@@ -317,8 +318,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           await _cartScreenBloc.calculateTotalPrice(
                               "/shopping_carts/${auth.uid}/shopping_cart_items",
                               "/products/");
-                          print('in cart screen');
-                          print(_cartScreenBloc.productIdsAndQuantity);
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => CartCheckoutScreen(
@@ -331,12 +330,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         isMonthlyCart: false,
                                       )))
                               .then((value) async {
-                                print('calculating');
                                 _cartScreenBloc.resetState();
                               });
-
-
-
                         }
                       },
                       child: Text(

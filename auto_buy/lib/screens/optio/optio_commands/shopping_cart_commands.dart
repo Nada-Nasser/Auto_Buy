@@ -3,6 +3,7 @@ import 'package:auto_buy/models/shopping_cart_item.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/services/shopping_cart_services.dart';
 import 'package:auto_buy/widgets/products_list_dialog.dart';
@@ -15,6 +16,7 @@ class ShoppingCartCommand implements Command{
   ShoppingCartCommand(this.commandArguments);
   final ProductsBackendServices _productsBackendServices = ProductsBackendServices();
   final ShoppingCartServices shoppingCartServices = ShoppingCartServices();
+  final ProductSearchServices searchService = ProductSearchServices();
   Product selectedProduct;
 
   @override
@@ -37,9 +39,7 @@ class ShoppingCartCommand implements Command{
   Future<void> _addToShoppingCart() async {
     try {
       //TODO: search using similarity
-      List<Product> products =
-      await _productsBackendServices.readCategoryProducts("Food");
-
+      List<Product> products = await getSearchResults(commandArguments.productsName);
       ///select a product
       await productsListDialog(
         commandArguments.context,
@@ -77,6 +77,10 @@ class ShoppingCartCommand implements Command{
     }
   }
 
+  Future<List<Product>> getSearchResults(String term) async{
+    await searchService.readAllProducts();
+    return searchService.search(term);
+  }
 
   Future<void> _deleteFromShoppingCart() async {
     try {

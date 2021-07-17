@@ -104,9 +104,11 @@ class CommandGenerator {
     if (commandPlace == CommandPlace.MonthlyCart) {
       command = MonthlyCartCommand(commandArguments);
     } else if (commandPlace == CommandPlace.ShoppingCart) {
+      command = ShoppingCartCommand(commandArguments);
     } else if (commandPlace == CommandPlace.ExpenseTracker) {
       command = ExpenseTrackerCommand(commandArguments);
     } else if (commandPlace == CommandPlace.FriendsSystem) {
+      command = FriendCommand(commandArguments);
     } else if (commandPlace == CommandPlace.ProductsSearching) {
       command = SearchCommand(commandArguments);
     } else {
