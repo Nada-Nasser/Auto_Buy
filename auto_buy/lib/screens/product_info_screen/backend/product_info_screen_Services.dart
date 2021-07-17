@@ -41,15 +41,20 @@ class ProductInfoScreenServices {
   Future<List<String>> readUserMonthlyCartsNames(String uid) async =>
       await _monthlyCartServices.readUserMonthlyCartsNames(uid);
 
-  Future<List<MonthlyCartItem>> readMonthlyCartProducts(
-          String uid, String cartName) async =>
+  Future<List<MonthlyCartItem>> readMonthlyCartProducts(String uid,
+      String cartName) async =>
       await _monthlyCartServices.readMonthlyCartItems(uid, cartName);
 
-  Future<void> addProductToMonthlyCart(
-          String uid, String cartName, MonthlyCartItem product) async =>
+  Future<void> addProductToMonthlyCart(String uid, String cartName,
+      MonthlyCartItem product) async =>
       await _monthlyCartServices.addProductToMonthlyCart(
           uid, cartName, product);
 
   Future<List<Product>> readCategoryProducts(String categoryID) async =>
       await _productServices.readCategoryProducts(categoryID);
+
+  Future<bool> isMonthlyCartCheckedOut(String uid,
+      String monthlyCartName) async {
+    await _monthlyCartServices.getIsCheckedOut(uid, monthlyCartName);
+  }
 }

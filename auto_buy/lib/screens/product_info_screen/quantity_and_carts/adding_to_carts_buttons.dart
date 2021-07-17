@@ -87,7 +87,7 @@ class AddingToCartsButtons extends StatelessWidget {
     final bloc = Provider.of<ProductInfoScreenBloc>(context, listen: false);
     List<String> names = await bloc.getMonthlyCartsNames();
     print(names);
-    selectionDialog(
+    await selectionDialog(
       context,
       _addTheProductToMonthlyCart,
       names,

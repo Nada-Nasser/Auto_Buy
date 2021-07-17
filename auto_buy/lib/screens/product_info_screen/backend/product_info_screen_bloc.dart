@@ -200,6 +200,11 @@ class ProductInfoScreenBloc {
         quantity: quantity,
       );
 
+      bool flag = await _services.isMonthlyCartCheckedOut(uid, monthlyCartName);
+      if (!flag) {
+        return "You can not add to monthly carts after checking it out";
+      }
+
       if (quantity < 1) return "You can't add 0 items to your monthly carts";
 
       await _services.addProductToMonthlyCart(uid, monthlyCartName, item);
