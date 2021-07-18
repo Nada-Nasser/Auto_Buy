@@ -286,6 +286,6 @@ class SearchBarState extends State<SearchBarScreen> {
         ),
         body: (chosenProduct.isEmpty && selectedTerm != null)
             ? ErrorMsg()
-            : VerticalProductsListView(productsList: chosenProduct,_onTapProduct()));
+            : VerticalProductsListView(productsList: chosenProduct,onTap: _onTapProduct));
   }
 }

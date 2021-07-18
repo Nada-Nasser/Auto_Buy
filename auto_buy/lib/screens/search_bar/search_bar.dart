@@ -15,7 +15,7 @@ class SearchBar extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting)
           return Center(child: CircularProgressIndicator());
         else if (snapshot.hasData)
-          return SearchBarScreen(sv: sv,);
+          return SearchBarScreen(sv: sv);
         else if (snapshot.hasError)
           return Text("ERROR: ${snapshot.error}");
         else
