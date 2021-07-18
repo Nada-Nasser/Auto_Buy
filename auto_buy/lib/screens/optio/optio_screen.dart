@@ -1,6 +1,7 @@
 import 'package:auto_buy/blocs/optio_change_notifier.dart';
 import 'package:auto_buy/screens/optio/text_input_optio.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
+import 'package:auto_buy/widgets/optio_help.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,9 @@ class _OptioScreenState extends State<OptioScreen> {
                 Navigator.of(context).pop(context);
               }),
           actions: [
-            IconButton(icon: Icon(Icons.help), onPressed: (){}, color: Colors.orange,)
+            IconButton(icon: Icon(Icons.help), onPressed: () async {
+              await optioHelpWidget(context);
+            }, color: Colors.orange,)
           ],
         ),
         body: Container(

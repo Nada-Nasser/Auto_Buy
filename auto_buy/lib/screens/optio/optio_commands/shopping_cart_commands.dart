@@ -32,7 +32,7 @@ class ShoppingCartCommand implements Command{
     }else if(commandArguments.commandType == CommandType.OPEN){
       _openShoppingCart();
     }else{
-      throw UnimplementedError();
+      throw Exception('you can\'t do this command with your shopping cart');
     }
   }
 
@@ -56,9 +56,6 @@ class ShoppingCartCommand implements Command{
       if(commandArguments.quantity > selectedProduct.numberInStock)
         throw Exception('only ${selectedProduct.numberInStock} of this product left in stock');
 
-      print('product id is ${selectedProduct.id}');
-      print('quantity is ${commandArguments.quantity}');
-      print('product name is ${selectedProduct.name}');
       ///create a cart item
       if (_didntExceedMax()) {
         final cartItem = ShoppingCartItem(

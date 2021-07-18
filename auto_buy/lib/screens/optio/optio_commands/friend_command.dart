@@ -37,7 +37,7 @@ class FriendCommand implements Command {
       );
     }
     else {
-      throw UnimplementedError();
+      throw Exception('you can\'t do this command with your friends list');
     }
   }
 
@@ -68,9 +68,6 @@ class FriendCommand implements Command {
 
   }
 
-  Future<void >_onClick(BuildContext contextm){
-
-  }
 
   validate(BuildContext context, TextEditingController controller,
       String uid) async {
