@@ -3,6 +3,7 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:commons/alert_dialogs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -133,6 +134,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != null ? "${snapShot.data['adress']['floor_number']}" : ""));
                 TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != null ? "${snapShot.data['adress']['apartment_number']}" : ""));
                 TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != null ? "${snapShot.data['adress']['street']}" : ""));
+                TextEditingController numberController  = TextEditingController(text: snapShot.data['phone_number']);
                 initGovernorate = snapShot.data['adress']['governorate'];
                 print(initGovernorate);
                 return ListView(
@@ -150,7 +152,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             future: FirebaseStorageService.instance
                                 .downloadURL(snapShot.data['pic_path']),
                             builder: (ctx, image) {
-                              if (image.hasData) {
+                              if (image.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else {
                                 String pth;
                                 if (snapShot.data['pic_path']
                                     .toString()
@@ -180,8 +184,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         : DecorationImage(image: new FileImage(_image), fit: BoxFit.fill)
                                   ),
                                 );
-                              } else {
-                                return CircularProgressIndicator();
                               }
                             },
                           ),
@@ -273,6 +275,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
 
                     buildTextFormField("Full Name",nameController),
+                    buildTextFormField("Phone Number",numberController),
                     Row(
                       children: [
                         
@@ -305,7 +308,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         RaisedButton(
                           onPressed: () {
-                            update(context, auth, nameController, bNumberController, cityController, streetController, aNumberController, fNumberController);
+                            update(context, auth, nameController, bNumberController, cityController, streetController, aNumberController, fNumberController, numberController);
                             showInSnackBar("Your data updated successfuly", context);
                           },
                           color: Colors.orange,
@@ -333,7 +336,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future update(BuildContext context, FirebaseAuthService auth, 
   TextEditingController nameController, TextEditingController bNumberController, 
   TextEditingController cityController, TextEditingController streetController, 
-  TextEditingController aNumberController, TextEditingController fNumberController) async{
+  TextEditingController aNumberController, TextEditingController fNumberController, TextEditingController numberController) async{
 
     Map <String, dynamic> newAdress;
     String newGov;
@@ -356,6 +359,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
         documentID: auth.user.uid,
         fieldName: 'name',
         updatedValue: nameController.text);
+    
+    // Update number.
+    await CloudFirestoreService.instance.updateDocumentField(
+        collectionPath: "users/",
+        documentID: auth.user.uid,
+        fieldName: 'phone_number',
+        updatedValue: numberController.text);
 
     newAdress = {"building_number" : bNumberController.text, "city" : cityController.text, "street" : streetController.text, "governorate" : newGov, "apartment_number" : aNumberController.text, "floor_number" : fNumberController.text};
 

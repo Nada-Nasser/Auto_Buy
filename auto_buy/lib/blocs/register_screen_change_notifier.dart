@@ -67,7 +67,8 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
           "street": "",
           "governorate": "",
           "apartment_number": "",
-          "floor_number": ""
+          "floor_number": "",
+          "phone_number": ""
         },
         "pic_path": auth.user.photoURL == ""
             ? "auto_buy/assets/images/optiologo.png"
@@ -119,7 +120,8 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
           "street": "",
           "governorate": "",
           "apartment_number": "",
-          "floor_number": ""
+          "floor_number": "",
+          "phone_number": ""
         },
         "pic_path": auth.user.photoURL == null
             ? "/images/optiologo.png"
