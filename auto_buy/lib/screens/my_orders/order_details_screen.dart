@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 class OrderDetailsScreen extends StatefulWidget {
   List<dynamic> productIds;
   Map<String,dynamic> productIdsAndQuantity;
+  Map<String,dynamic> productIdsAndPrices;
   double price;
-  OrderDetailsScreen({@required this.productIds, this.productIdsAndQuantity,@required this.price});
+  OrderDetailsScreen({@required this.productIds, this.productIdsAndQuantity,@required this.price,this.productIdsAndPrices});
   @override
   _OrderDetailsScreenState createState() => _OrderDetailsScreenState();
 }
@@ -50,11 +51,19 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       children: [
                         Row(
                           mainAxisAlignment:
-                          MainAxisAlignment.end,
+                          MainAxisAlignment.spaceBetween,
                           children: [
+                            Text(
+                              widget.productIdsAndPrices!=null?"EGP ${widget.productIdsAndPrices[widget.productIds[index]]}":"0.00",
+                              textAlign: TextAlign.left,
+                              overflow:
+                              TextOverflow.ellipsis,
+                            ),
                             Text(
                               widget.productIdsAndQuantity!=null?"pcs ${widget.productIdsAndQuantity[widget.productIds[index]]}":"1",
                               textAlign: TextAlign.end,
+                              overflow:
+                              TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -69,7 +78,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                   width: double.infinity,
-                                  height: 0.5 * 200,
                                 );
                               } else {
                                 return CircularProgressIndicator();
@@ -81,6 +89,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
+                          overflow:
+                          TextOverflow.ellipsis,
                         ),
                       ],
                     ),
