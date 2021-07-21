@@ -69,14 +69,25 @@ class CheckingOutServices {
     ///reduce the quantity in stock
     productIdsAndQuantity.forEach((productID, quantity) async {
       int productNumberInStock = await getProductNumberInStock(productID);
+      int numberSold = await getProductSNumberSold(productID);
+
       int numberInCart = quantity;
       int newProductQuantity = productNumberInStock - numberInCart;
       if (newProductQuantity < 0) newProductQuantity = 0;
+
+      numberSold = (numberSold ?? 0) + numberInCart;
+
       await _firestoreService.updateDocumentField(
           collectionPath: "/products/",
           documentID: productID,
           fieldName: "number_in_stock",
           updatedValue: newProductQuantity);
+
+      await _firestoreService.updateDocumentField(
+          collectionPath: "/products/",
+          documentID: productID,
+          fieldName: "number_sold",
+          updatedValue: numberSold);
 
       ///empty te user's cart
       if (isShoppingCart)
@@ -91,5 +102,12 @@ class CheckingOutServices {
         documentId: "$productId",
         builder: (Map<String, dynamic> data, String documentId) =>
             data["number_in_stock"]);
+  }
+  Future<int> getProductSNumberSold(String productId) async {
+    return await CloudFirestoreService.instance.readOnceDocumentData(
+        collectionPath: "products/",
+        documentId: "$productId",
+        builder: (Map<String, dynamic> data, String documentId) =>
+        data["number_sold"]);
   }
 }

@@ -62,6 +62,7 @@ class ProductSearchServices {
       else break;
     }
 
+    print("DOHA DUHA ${StringSimilarity.compareTwoStrings("doha","duha")}");
     return similarStrings.toList();
   }
 

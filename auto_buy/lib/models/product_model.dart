@@ -15,6 +15,7 @@ class Product {
   final double size;
   final String sizeUnit;
   final int maxDemandPerUser;
+  final int numberSold;
 
   static String get numberInStockFieldName => "number_in_stock";
 
@@ -29,6 +30,7 @@ class Product {
     @required this.price,
     @required this.categoryID,
     @required this.maxDemandPerUser,
+    this.numberSold,
     this.brand = 'None',
     this.description = '',
     this.hasDiscount = false,
@@ -56,6 +58,7 @@ class Product {
       sizeUnit: value['size_unit'] ?? "",
       subCategory: value['sub_category'] ?? "",
       maxDemandPerUser: int.parse('${value['max_demand_per_user']}'),
+      numberSold: value['number_sold'] ?? 0
     );
   }
 
@@ -75,6 +78,7 @@ class Product {
       'size_unit': this.sizeUnit,
       'sub_category': this.subCategory,
       'max_demand_per_user': this.maxDemandPerUser,
+      'number_sold' : this.numberSold
     };
   }
 

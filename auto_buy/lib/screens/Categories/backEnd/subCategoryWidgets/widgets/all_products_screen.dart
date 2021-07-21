@@ -7,19 +7,19 @@ import 'package:provider/provider.dart';
 
 import '../../SelectedCategoryNotifier.dart';
 
-class AllProductsView extends StatefulWidget {
+class AllProductsScreen extends StatefulWidget {
   String mainCategory;
   List<Product> products = [];
 
-  AllProductsView({@required this.mainCategory, @required this.products}) {
+  AllProductsScreen({@required this.mainCategory, @required this.products}) {
     if (products == null) products = [];
   }
 
   @override
-  _AllProductsViewState createState() => _AllProductsViewState();
+  _AllProductsScreenState createState() => _AllProductsScreenState();
 }
 
-class _AllProductsViewState extends State<AllProductsView> {
+class _AllProductsScreenState extends State<AllProductsScreen> {
   @override
   Widget build(BuildContext context) {
     print("called");

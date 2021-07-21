@@ -30,12 +30,12 @@ class _getSubCategoriesState extends State<getSubCategories> {
   Widget build(BuildContext context) {
 
     final myListener = context.watch<SelectedCategoryNotifier>();
-    category categ = mainCategScreen.categs[myListener.selectedIndex];
+    category categ = mainCategoriesScreen.categs[myListener.selectedIndex];
     return myListener.isAllSelected != 0
         ? (myListener.isAllSelected == 1?
-    AllProductsView(
+    AllProductsScreen(
         mainCategory: categ.name, products: widget.FromCategToProducts[categ.name] ??[]):
-    AllProductsView(
+    AllProductsScreen(
         mainCategory: myListener.subCategory, products: widget.FromSubCategToProducts[myListener.subCategory] ??[]))
         : Container(
             child: Column(
@@ -44,10 +44,10 @@ class _getSubCategoriesState extends State<getSubCategories> {
                 Expanded( //for each suncategory we will create a view
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: mainCategScreen
+                    itemCount: mainCategoriesScreen
                         .categs[myListener.selectedIndex].subcategory.length,
                     itemBuilder: (context, indx) {
-                      String curSubCateg = mainCategScreen
+                      String curSubCateg = mainCategoriesScreen
                           .categs[myListener.selectedIndex].subcategory[indx];
                       return Card(
                         child: Column(
@@ -62,7 +62,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          mainCategScreen
+                                          mainCategoriesScreen
                                               .categs[myListener.selectedIndex]
                                               .subcategory[indx],
                                           style: new TextStyle(
@@ -115,7 +115,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
   }
 
   void CreatMapChosenProductsFromSubCateg() {
-    for (Product P in mainCategScreen.AllProducts) {
+    for (Product P in mainCategoriesScreen.AllProducts) {
       String subCat = P.subCategory;
       if (!widget.FromSubCategToProducts.containsKey(subCat)) {
         widget.FromSubCategToProducts[subCat] = [];
@@ -125,7 +125,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
   }
 
   void CreatMapChosenProductsFromCateg() {
-    for (Product P in mainCategScreen.AllProducts) {
+    for (Product P in mainCategoriesScreen.AllProducts) {
       String Categ = P.categoryID;
       if (!widget.FromCategToProducts.containsKey(Categ)) {
         widget.FromCategToProducts[Categ] = [];
