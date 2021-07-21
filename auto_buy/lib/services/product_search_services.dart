@@ -9,11 +9,6 @@ class ProductSearchServices {
   List<String> _productNamesList = [];
   final Map<String, Product> _fromNameToProduct = {};
 
-  _searchServices() {
-    print("search service intilised");
-    readAllProducts();
-  }
-
   bool hasProducts(){
     return _allProducts.isNotEmpty;
   }
@@ -26,6 +21,7 @@ class ProductSearchServices {
       print(_fromNameToProduct);
       return _allProducts;
   }
+
   List<Product> search(String searchTerm) {
     List<String> similarStrings = searchReturnsNames(searchTerm);
     List<Product> products = [];
@@ -36,14 +32,26 @@ class ProductSearchServices {
   }
 
   List<String> searchReturnsNames(String searchTerm) {
+    if(searchTerm == "")
+      return [];
     Set<String> similarStrings =  new Set<String>();
     List<Pair<double,String>> pairs = [];
 
+    searchTerm = searchTerm.replaceAll(new RegExp("(^(al[ -]*))|(^(el[ -]*))"),'');
+
+    if(searchTerm == "")
+      return [];
+
     for(String s in _productNamesList){
       pairs.add(Pair(s.similarityTo(searchTerm) , s));
-      if(s.contains(searchTerm)) {
-        similarStrings.add(s);
-      }
+
+      List<String> sentenceSplit = searchTerm.split(" ");
+        for (String word in sentenceSplit) {
+          if(word != "" && s.contains(word)) {
+            similarStrings.add(s);
+          }
+        }
+
       print("SIMILARITY OF $searchTerm = ${s.similarityTo(searchTerm)}");
     }
     pairs.sort((a,b)=> a.element1 < b.element1? 1 : 0);

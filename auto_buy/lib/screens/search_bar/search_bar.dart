@@ -13,7 +13,7 @@ class SearchBar extends StatelessWidget {
       future: sv.readAllProducts(),
       builder:(context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
-          return Center(child: CircularProgressIndicator());
+          return Container(child: Center(child: CircularProgressIndicator()));
         else if (snapshot.hasData)
           return SearchBarScreen(sv: sv);
         else if (snapshot.hasError)

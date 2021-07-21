@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../Categories/backEnd/MainCategoryWidgets/GetCategories.dart';
+import '../Categories/backEnd/MainCategoryWidgets/main_categories_screen.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -89,7 +89,7 @@ Widget _drawer(BuildContext context) {
             Navigator.of(context).push(
               MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (context) => Scaffold(body: GetCategories()),
+                builder: (context) => Scaffold(body: mainCategScreen()),
               ),
             );
           }),

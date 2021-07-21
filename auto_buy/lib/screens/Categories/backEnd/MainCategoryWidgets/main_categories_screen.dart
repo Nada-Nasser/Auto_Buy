@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'CategoryListView.dart';
+import 'main_category_listView.dart';
 import '../subCategoryWidgets/GetSubCategories.dart';
 import '../SelectedCategoryNotifier.dart';
 
-class GetCategories extends StatefulWidget {
+class mainCategScreen extends StatefulWidget {
   static int selectedIndx = 0;
   static List<category> categs = [];
   static List<String> sub_categories = [];
@@ -21,10 +21,10 @@ class GetCategories extends StatefulWidget {
   final Future<List<Product>> _Productfuture = ProductsBackendServices().ReadProductsFromFirestore();
 
   @override
-  _GetCategoriesState createState() => _GetCategoriesState();
+  _mainCategScreenState createState() => _mainCategScreenState();
 }
 
-class _GetCategoriesState extends State<GetCategories> {
+class _mainCategScreenState extends State<mainCategScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,8 @@ class _GetCategoriesState extends State<GetCategories> {
                   'Something went wrong xxxxxxxxxxx, ${snapshot.error.toString()}');
             }
             if (snapshot.hasData) {
-              GetCategories.categs = snapshot.data[0];
-              GetCategories.AllProducts =snapshot.data[1];
+              mainCategScreen.categs = snapshot.data[0];
+              mainCategScreen.AllProducts =snapshot.data[1];
               return //CategoryListView(categories : GetCategories.categs);
                   Container(
                 child: Column(
@@ -60,7 +60,7 @@ class _GetCategoriesState extends State<GetCategories> {
                                 decoration: BoxDecoration(color: Colors.white),
                                 child: Scaffold(
                                   body: CategoryListView(
-                                      categories: GetCategories.categs),
+                                      categories: mainCategScreen.categs),
                                 ),
                               ),
                             ),

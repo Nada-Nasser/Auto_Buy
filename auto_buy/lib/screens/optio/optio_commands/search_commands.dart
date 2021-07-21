@@ -1,6 +1,6 @@
 
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/getAllProducts.dart';
+import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/all_products_screen.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/products_list_dialog.dart';

@@ -8,8 +8,6 @@ import 'monthly_cart_services.dart';
 
 class CheckingOutServices {
   final _firestoreService = CloudFirestoreService.instance;
-  final ProductsBackendServices _productsBackendServices =
-      ProductsBackendServices();
 
   Future<void> addNewOrder(
       {String uid,

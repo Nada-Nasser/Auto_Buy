@@ -1,4 +1,5 @@
 import 'package:auto_buy/models/product_model.dart';
+import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,19 +7,19 @@ import 'package:provider/provider.dart';
 
 import '../../SelectedCategoryNotifier.dart';
 
-class getAllProducts extends StatefulWidget {
+class AllProductsView extends StatefulWidget {
   String mainCategory;
   List<Product> products = [];
 
-  getAllProducts({@required this.mainCategory, @required this.products}) {
+  AllProductsView({@required this.mainCategory, @required this.products}) {
     if (products == null) products = [];
   }
 
   @override
-  _getAllProductsState createState() => _getAllProductsState();
+  _AllProductsViewState createState() => _AllProductsViewState();
 }
 
-class _getAllProductsState extends State<getAllProducts> {
+class _AllProductsViewState extends State<AllProductsView> {
   @override
   Widget build(BuildContext context) {
     print("called");
@@ -62,9 +63,23 @@ class _getAllProductsState extends State<getAllProducts> {
           Expanded(
               child: VerticalProductsListView(
                 productsList:widget.products,
+                onTap: _onTapProduct,
                 listHeight: 80,
               )),
         ],
+      ),
+    );
+  }
+  _onTapProduct(BuildContext context, Product product) {
+    //  Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => ProductInfoScreen.create(
+          context,
+          product,
+          product.picturePath,
+        ),
       ),
     );
   }

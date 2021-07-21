@@ -1,5 +1,4 @@
 import 'package:auto_buy/models/Category.dart';
-import 'GetCategories.dart';
 import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,6 @@ class _CategoryListViewState extends State<CategoryListView> {
                     setState(() { // when selected change _selectedIndx
                       widget._selectedIndex = indx;
                       Provider.of<SelectedCategoryNotifier>(context,listen: false).ChangeSelectedIndex(indx);
-
                     });
                   }),
             ),

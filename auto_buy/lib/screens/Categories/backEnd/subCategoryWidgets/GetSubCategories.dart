@@ -1,9 +1,8 @@
 import 'package:auto_buy/models/Category.dart';
 import 'package:auto_buy/models/product_model.dart';
-import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/SeeAllProductsWidget.dart';
-import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/getAllProducts.dart';
-import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/productsInSubCategView.dart';
-import '../MainCategoryWidgets/GetCategories.dart';
+import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/all_products_screen.dart';
+import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/widgets/products_in_subcategory_View.dart';
+import '../MainCategoryWidgets/main_categories_screen.dart';
 import 'package:auto_buy/screens/Categories/backEnd/SelectedCategoryNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +30,12 @@ class _getSubCategoriesState extends State<getSubCategories> {
   Widget build(BuildContext context) {
 
     final myListener = context.watch<SelectedCategoryNotifier>();
-    category categ = GetCategories.categs[myListener.selectedIndex];
+    category categ = mainCategScreen.categs[myListener.selectedIndex];
     return myListener.isAllSelected != 0
         ? (myListener.isAllSelected == 1?
-    getAllProducts(
+    AllProductsView(
         mainCategory: categ.name, products: widget.FromCategToProducts[categ.name] ??[]):
-    getAllProducts(
+    AllProductsView(
         mainCategory: myListener.subCategory, products: widget.FromSubCategToProducts[myListener.subCategory] ??[]))
         : Container(
             child: Column(
@@ -45,10 +44,10 @@ class _getSubCategoriesState extends State<getSubCategories> {
                 Expanded( //for each suncategory we will create a view
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: GetCategories
+                    itemCount: mainCategScreen
                         .categs[myListener.selectedIndex].subcategory.length,
                     itemBuilder: (context, indx) {
-                      String curSubCateg = GetCategories
+                      String curSubCateg = mainCategScreen
                           .categs[myListener.selectedIndex].subcategory[indx];
                       return Card(
                         child: Column(
@@ -63,7 +62,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          GetCategories
+                                          mainCategScreen
                                               .categs[myListener.selectedIndex]
                                               .subcategory[indx],
                                           style: new TextStyle(
@@ -116,7 +115,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
   }
 
   void CreatMapChosenProductsFromSubCateg() {
-    for (Product P in GetCategories.AllProducts) {
+    for (Product P in mainCategScreen.AllProducts) {
       String subCat = P.subCategory;
       if (!widget.FromSubCategToProducts.containsKey(subCat)) {
         widget.FromSubCategToProducts[subCat] = [];
@@ -126,7 +125,7 @@ class _getSubCategoriesState extends State<getSubCategories> {
   }
 
   void CreatMapChosenProductsFromCateg() {
-    for (Product P in GetCategories.AllProducts) {
+    for (Product P in mainCategScreen.AllProducts) {
       String Categ = P.categoryID;
       if (!widget.FromCategToProducts.containsKey(Categ)) {
         widget.FromCategToProducts[Categ] = [];
@@ -137,3 +136,26 @@ class _getSubCategoriesState extends State<getSubCategories> {
 }
 
 
+
+class seeAllProductsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(
+          "ALL PRODUCTS",
+          style: new TextStyle(
+            fontSize: 12.0,
+          ),
+        ),
+        trailing: IconButton(
+            icon: Icon(Icons.arrow_forward_ios_rounded),
+            iconSize: 15,
+            onPressed: () {
+              Provider.of<SelectedCategoryNotifier>(context, listen: false)
+                  .isALLSELECTED(1);
+            }),
+      ),
+    );
+  }
+}
