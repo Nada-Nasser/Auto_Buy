@@ -10,23 +10,21 @@ import 'package:provider/provider.dart';
 import 'main_category_listView.dart';
 import '../subCategoryWidgets/sub_categories_screen.dart';
 import '../SelectedCategoryNotifier.dart';
-import '../subCategoryWidgets/GetSubCategories.dart';
-import 'main_category_listView.dart';
 
-class mainCategoriesScreen extends StatefulWidget {
+class MainCategoriesScreen extends StatefulWidget {
   static List<category> categs = [];
   static List<Product> AllProducts = [];
 
   final Future<List<category>> _Categoryfuture =
-      categoryServices().ReadCategoriesFromFirestore();
+      CategoryServices().ReadCategoriesFromFirestore();
   final Future<List<Product>> _Productfuture =
       ProductsBackendServices().readProductsFromFirestore();
 
   @override
-  _mainCategoriesScreenState createState() => _mainCategoriesScreenState();
+  _MainCategoriesScreenState createState() => _MainCategoriesScreenState();
 }
 
-class _mainCategoriesScreenState extends State<mainCategoriesScreen> {
+class _MainCategoriesScreenState extends State<MainCategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +42,8 @@ class _mainCategoriesScreenState extends State<mainCategoriesScreen> {
                   'Something went wrong xxxxxxxxxxx, ${snapshot.error.toString()}');
             }
             if (snapshot.hasData) {
-              mainCategoriesScreen.categs = snapshot.data[0];
-              mainCategoriesScreen.AllProducts =snapshot.data[1];
+              MainCategoriesScreen.categs = snapshot.data[0];
+              MainCategoriesScreen.AllProducts =snapshot.data[1];
               return //CategoryListView(categories : GetCategories.categs);
                   Container(
                 child: Column(
@@ -61,8 +59,8 @@ class _mainCategoriesScreenState extends State<mainCategoriesScreen> {
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 decoration: BoxDecoration(color: Colors.white),
                                 child: Scaffold(
-                                  body: mainCategoriesListView(
-                                      categories: mainCategoriesScreen.categs),
+                                  body: MainCategoriesListView(
+                                      categories: MainCategoriesScreen.categs),
                                 ),
                               ),
                             ),

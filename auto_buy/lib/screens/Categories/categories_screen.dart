@@ -10,6 +10,6 @@ class DisplayCategories extends StatefulWidget {
 class _DisplayCategoriesState extends State<DisplayCategories> {
   @override
   Widget build(BuildContext context) {
-      return mainCategoriesScreen();
+      return MainCategoriesScreen();
   }
 }

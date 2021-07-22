@@ -3,7 +3,7 @@ import 'package:auto_buy/models/Category.dart';
 import 'firebase_backend/api_paths.dart';
 import 'firebase_backend/firestore_service.dart';
 
-class categoryServices{
+class CategoryServices{
   final _firestoreService = CloudFirestoreService.instance;
 
   Future<List<category>> ReadCategoriesFromFirestore() async {

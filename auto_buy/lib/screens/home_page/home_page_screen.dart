@@ -89,7 +89,7 @@ Widget _drawer(BuildContext context) {
             Navigator.of(context).push(
               MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (context) => Scaffold(body: mainCategoriesScreen()),
+                builder: (context) => Scaffold(body: MainCategoriesScreen()),
               ),
             );
           }),

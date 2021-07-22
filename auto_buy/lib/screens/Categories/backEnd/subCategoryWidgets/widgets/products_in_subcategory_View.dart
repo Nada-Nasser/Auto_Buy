@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'ProductTile.dart';
 
-class productsInSubCategView extends StatelessWidget {
+class ProductsInSubCategView extends StatelessWidget {
 
     int TotalitemCount = 0;
    List<Product> ProductsInSubCateg =[];
 
-  productsInSubCategView({@required this.TotalitemCount = 0, @required this.ProductsInSubCateg});
+  ProductsInSubCategView({@required this.TotalitemCount = 0, @required this.ProductsInSubCateg});
   @override
   Widget build(BuildContext context) {
     return GridView.builder(

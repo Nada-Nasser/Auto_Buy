@@ -30,7 +30,7 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
   Widget build(BuildContext context) {
 
     final myListener = context.watch<SelectedCategoryNotifier>();
-    category categ = mainCategoriesScreen.categs[myListener.selectedIndex];
+    category categ = MainCategoriesScreen.categs[myListener.selectedIndex];
     return myListener.isAllSelected != 0
         ? (myListener.isAllSelected == 1?
     AllProductsScreen(
@@ -44,10 +44,10 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
                 Expanded( //for each suncategory we will create a view
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: mainCategoriesScreen
+                    itemCount: MainCategoriesScreen
                         .categs[myListener.selectedIndex].subcategory.length,
                     itemBuilder: (context, indx) {
-                      String curSubCateg = mainCategoriesScreen
+                      String curSubCateg = MainCategoriesScreen
                           .categs[myListener.selectedIndex].subcategory[indx];
                       return Card(
                         child: Column(
@@ -62,7 +62,7 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          mainCategoriesScreen
+                                          MainCategoriesScreen
                                               .categs[myListener.selectedIndex]
                                               .subcategory[indx],
                                           style: new TextStyle(
@@ -99,7 +99,7 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
                             ),
                             Container(
                               height: 330,
-                              child: productsInSubCategView(ProductsInSubCateg: widget._FromSubCategToProducts[curSubCateg],
+                              child: ProductsInSubCategView(ProductsInSubCateg: widget._FromSubCategToProducts[curSubCateg],
                                 TotalitemCount: widget._FromSubCategToProducts[curSubCateg] == null ? 0
                                   : widget._FromSubCategToProducts[curSubCateg].length,)
                             ),
@@ -115,7 +115,7 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
   }
 
     void CreatMapChosenProductsFromSubCateg() {
-    for (Product P in mainCategoriesScreen.AllProducts) {
+    for (Product P in MainCategoriesScreen.AllProducts) {
       String subCat = P.subCategory;
       if (!widget._FromSubCategToProducts.containsKey(subCat)) {
         widget._FromSubCategToProducts[subCat] = [];
@@ -125,7 +125,7 @@ class _SubCategoriesListViewState extends State<SubCategoriesListView> {
   }
 
   void CreatMapChosenProductsFromCateg() {
-    for (Product P in mainCategoriesScreen.AllProducts) {
+    for (Product P in MainCategoriesScreen.AllProducts) {
       String Categ = P.categoryID;
       if (!widget._FromCategToProducts.containsKey(Categ)) {
         widget._FromCategToProducts[Categ] = [];
