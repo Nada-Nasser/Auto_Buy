@@ -149,70 +149,14 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                           ),
                                         ],
                                       ),
-                                      // child: Row(
-                                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //   children: [
-                                      //     Container(
-                                      //       child: Icon(
-                                      //         Icons.list_alt,
-                                      //         size: 50,
-                                      //         color: Colors.purple,
-                                      //       ),
-                                      //       padding: EdgeInsets.only(right: 3),
-                                      //     ),
-                                      //     // SizedBox(width: 30,),
-                                      //     Column(
-                                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                                      //       children: [
-                                      //         Text(
-                                      //           "Delivery Date",
-                                      //           style: TextStyle(
-                                      //             fontWeight: FontWeight.bold,
-                                      //             fontSize: 18,
-                                      //           ),
-                                      //           softWrap: true,
-                                      //         ),
-                                      //         Text(
-                                      //           DateFormat('yyyy-MM-dd').format(snapshotOrderDetail.data['delivery_date'].toDate()).toString()
-                                      //           ,
-                                      //           style: TextStyle(
-                                      //             fontWeight: FontWeight.bold,
-                                      //             fontSize: 18,
-                                      //           ),
-                                      //           softWrap: true,
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     Container(
-                                      //       child: IconButton(
-                                      //         icon: Icon(LineAwesomeIcons.envelope_open, color: Colors.green),
-                                      //         onPressed: (){
-                                      //           Navigator.of(context).push(
-                                      //             MaterialPageRoute(
-                                      //               fullscreenDialog: true,
-                                      //               builder: (context) => OrderDetailsScreen(productIds:snapshotOrderDetail.data['product_ids'],
-                                      //                 productIdsAndQuantity: snapshotOrderDetail.data['productid_quantity'],
-                                      //                 price: snapshotOrderDetail.data['price'].toDouble(),
-                                      //               )
-                                      //             ),
-                                      //           );
-                                      //         },
-                                      //       ),
-                                      //     ),
-                                      //     IconButton(
-                                      //       icon: Icon(Icons.remove_circle, color: Colors.red,),
-                                      //       onPressed: () {
-                                      //         var toBeRemoved = orderIds.indexOf(orderIds[index]);
-                                      //         print(orderIds);
-                                      //         showOrderdeleteDialog(context,auth.uid,orderIds,toBeRemoved);
-                                      //       },
-                                      //     ),
-                                      //   ],
-                                      // ),
                                     ),
                                   );
                                 } else {
-                                  return CircularProgressIndicator();
+                                  return Container(
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
                                 }
                               });
                         },
