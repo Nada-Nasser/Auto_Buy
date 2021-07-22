@@ -152,7 +152,11 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                     ),
                                   );
                                 } else {
-                                  return CircularProgressIndicator();
+                                  return Container(
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
                                 }
                               });
                         },
