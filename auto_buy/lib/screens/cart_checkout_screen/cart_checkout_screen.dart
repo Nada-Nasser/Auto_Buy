@@ -35,7 +35,7 @@ class CartCheckoutScreen extends StatefulWidget {
 }
 
 class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
-  String governorate;
+  String governorate,initGovernorate,newGov;
   DateTime selectedDeliveryDate =  DateTime.now().add(new Duration(days:3));
 
   List listItem = [
@@ -83,6 +83,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               text: ("${userdata.data['adress']['street']}" != null
                   ? "${userdata.data['adress']['street']}"
                   : ""));
+          TextEditingController phoneNumberController = TextEditingController(
+              text: ("${userdata.data['phone_number']}" != null
+                  ? "${userdata.data['phone_number']}"
+                  : ""));
+          initGovernorate = userdata.data['adress']['governorate'];
 
           return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -110,6 +115,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                       "You are Sending a Gift to ${userdata.data['name']}, the gift will be delivered to the address provided by him",
                       textAlign: TextAlign.center,
                     ),
+                    widget.isGift==false?buildTextFormField("Phone number",
+                        phoneNumberController, widget.enabledEditing):Container(),
                     widget.isGift==false?Row(
                       children: [
                         Expanded(
@@ -151,8 +158,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                             print(widget.enabledEditing);
                             setState(() {});
                           } else {
+                            print(phoneNumberController.text);
+                            print(governorate);
                             if(cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
-                                && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty)
+                                && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty && phoneNumberController.text.isNotEmpty
+                                && (governorate != null || initGovernorate != null))
                             {
                               update(
                                   context,
@@ -161,12 +171,13 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                   cityController,
                                   streetController,
                                   aNumberController,
-                                  fNumberController);
+                                  fNumberController,
+                                  phoneNumberController);
                               widget.enabledEditing = false;
                               print(widget.enabledEditing);
                               setState(() {});
                             }else {
-                              showInSnackBar("please fill in all the fields", context);
+                              showInSnackBar("please fill in all the fields to update", context);
                             }
 
                           }
@@ -196,47 +207,53 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         onPressed: widget.enabledEditing == false
                             ? () async {
                           ///changed prouctIDs to productIdsAndQuantity
-                          await CheckingOutServices().addNewOrder(
-                              productIDs: widget.productIDs,
-                              price: widget.orderPrice,
-                              uid: auth.uid,
-                              productIdAndQuantity: widget.productIdsAndQuantity,
-                              productIdAndPrices: widget.productIdsAndPrices,
-                              isMonthlyCart: (widget.isMonthlyCart)? true : false,
-                              cartName: widget.cartPath,
-                              address: {
-                                "building_number": userdata.data['adress']
-                                ['building_number'],
-                                "city": userdata.data['adress']['city'],
-                                "street": userdata.data['adress']['street'],
-                                "governorate": userdata.data['adress']
-                                ['governorate'],
-                                "apartment_number": userdata.data['adress']
-                                ['apartment_number'],
-                                "floor_number": userdata.data['adress']
-                                ['floor_number']
-                              },
-                              selectedDate: selectedDeliveryDate);
-                          if (widget.isMonthlyCart == false) {
-                            await CheckingOutServices().removeItemsFromCart(
-                                shoppingCartPath:
-                                "/shopping_carts/${auth.uid}/shopping_cart_items",
-                                productIdsAndQuantity: widget.productIdsAndQuantity
-                            );
+                          if (cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
+                              && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty && phoneNumberController.text.isNotEmpty
+                              && (governorate != null || initGovernorate != null)) {
+                            await CheckingOutServices().addNewOrder(
+                                productIDs: widget.productIDs,
+                                price: widget.orderPrice,
+                                uid: auth.uid,
+                                productIdAndQuantity: widget.productIdsAndQuantity,
+                                productIdAndPrices: widget.productIdsAndPrices,
+                                isMonthlyCart: (widget.isMonthlyCart)? true : false,
+                                cartName: widget.cartPath,
+                                address: {
+                                  "building_number": userdata.data['adress']
+                                  ['building_number'],
+                                  "city": userdata.data['adress']['city'],
+                                  "street": userdata.data['adress']['street'],
+                                  "governorate": userdata.data['adress']
+                                  ['governorate'],
+                                  "apartment_number": userdata.data['adress']
+                                  ['apartment_number'],
+                                  "floor_number": userdata.data['adress']
+                                  ['floor_number']
+                                },
+                                selectedDate: selectedDeliveryDate);
+                            if (widget.isMonthlyCart == false) {
+                              await CheckingOutServices().removeItemsFromCart(
+                                  shoppingCartPath:
+                                  "/shopping_carts/${auth.uid}/shopping_cart_items",
+                                  productIdsAndQuantity: widget.productIdsAndQuantity
+                              );
 
+                            }
+                            else{
+                              await MonthlyCartsBloc(uid: auth.uid)
+                                  .setCheckedOut(widget.cartPath ,true);
+                              await CheckingOutServices().removeItemsFromCart(
+                                  shoppingCartPath:"",
+                                  isShoppingCart: false,
+                                  productIdsAndQuantity: widget.productIdsAndQuantity
+                              );
+                            }
+                            showInSnackBar("checkout done!", context);
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
+                          }else{
+                            showInSnackBar('please fill all the fields', context);
                           }
-                          else{
-                            await MonthlyCartsBloc(uid: auth.uid)
-                                .setCheckedOut(widget.cartPath ,true);
-                            await CheckingOutServices().removeItemsFromCart(
-                                shoppingCartPath:"",
-                                isShoppingCart: false,
-                                productIdsAndQuantity: widget.productIdsAndQuantity
-                            );
-                          }
-                          showInSnackBar("checkout done!", context);
-                          int count = 0;
-                          Navigator.of(context).popUntil((_) => count++ >= 2);
                         }
                             : null,
 
@@ -407,6 +424,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           iconSize: 36,
           value: governorate,
           onChanged: (newValue) {
+            print(newValue);
             setState(() {
               governorate = newValue;
             });
@@ -429,13 +447,21 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       TextEditingController cityController,
       TextEditingController streetController,
       TextEditingController aNumberController,
-      TextEditingController fNumberController) async {
+      TextEditingController fNumberController,
+      TextEditingController phoneNumberController) async {
     Map<String, dynamic> newAdress;
+    if(governorate == null)
+    {
+      newGov = initGovernorate;
+    }else
+    {
+      newGov = governorate;
+    }
     newAdress = {
       "building_number": bNumberController.text,
       "city": cityController.text,
       "street": streetController.text,
-      "governorate": governorate,
+      "governorate": newGov,
       "apartment_number": aNumberController.text,
       "floor_number": fNumberController.text
     };
@@ -446,6 +472,13 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         documentID: auth.user.uid,
         fieldName: 'adress',
         updatedValue: newAdress);
+
+    //update number
+    await CloudFirestoreService.instance.updateDocumentField(
+        collectionPath: "users/",
+        documentID: auth.user.uid,
+        fieldName: 'phone_number',
+        updatedValue: phoneNumberController.text);
   }
 }
 
