@@ -144,7 +144,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         "Street", streetController, widget.enabledEditing):Container(),
                     widget.isGift==false?buildTextFormField(
                         "City", cityController, widget.enabledEditing):Container(),
-                    widget.isGift==false?buildDropDownMenu(userdata.data['adress']['governorate'],
+                    widget.isGift==false?buildDropDownMenu(initGovernorate,
                         widget.enabledEditing):Container(),
                     widget.isGift==false?SizedBox(
                       height: 20,
@@ -391,7 +391,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
-  Widget buildDropDownMenu(data, bool enabledEditing) {
+  Widget buildDropDownMenu(String data, bool enabledEditing) {
     return IgnorePointer(
       ignoring: !enabledEditing,
       child: Padding(
@@ -404,7 +404,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             fillColor: Colors.white,
             contentPadding:
             const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
-            labelText: (data == null) ? "Governorate" : data,
+            hintText: (data == null) ? "Governorate" : data,
             enabledBorder: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
               borderSide: new BorderSide(
@@ -424,10 +424,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           iconSize: 36,
           value: governorate,
           onChanged: (newValue) {
-            print(newValue);
-            setState(() {
-              governorate = newValue;
-            });
+            governorate = newValue;
           },
           items: listItem.map((valueItem) {
             return DropdownMenuItem(

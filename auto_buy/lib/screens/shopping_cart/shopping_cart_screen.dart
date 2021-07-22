@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
-  List<String> productIds = [];
   double totalPrice;
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
@@ -115,9 +114,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   Product product = Product.fromMap(
                                       snapshot.data['data'],
                                       snapshot.data['id']);
-                                  if (!widget.productIds.contains(product.id)) {
-                                    widget.productIds.add(product.id);
-                                  }
                                   return GestureDetector(
                                     onLongPress: () async {
                                       await onLongPressProduct(
@@ -491,141 +487,3 @@ Future<int> getProductNumber(String productId) async {
       builder: (Map<String, dynamic> data, String documentId) =>
           data["number_in_stock"]);
 }
-
-
-// return GridView.builder(
-//   itemCount: alldata.data.length,
-//   gridDelegate:
-//       SliverGridDelegateWithFixedCrossAxisCount(
-//     crossAxisCount: 2,
-//     childAspectRatio:
-//         MediaQuery.of(context).size.width /
-//             (MediaQuery.of(context).size.height / 1.5),
-//   ),
-//   itemBuilder: (context, index) {
-//     ///this feature builder goes through each item in the user cart
-//     return FutureBuilder(
-//         future: CloudFirestoreService.instance
-//             .readOnceDocumentData(
-//                 collectionPath: "/products/",
-//                 documentId:
-//                     "${alldata.data[index]['data']['product_id']}",
-//                 builder: (data, documentId) {
-//                   Map<String, dynamic> output = {
-//                     "data": data,
-//                     "id": documentId
-//                   };
-//                   return output;
-//                 }),
-//         builder: (context, snapshot) {
-//           if (snapshot.hasData) {
-//             Product product =
-//             Product.fromMap(
-//                 snapshot.data['data'],
-//                 snapshot.data['id']);
-//             if(!widget.productIds.contains(product.id))
-//               {
-//                 print("adding product");
-//                 widget.productIds.add(product.id);
-//               }
-//             return Container(
-//               padding: EdgeInsets.all(10),
-//               margin: EdgeInsets.all(10),
-//               height: 200,
-//               width: 40,
-//               child: Column(
-//                 crossAxisAlignment:
-//                     CrossAxisAlignment.center,
-//                 mainAxisAlignment:
-//                     MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Row(
-//                     mainAxisAlignment:
-//                         MainAxisAlignment.end,
-//                     children: [
-//                       Text(
-//                         "pcs ${alldata.data[index]['data']['quantity']}",
-//                         textAlign: TextAlign.end,
-//                       ),
-//                     ],
-//                   ),
-//                   FutureBuilder(
-//                       future: FirebaseStorageService
-//                           .instance
-//                           .downloadURL(
-//                               snapshot.data['data']
-//                                   ['pic_path']),
-//                       builder: (context, image) {
-//                         if (image.hasData) {
-//                           return GestureDetector(
-//                             onLongPress: () async {
-//                               await onLongPressProduct(
-//                                 context,
-//                                 product,
-//                                 "/shopping_carts/${auth.uid}/shopping_cart_items/",
-//                                 "${alldata.data[index]['id']}",
-//                               _cartScreenBloc,
-//                               );
-//                             },
-//                             onTap: () {
-//                               Navigator.of(context)
-//                                   .push(
-//                                 MaterialPageRoute(
-//                                   fullscreenDialog:
-//                                       true,
-//                                   builder: (context) =>
-//                                       ProductInfoScreen
-//                                           .create(
-//                                     context,
-//                                     product,
-//                                     image.data,
-//                                   ),
-//                                 ),
-//                               ).then((value) {setState(() {});});
-//
-//                             },
-//                             child: CachedNetworkImage(
-//                               imageUrl: image.data,
-//                               placeholder:
-//                                   (context, url) =>
-//                                       LoadingImage(),
-//                               errorWidget: (context,
-//                                       url, error) =>
-//                                   Icon(Icons.error),
-//                               width: double.infinity,
-//                               height: 100,
-//                             ),
-//                           );
-//                         } else {
-//                           return CircularProgressIndicator();
-//                         }
-//                       }),
-//                   Text(
-//                     snapshot.data['data']['name'],
-//                     overflow: TextOverflow.ellipsis,
-//                     textAlign: TextAlign.center,
-//                     style: TextStyle(
-//                       fontSize: 15,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(25),
-//                 color: Colors.white,
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color:
-//                         Colors.black.withOpacity(0.5),
-//                     blurRadius: 3,
-//                     offset: Offset(0, 3),
-//                   )
-//                 ],
-//               ),
-//             );
-//           } else {
-//             return Container();
-//           }
-//         });
-//   },
-// );

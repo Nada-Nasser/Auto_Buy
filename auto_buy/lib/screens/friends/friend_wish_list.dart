@@ -3,7 +3,6 @@ import 'package:auto_buy/screens/cart_checkout_screen/cart_checkout_screen.dart'
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
-import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';

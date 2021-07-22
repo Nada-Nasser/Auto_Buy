@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'main_category_listView.dart';
 import '../subCategoryWidgets/sub_categories_screen.dart';
 import '../SelectedCategoryNotifier.dart';
-import '../subCategoryWidgets/GetSubCategories.dart';
+// import '../subCategoryWidgets/GetSubCategories.dart';
 import 'main_category_listView.dart';
 
 class mainCategoriesScreen extends StatefulWidget {
