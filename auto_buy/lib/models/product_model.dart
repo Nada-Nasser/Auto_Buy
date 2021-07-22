@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Product {
+class Product implements Comparable {
   final String id;
   final String name;
   final String brand;
@@ -78,12 +78,29 @@ class Product {
       'size_unit': this.sizeUnit,
       'sub_category': this.subCategory,
       'max_demand_per_user': this.maxDemandPerUser,
-      'number_sold' : this.numberSold
+      'number_sold': this.numberSold
     };
   }
 
   @override
   String toString() {
     return 'Product{id: $id, name: $name, brand: $brand, categoryID: $categoryID, description: $description, numberInStock: $numberInStock, picturePath: $picturePath, price: $price, hasDiscount: $hasDiscount, priceBeforeDiscount: $priceAfterDiscount, subCategory: $subCategory, size: $size, sizeUnit: $sizeUnit}';
+  }
+
+  @override
+  int compareTo(other) {
+    if (this.numberSold == null || other.numberSold == null) {
+      return null;
+    }
+    if (this.numberSold < other.numberSold) {
+      return -1;
+    }
+    if (this.numberSold > other.numberSold) {
+      return 1;
+    }
+    if (this.numberSold == other.numberSold) {
+      return 0;
+    }
+    return null;
   }
 }

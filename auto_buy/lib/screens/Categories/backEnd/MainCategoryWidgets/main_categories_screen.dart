@@ -7,17 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'main_category_listView.dart';
-import '../subCategoryWidgets/GetSubCategories.dart';
 import '../SelectedCategoryNotifier.dart';
+import '../subCategoryWidgets/GetSubCategories.dart';
+import 'main_category_listView.dart';
 
 class mainCategoriesScreen extends StatefulWidget {
-
   static List<category> categs = [];
   static List<Product> AllProducts = [];
 
-  final Future<List<category>> _Categoryfuture = categoryServices().ReadCategoriesFromFirestore();
-  final Future<List<Product>> _Productfuture = ProductsBackendServices().ReadProductsFromFirestore();
+  final Future<List<category>> _Categoryfuture =
+      categoryServices().ReadCategoriesFromFirestore();
+  final Future<List<Product>> _Productfuture =
+      ProductsBackendServices().readProductsFromFirestore();
 
   @override
   _mainCategoriesScreenState createState() => _mainCategoriesScreenState();
