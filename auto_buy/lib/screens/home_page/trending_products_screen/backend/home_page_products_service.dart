@@ -1,9 +1,9 @@
 import 'package:auto_buy/models/advertisement_model.dart';
-import 'package:auto_buy/models/peoducts_list.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/services/firebase_backend/api_paths.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 
 class HomePageProductsServices {
   final _storageService = FirebaseStorageService.instance;
@@ -18,29 +18,14 @@ class HomePageProductsServices {
         builder: (data, documentId) => Advertisement.fromMap(data, documentId),
       );
 
-  Stream<List<ProductsList>> trendingProductsStream() =>
-      _firestoreService.collectionStream(
-        path: APIPath.trendingProductsPath(),
-        builder: (data, documentId) => ProductsList.fromMap(data, documentId),
-      );
-
-  Stream<List<ProductsList>> eventProductsStream() =>
-      _firestoreService.collectionStream(
-        path: APIPath.eventProductsPath(),
-        builder: (data, documentId) => ProductsList.fromMap(data, documentId),
-      );
-
-  Future<Product> readProduct(String productID) async {
-    Product product = await _firestoreService.readOnceDocumentData(
-      collectionPath: APIPath.productsPath(),
-      documentId: productID,
-      builder: (data, documentID) => Product.fromMap(data, documentID),
-    );
-
-    String url = await getImageURL(product.picturePath);
-    product.picturePath = url;
-    return product;
+  Future<List<Product>> getProductsViaSearchQuery(String searchQuery) async {
+    List<Product> p = await _getSearchResults(searchQuery);
+    return p;
   }
 
-// TODO: add recommended for user products stream
+  Future<List<Product>> _getSearchResults(String term) async {
+    final ProductSearchServices searchService = ProductSearchServices();
+    await searchService.readAllProducts();
+    return searchService.search(term);
+  }
 }

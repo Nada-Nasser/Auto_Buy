@@ -28,6 +28,7 @@ class AdvertisementSwiper extends StatelessWidget {
         stream: bloc.modelStream,
         builder: (BuildContext context,
             AsyncSnapshot<List<Advertisement>> snapshot) {
+          print(snapshot);
           try {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
@@ -94,29 +95,3 @@ class AdvertisementSwiper extends StatelessWidget {
         .height;
   }
 }
-
-/*
-class AdvertisementSwiperBuilder extends StatefulWidget {
-  final List<Advertisement> advertisements;
-
-  const AdvertisementSwiperBuilder({Key key, this.advertisements}) : super(key: key);
-
-  @override
-  _AdvertisementSwiperBuilderState createState() => _AdvertisementSwiperBuilderState();
-}
-
-class _AdvertisementSwiperBuilderState extends State<AdvertisementSwiperBuilder> {
-
-  @override
-  void initState() {
-    final bloc = Provider.of<AdvertisementBloc>(context , listen: false);
-    bloc.getAdImagesURL(widget.advertisements);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-*/

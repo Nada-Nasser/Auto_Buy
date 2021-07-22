@@ -1,5 +1,6 @@
-import 'package:auto_buy/models/peoducts_list.dart';
+import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/widgets/home_page_list_views/widgets/home_page_products_list.dart';
+import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +14,9 @@ class HomePageProductsListView extends StatelessWidget {
   const HomePageProductsListView({Key key, this.bloc}) : super(key: key);
 
   static Widget create(BuildContext context, ListType listType) {
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return Provider<ProductsListViewBloc>(
-      create: (_) => ProductsListViewBloc(type: listType),
+      create: (_) => ProductsListViewBloc(type: listType, uid: auth.uid),
       child: Consumer<ProductsListViewBloc>(
         builder: (_, bloc, __) => HomePageProductsListView(bloc: bloc),
       ),
@@ -24,10 +26,10 @@ class HomePageProductsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = _calcHeight(context);
-    return StreamBuilder<List<ProductsList>>(
-        stream: bloc.modelStream(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<ProductsList>> snapshot) {
+    return FutureBuilder<List<Product>>(
+        future: bloc.readProducts(),
+        initialData: [],
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           try {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
@@ -39,11 +41,8 @@ class HomePageProductsListView extends StatelessWidget {
                   height: height, child: LoadingImage(height: 0.5 * height));
             }
             if (snapshot.hasData) {
-              List<ProductsList> products = snapshot.data;
-              List<String> ids = products[0].ids;
               return HomePageProductsList(
-                ids: ids,
-              );
+                  products: snapshot.data);
             } else
               return Text("no data");
           } on Exception catch (e) {

@@ -24,22 +24,21 @@ class orderModel {
       });
 
   factory orderModel.fromMap(Map<String, dynamic> values, String id) {
-    DateTime DeliveryDate = DateTime.fromMicrosecondsSinceEpoch(
+    DateTime deliveryDate = DateTime.fromMicrosecondsSinceEpoch(
         values['delivery_date'].microsecondsSinceEpoch);
-    DateTime OrderDate = DateTime.fromMicrosecondsSinceEpoch(
+    DateTime orderDate = DateTime.fromMicrosecondsSinceEpoch(
         values['order_date'].microsecondsSinceEpoch);
 
     return orderModel(
         address: values['address'],
-        deliveryDate: DeliveryDate,
-        orderDate: OrderDate,
+        deliveryDate: deliveryDate,
+        orderDate: orderDate,
         status: "pending",
         price: values["price"],
         productIDs: values['product_ids'],
         userID: values['user_id'],
         productIdsAndQuantity: values['productid_quantity'],
-        productIdsAndPrices:   values['productid_prices']
-    );
+        productIdsAndPrices: values['productid_prices']);
   }
 
   Map<String, dynamic> toMap() {
