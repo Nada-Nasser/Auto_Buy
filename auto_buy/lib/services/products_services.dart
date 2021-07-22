@@ -73,7 +73,7 @@ class ProductsBackendServices {
     return products;
   }
 
-  Future<List<Product>> ReadProductsFromFirestore() async {
+  Future<List<Product>> readProductsFromFirestore() async {
     List<Product> products = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),

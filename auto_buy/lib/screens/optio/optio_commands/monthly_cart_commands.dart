@@ -3,7 +3,6 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_screen.dart';
 import 'package:auto_buy/services/monthly_cart_services.dart';
 import 'package:auto_buy/services/product_search_services.dart';
-import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/products_list_dialog.dart';
 import 'package:auto_buy/widgets/selection_dialog.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +41,6 @@ class MonthlyCartCommand implements Command {
   }
 
   Future<void> _addToMonthlyCart() async {
-    // TODO: search for the product using [commandArguments.productName] to get List<product>
     try {
       List<Product> products = await getSearchResults(commandArguments.productsName);
 

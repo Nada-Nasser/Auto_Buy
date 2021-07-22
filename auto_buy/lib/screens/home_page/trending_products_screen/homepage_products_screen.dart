@@ -20,16 +20,10 @@ class HomePageProducts extends StatelessWidget {
         ListType.MOST_TRENDING,
       ),
       buildDivider(),
-      buildSectionHeader(context, "Event Collection"),
-      HomePageProductsListView.create(
-        context,
-        ListType.EVENT_COLLECTION,
-      ),
-      buildDivider(),
       buildSectionHeader(context, "Recommended for you"),
       HomePageProductsListView.create(
         context,
-        ListType.MOST_TRENDING,
+        ListType.RECOMMENDED_FOR_USER,
       ),
       buildDivider(),
     ];

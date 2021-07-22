@@ -113,7 +113,7 @@ class OneInvoiceTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Total Price", style: TextStyle(fontSize: 18.0)),
-                Text("${invoice.totalPrice} EGP",
+                Text("${invoice.totalPrice.toStringAsFixed(3)} EGP",
                     style: TextStyle(fontSize: 18.0)),
               ],
             ),
@@ -197,7 +197,7 @@ class OneInvoiceTile extends StatelessWidget {
         Column(
           children: [
             Text(
-              '${invoice.entries[i].price}',
+              '${invoice.entries[i].price.toStringAsFixed(3)}',
               style: TextStyle(
                 fontSize: 15.0,
               ),

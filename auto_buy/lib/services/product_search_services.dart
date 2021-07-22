@@ -13,13 +13,13 @@ class ProductSearchServices {
     return _allProducts.isNotEmpty;
   }
   Future<List<Product>> readAllProducts() async{
-    _allProducts = await ProductsBackendServices().ReadProductsFromFirestore();
-      for (Product prod in _allProducts) {
-        _fromNameToProduct[prod.name.toLowerCase()] = prod;
-        _productNamesList.add(prod.name.toLowerCase());
-      }
-      print(_fromNameToProduct);
-      return _allProducts;
+    _allProducts = await ProductsBackendServices().readProductsFromFirestore();
+    for (Product prod in _allProducts) {
+      _fromNameToProduct[prod.name.toLowerCase()] = prod;
+      _productNamesList.add(prod.name.toLowerCase());
+    }
+    //print(_fromNameToProduct);
+    return _allProducts;
   }
 
   List<Product> search(String searchTerm) {

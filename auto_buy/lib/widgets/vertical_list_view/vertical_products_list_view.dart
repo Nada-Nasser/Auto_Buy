@@ -28,7 +28,20 @@ class VerticalProductsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> content = _buildContent(context);
-
+    if (productsList.isEmpty)
+      return Container(
+        padding: smallPic
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        child: Center(
+          child: Text(
+            "There are no products found",
+            style: TextStyle(
+              color: Colors.grey[500],
+            ),
+          ),
+        ),
+      );
     return Container(
       padding: smallPic
           ? const EdgeInsets.all(0)
@@ -47,14 +60,15 @@ class VerticalProductsListView extends StatelessWidget {
 
     for (int i = 0; i < productsList.length; i++) {
       ProductTile tile = ProductTile(
-          smallPic: smallPic,
-          product: productsList[i],
-          onTap: () => onTap(context, productsList[i]),
-          onLongPress: () => onLongPress(context, productsList[i]),
-          quantity: quantities != null ? quantities[i] : null,
-          isPriceHidden: isPriceHidden,
-          height: listHeight,
-      width: listWidth,);
+        smallPic: smallPic,
+        product: productsList[i],
+        onTap: () => onTap(context, productsList[i]),
+        onLongPress: () => onLongPress(context, productsList[i]),
+        quantity: quantities != null ? quantities[i] : null,
+        isPriceHidden: isPriceHidden,
+        height: listHeight,
+        width: listWidth,
+      );
       w.add(tile);
     }
 
