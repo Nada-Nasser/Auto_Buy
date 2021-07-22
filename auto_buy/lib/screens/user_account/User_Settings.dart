@@ -288,7 +288,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     buildTextFormField("Street", streetController),
                     buildTextFormField("City", cityController),
-                    buildDropDownMenu(snapShot.data['adress']['governorate']),
+                    buildDropDownMenu(initGovernorate),
                     
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -407,19 +407,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-  Widget  buildDropDownMenu(data)
+  Widget  buildDropDownMenu(String ingov)
   {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: DropdownButtonFormField(
           style: TextStyle(fontSize: 13.0, color: Colors.black),
+          hint: (ingov == null) ? "Governorate" : Text(ingov),
           decoration: InputDecoration(
             border: InputBorder.none,
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
             
-            labelText: (data == null) ? "Governorate" : data,
             enabledBorder: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(10.0),
                         borderSide: new BorderSide(
@@ -436,9 +436,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           
           value: governorate,
           onChanged: (newValue){
-            setState(() {
               governorate = newValue;
-            });
           },
           items: listItem.map((valueItem){
             return DropdownMenuItem(
