@@ -58,7 +58,6 @@ dependencies:
   translator: ^0.1.7
   html_unescape: ^2.0.0
   string_similarity: ^2.0.0
-  dcdg: ^3.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
