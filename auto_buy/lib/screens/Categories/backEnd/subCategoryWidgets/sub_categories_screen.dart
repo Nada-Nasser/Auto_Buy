@@ -8,16 +8,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class getSubCategories extends StatefulWidget {
-  Map<String, List<Product>> FromSubCategToProducts =
+class SubCategoriesListView extends StatefulWidget {
+  Map<String, List<Product>> _FromSubCategToProducts =
       Map<String, List<Product>>();
-  Map<String, List<Product>> FromCategToProducts = Map<String, List<Product>>();
+  Map<String, List<Product>> _FromCategToProducts = Map<String, List<Product>>();
 
   @override
-  _getSubCategoriesState createState() => _getSubCategoriesState();
+  _SubCategoriesListViewState createState() => _SubCategoriesListViewState();
 }
 
-class _getSubCategoriesState extends State<getSubCategories> {
+class _SubCategoriesListViewState extends State<SubCategoriesListView> {
   @override
   void initState() {
     print("init of subCategories here");
@@ -34,9 +34,9 @@ class _getSubCategoriesState extends State<getSubCategories> {
     return myListener.isAllSelected != 0
         ? (myListener.isAllSelected == 1?
     AllProductsScreen(
-        mainCategory: categ.name, products: widget.FromCategToProducts[categ.name] ??[]):
+        mainCategory: categ.name, products: widget._FromCategToProducts[categ.name] ??[]):
     AllProductsScreen(
-        mainCategory: myListener.subCategory, products: widget.FromSubCategToProducts[myListener.subCategory] ??[]))
+        mainCategory: myListener.subCategory, products: widget._FromSubCategToProducts[myListener.subCategory] ??[]))
         : Container(
             child: Column(
               children: [
@@ -99,9 +99,9 @@ class _getSubCategoriesState extends State<getSubCategories> {
                             ),
                             Container(
                               height: 330,
-                              child: productsInSubCategView(ProductsInSubCateg: widget.FromSubCategToProducts[curSubCateg],
-                                TotalitemCount: widget.FromSubCategToProducts[curSubCateg] == null ? 0
-                                  : widget.FromSubCategToProducts[curSubCateg].length,)
+                              child: productsInSubCategView(ProductsInSubCateg: widget._FromSubCategToProducts[curSubCateg],
+                                TotalitemCount: widget._FromSubCategToProducts[curSubCateg] == null ? 0
+                                  : widget._FromSubCategToProducts[curSubCateg].length,)
                             ),
                           ],
                         ),
@@ -114,23 +114,23 @@ class _getSubCategoriesState extends State<getSubCategories> {
           );
   }
 
-  void CreatMapChosenProductsFromSubCateg() {
+    void CreatMapChosenProductsFromSubCateg() {
     for (Product P in mainCategoriesScreen.AllProducts) {
       String subCat = P.subCategory;
-      if (!widget.FromSubCategToProducts.containsKey(subCat)) {
-        widget.FromSubCategToProducts[subCat] = [];
+      if (!widget._FromSubCategToProducts.containsKey(subCat)) {
+        widget._FromSubCategToProducts[subCat] = [];
       }
-      widget.FromSubCategToProducts[subCat].add(P);
+      widget._FromSubCategToProducts[subCat].add(P);
     }
   }
 
   void CreatMapChosenProductsFromCateg() {
     for (Product P in mainCategoriesScreen.AllProducts) {
       String Categ = P.categoryID;
-      if (!widget.FromCategToProducts.containsKey(Categ)) {
-        widget.FromCategToProducts[Categ] = [];
+      if (!widget._FromCategToProducts.containsKey(Categ)) {
+        widget._FromCategToProducts[Categ] = [];
       }
-      widget.FromCategToProducts[Categ].add(P);
+      widget._FromCategToProducts[Categ].add(P);
     }
   }
 }

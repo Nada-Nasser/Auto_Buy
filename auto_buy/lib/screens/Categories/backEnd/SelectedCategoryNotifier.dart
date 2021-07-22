@@ -1,4 +1,3 @@
-import 'package:auto_buy/screens/Categories/backEnd/subCategoryWidgets/GetSubCategories.dart';
 import 'package:flutter/cupertino.dart';
 
 class SelectedCategoryNotifier extends ChangeNotifier {

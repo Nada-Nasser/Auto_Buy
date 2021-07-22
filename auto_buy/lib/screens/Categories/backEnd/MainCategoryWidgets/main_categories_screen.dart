@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'main_category_listView.dart';
-import '../subCategoryWidgets/GetSubCategories.dart';
+import '../subCategoryWidgets/sub_categories_screen.dart';
 import '../SelectedCategoryNotifier.dart';
 
 class mainCategoriesScreen extends StatefulWidget {
@@ -58,7 +58,7 @@ class _mainCategoriesScreenState extends State<mainCategoriesScreen> {
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 decoration: BoxDecoration(color: Colors.white),
                                 child: Scaffold(
-                                  body: CategoryListView(
+                                  body: mainCategoriesListView(
                                       categories: mainCategoriesScreen.categs),
                                 ),
                               ),
@@ -69,7 +69,7 @@ class _mainCategoriesScreenState extends State<mainCategoriesScreen> {
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 padding: EdgeInsets.fromLTRB(1, 5, 2, 0),
                                 decoration: BoxDecoration(color: Colors.transparent),
-                                child:getSubCategories(),
+                                child:SubCategoriesListView(),
                               ),
                             ),
                           ],

@@ -4,16 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CategoryListView extends StatefulWidget {
+class mainCategoriesListView extends StatefulWidget {
   List<category> categories = [];
   int _selectedIndex = 0;
-  CategoryListView( {@required this.categories});
+  mainCategoriesListView( {@required this.categories});
 
   @override
-  _CategoryListViewState createState() => _CategoryListViewState();
+  _mainCategoriesListViewState createState() => _mainCategoriesListViewState();
 }
 
-class _CategoryListViewState extends State<CategoryListView> {
+class _mainCategoriesListViewState extends State<mainCategoriesListView> {
   @override
   Widget build(BuildContext context) {
     return  ListView.builder(

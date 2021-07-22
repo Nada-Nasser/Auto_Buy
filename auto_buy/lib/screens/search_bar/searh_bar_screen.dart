@@ -2,13 +2,9 @@ import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
 import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/vertical_list_view/vertical_products_list_view.dart';
-import 'package:auto_buy/services/products_services.dart';
-import 'package:auto_buy/widgets/products_list_view/product_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'BackEnd/UI_for_search_results.dart';
 
 class SearchBarScreen extends StatefulWidget {
   ProductSearchServices sv;
@@ -29,7 +25,7 @@ class SearchBarState extends State<SearchBarScreen> {
   List<String> _productNamesList = [];
 
   List<Product> Products = [];
-  List<Product> chosenProduct = [];
+    List<Product> chosenProduct = [];
   String selectedTerm;
   final Map<String, Product> fromNameToProduct = {};
 

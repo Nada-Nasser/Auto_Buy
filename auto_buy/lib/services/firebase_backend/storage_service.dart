@@ -11,5 +11,4 @@ class FirebaseStorageService {
         .getDownloadURL();
     return downloadURL;
   }
-
 }
