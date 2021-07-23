@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/expense_tracker/expense_tracker_screen.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:flutter/material.dart';
 
 import 'command.dart';
@@ -14,7 +15,7 @@ class ExpenseTrackerCommand implements Command {
       commandArguments.commandType != CommandType.INVALID;
 
   @override
-  Future<void> run() async {
+  Future<void> run(ProductSearchServices searchService) async {
     if (commandArguments.commandType == CommandType.OPEN) {
       await _openExpenseTracker();
     } else {

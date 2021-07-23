@@ -13,7 +13,6 @@ class MonthlyCartCommand implements Command {
   @override
   final CommandArguments commandArguments;
   final MonthlyCartServices _monthlyCartServices = MonthlyCartServices();
-  final ProductSearchServices searchService = ProductSearchServices();
   /// contains the parameters needed to execute run function
   /// ex. uid, productName, ...
 
@@ -23,11 +22,11 @@ class MonthlyCartCommand implements Command {
   String _selectedCartName;
 
   @override
-  Future<void> run() async {
+  Future<void> run(ProductSearchServices searchService) async {
     print("monthly cart command is running");
     try {
       if (commandArguments.commandType == CommandType.ADD) {
-        await _addToMonthlyCart();
+        await _addToMonthlyCart(searchService);
       } else if (commandArguments.commandType == CommandType.DELETE) {
         await _deleteFromMonthlyCart();
       } else if (commandArguments.commandType == CommandType.OPEN) {
@@ -40,9 +39,10 @@ class MonthlyCartCommand implements Command {
     }
   }
 
-  Future<void> _addToMonthlyCart() async {
+  Future<void> _addToMonthlyCart(ProductSearchServices searchService) async {
     try {
-      List<Product> products = await getSearchResults(commandArguments.productsName);
+      List<Product> products =
+          await getSearchResults(commandArguments.productsName, searchService);
 
       await productsListDialog(
         commandArguments.context,
@@ -78,8 +78,8 @@ class MonthlyCartCommand implements Command {
     }
   }
 
-  Future<List<Product>> getSearchResults(String term) async{
-    await searchService.readAllProducts();
+  Future<List<Product>> getSearchResults(
+      String term, ProductSearchServices searchService) async {
     return searchService.search(term);
   }
 

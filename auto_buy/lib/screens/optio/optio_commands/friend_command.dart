@@ -1,13 +1,11 @@
 import 'package:auto_buy/screens/friends/add_friend.dart';
-import 'package:auto_buy/screens/friends/friends_list.dart';
 import 'package:auto_buy/screens/friends/friends_screen.dart';
-import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/users_list_dialog.dart';
 import 'package:commons/alert_dialogs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'command.dart';
 
@@ -21,22 +19,20 @@ class FriendCommand implements Command {
       commandArguments.commandType != CommandType.INVALID;
 
   @override
-  Future<void> run() async {
+  Future<void> run(ProductSearchServices searchService) async {
     // TODO: implement run
     if (commandArguments.commandType == CommandType.ADD) {
       await _addFriend();
     } else if (commandArguments.commandType == CommandType.DELETE) {
       await _deleteFriend();
-    }
-    else if(commandArguments.commandType == CommandType.OPEN){
+    } else if (commandArguments.commandType == CommandType.OPEN) {
       Navigator.of(commandArguments.context).push(
         MaterialPageRoute(
           fullscreenDialog: true,
           builder: (context) => AllScreens(),
         ),
       );
-    }
-    else {
+    } else {
       throw Exception('you can\'t do this command with your friends list');
     }
   }

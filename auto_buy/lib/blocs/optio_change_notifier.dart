@@ -3,6 +3,7 @@ import 'package:auto_buy/screens/optio/optio_commands/command.dart';
 import 'package:auto_buy/screens/optio/optio_commands/command_generator.dart';
 import 'package:auto_buy/screens/optio/optio_image.dart';
 import 'package:auto_buy/services/firebase_backend/google_translate.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,9 @@ class OptioChangeNotifier extends ChangeNotifier {
   final controller = ScrollController();
   final CommandGenerator _commandGenerator = CommandGenerator();
   final String uid;
+  final ProductSearchServices searchService;
 
-  OptioChangeNotifier(this.uid) {
+  OptioChangeNotifier(this.uid, this.searchService) {
     chatWidgets.add(optioImage());
   }
 
@@ -48,7 +50,8 @@ class OptioChangeNotifier extends ChangeNotifier {
     Command command;
     var response;
     try {
-      var url = Uri.parse('https://3955ddba412e.ngrok.io/classifytext/$translation');
+      var url =
+          Uri.parse('https://e0e822c03277.ngrok.io/classifytext/$translation');
       response = await http.get(url);
       print(response.body.toString());
 
@@ -87,7 +90,7 @@ class OptioChangeNotifier extends ChangeNotifier {
            *    only text message = "failure message"
            * */
 
-          await command.run();
+          await command.run(searchService);
 
           String successMessage = "Command executed successfully"; //TODO
           optioResponse = _createOptioResponse(successMessage, true);
@@ -108,8 +111,7 @@ class OptioChangeNotifier extends ChangeNotifier {
       optioResponse = _createOptioResponse("Something went wrong", false);
       print("Command = NULL");
     }
-    //   chatWidgets.add(
-//        listWidget(_createOptioResponse(response.body.toString(), false), 0));
+
     chatWidgets.add(listWidget(optioResponse, 0));
 
     notifyListeners();

@@ -16,30 +16,30 @@ class ShoppingCartCommand implements Command{
   ShoppingCartCommand(this.commandArguments);
   final ProductsBackendServices _productsBackendServices = ProductsBackendServices();
   final ShoppingCartServices shoppingCartServices = ShoppingCartServices();
-  final ProductSearchServices searchService = ProductSearchServices();
   Product selectedProduct;
 
   @override
   bool get isValidCommand => commandArguments.commandType != CommandType.INVALID;
 
   @override
-  Future<void> run() async {
-    // TODO: implement run
-    if(commandArguments.commandType == CommandType.ADD){
-      await _addToShoppingCart();
-    }else if(commandArguments.commandType == CommandType.DELETE){
+  Future<void> run(ProductSearchServices searchService) async {
+    if (commandArguments.commandType == CommandType.ADD) {
+      await _addToShoppingCart(searchService);
+    } else if (commandArguments.commandType == CommandType.DELETE) {
       await _deleteFromShoppingCart();
-    }else if(commandArguments.commandType == CommandType.OPEN){
+    } else if (commandArguments.commandType == CommandType.OPEN) {
       _openShoppingCart();
-    }else{
+    } else {
       throw Exception('you can\'t do this command with your shopping cart');
     }
   }
 
-  Future<void> _addToShoppingCart() async {
+  Future<void> _addToShoppingCart(ProductSearchServices searchService) async {
     try {
       //TODO: search using similarity
-      List<Product> products = await getSearchResults(commandArguments.productsName);
+      List<Product> products =
+          await getSearchResults(commandArguments.productsName, searchService);
+
       ///select a product
       await productsListDialog(
         commandArguments.context,
@@ -49,10 +49,9 @@ class ShoppingCartCommand implements Command{
       );
 
       ///check if there's still quantity in stock
-      if(selectedProduct == null)
+      if (selectedProduct == null)
         throw Exception('you did not select a product');
-      if(selectedProduct.numberInStock == 0)
-        throw Exception('out of stock');
+      if (selectedProduct.numberInStock == 0) throw Exception('out of stock');
       if(commandArguments.quantity > selectedProduct.numberInStock)
         throw Exception('only ${selectedProduct.numberInStock} of this product left in stock');
 
@@ -66,18 +65,19 @@ class ShoppingCartCommand implements Command{
           commandArguments.quantity*selectedProduct.price,
           productID: selectedProduct.id,
         );
-        shoppingCartServices.addProductToUserShoppingCart(commandArguments.uid, cartItem, selectedProduct.numberInStock);
-      }else{
-        throw Exception('Couldn\'t add the product because you exceeded the demand limit');
+        shoppingCartServices.addProductToUserShoppingCart(
+            commandArguments.uid, cartItem, selectedProduct.numberInStock);
+      } else {
+        throw Exception(
+            'Couldn\'t add the product because you exceeded the demand limit');
       }
-
     } on Exception catch (e) {
       throw e;
     }
   }
 
-  Future<List<Product>> getSearchResults(String term) async{
-    await searchService.readAllProducts();
+  Future<List<Product>> getSearchResults(
+      String term, ProductSearchServices searchService) async {
     return searchService.search(term);
   }
 
@@ -86,9 +86,11 @@ class ShoppingCartCommand implements Command{
       //TODO: search using similarity
       List<Product> products = [];
       //first get all products from user's cart
-      dynamic cartItems = await CloudFirestoreService.instance.getCollectionData(
-          collectionPath: "shopping_carts/${commandArguments.uid}/shopping_cart_items/",
-          builder: (Map<String, dynamic> data, String documentId) {
+      dynamic cartItems = await CloudFirestoreService.instance
+          .getCollectionData(
+              collectionPath:
+                  "shopping_carts/${commandArguments.uid}/shopping_cart_items/",
+              builder: (Map<String, dynamic> data, String documentId) {
             Map<String, dynamic> output = {"data": data, "id": documentId};
             return output;
           });

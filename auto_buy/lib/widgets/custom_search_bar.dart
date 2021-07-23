@@ -1,5 +1,6 @@
 import 'package:auto_buy/screens/optio/optio_screen.dart';
 import 'package:auto_buy/screens/search_bar/search_bar.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:flutter/material.dart';
 
 Widget customSearchBar(BuildContext context) {
@@ -31,11 +32,15 @@ Widget customSearchBar(BuildContext context) {
         ),
         IconButton(
             icon: Image.asset('assets/images/optioface.png'),
-            onPressed: () {
+            onPressed: () async {
+              final ProductSearchServices searchService =
+                  ProductSearchServices();
+              await searchService.readAllProducts();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,
-                  builder: (context) => OptioScreen(),
+                  builder: (context) =>
+                      OptioScreen(searchService: searchService),
                 ),
               );
             }),
