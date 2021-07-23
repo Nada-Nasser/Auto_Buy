@@ -404,7 +404,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             fillColor: Colors.white,
             contentPadding:
             const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
-            hintText: (data == null) ? "Governorate" : data,
+            hintText: (data == '' || data==null) ? "Governorate" : data,
             enabledBorder: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
               borderSide: new BorderSide(

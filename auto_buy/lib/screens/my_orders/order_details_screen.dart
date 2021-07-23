@@ -28,7 +28,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height),
+              (MediaQuery.of(context).size.height/1.5),
         ),
         itemBuilder: (context, index) {
           ///this feature builder goes through each item in the user orders
@@ -77,7 +77,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   placeholder: (context, url) => LoadingImage(),
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
-                                  width: double.infinity,
+                                  width: MediaQuery.of(context).size.width/3,
                                 );
                               } else {
                                 return CircularProgressIndicator();

@@ -30,7 +30,7 @@ Widget customSearchBar(BuildContext context) {
               }),
         ),
         IconButton(
-            icon: Icon(Icons.tag_faces),
+            icon: Image.asset('assets/images/optioface.png'),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

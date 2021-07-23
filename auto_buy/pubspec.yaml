@@ -92,7 +92,7 @@ flutter:
     - assets/gifs/loading_2.gif
     - assets/images/Tony.png
     - assets/images/optio_gift.png
-  #   - images/a_dot_ham.jpeg
+    - assets/images/optio_heart.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

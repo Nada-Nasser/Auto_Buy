@@ -131,18 +131,18 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
-                ProfileListItem(
-                  icon: LineAwesomeIcons.history,
-                  text: 'Purchase History',
-                  Navigate_To: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => MyOrdersScreen(),
-                      ),
-                    );
-                  },
-                ),
+                // ProfileListItem(
+                //   icon: LineAwesomeIcons.history,
+                //   text: 'Purchase History',
+                //   Navigate_To: () {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         fullscreenDialog: true,
+                //         builder: (context) => MyOrdersScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 ProfileListItem(
                   icon: LineAwesomeIcons.user_friends,
                   text: 'Friends',
@@ -166,11 +166,6 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     );
                   },
-                ),
-                ProfileListItem(
-                  icon: LineAwesomeIcons.alternate_sign_out,
-                  text: 'Logout',
-                  hasNavigation: false,
                 ),
               ],
             ),

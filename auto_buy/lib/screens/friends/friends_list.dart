@@ -2,6 +2,7 @@ import 'package:auto_buy/screens/friends/friend_info_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,12 +21,26 @@ class FriendsList extends StatelessWidget {
                 }),
             builder: (ctx, snapShot) {
               if (snapShot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               } else {
                 List<dynamic> friends = snapShot.data['friends'];
                 if(friends.length == 0)
                 {
-                  return Text("You do not have a friend? Optio can be your friend 🥰");
+                  return Container(
+                    child :Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset("assets/images/optio_heart.png", width: MediaQuery.of(context).size.width/2,),
+                        SizedBox(height: 30,),
+                        Text("You do not have a friend? Optio can be your friend 🥰"),
+                      ],
+                    ),
+                    );
+                  // return Text("You do not have a friend? Optio can be your friend 🥰");
                 }
                 return ListView.builder(
                   itemCount: friends.length,
@@ -42,7 +57,11 @@ class FriendsList extends StatelessWidget {
                       builder: (context, snapShot) {
                         if (snapShot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return Container(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
                         } else {
                           String pth;
                           return Card(

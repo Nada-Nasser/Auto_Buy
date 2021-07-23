@@ -52,25 +52,29 @@ class AddingToCartsButtons extends StatelessWidget {
     Color textColor = Colors.black45,
     Color iconColor,
   }) {
-    return ElevatedButton.icon(
-      icon: Icon(
-        icon,
-        size: 0.07 * MediaQuery.of(context).size.width,
-        color: iconColor,
-      ),
-      label: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 0.045 * MediaQuery.of(context).size.width,
-          fontWeight: FontWeight.w500,
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      child: ElevatedButton.icon(
+        icon: Icon(
+          icon,
+          size: 0.07 * MediaQuery.of(context).size.width,
+          color: iconColor,
         ),
-      ),
-      onPressed: () => onTap(context),
-      style: ElevatedButton.styleFrom(
-        elevation: 5,
-        primary: backgroundColor,
-        padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+        label: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 0.045 * MediaQuery.of(context).size.width,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        onPressed: () => onTap(context),
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          primary: backgroundColor,
+          padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+        ),
       ),
     );
   }

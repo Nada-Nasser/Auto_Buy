@@ -123,7 +123,7 @@ class _MonthlySuppliesScreenState extends State<MonthlySuppliesScreen> {
                                 showInSnackBar(
                                     "You need to add items first!", context);
                             },
-                            child: Text("Check Out",style: TextStyle(color: Colors.white, fontSize: 18)))
+                            child: Text("Checkout",style: TextStyle(color: Colors.white, fontSize: 18)))
                   ],
                 ),
               );
