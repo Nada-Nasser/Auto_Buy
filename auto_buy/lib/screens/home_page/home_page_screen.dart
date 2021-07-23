@@ -146,19 +146,6 @@ Widget _drawer(BuildContext context) {
             );
           }),
           customTextStle(
-              'Friends',
-              Icon(
-                Icons.people,
-                color: Colors.black,
-              ), () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => AllScreens(),
-              ),
-            );
-          }),
-          customTextStle(
               'My Orders',
               Icon(
                 Icons.list_alt,

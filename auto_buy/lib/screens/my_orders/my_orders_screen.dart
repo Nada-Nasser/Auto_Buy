@@ -120,24 +120,9 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                                   fontWeight: FontWeight.w800
                                                 ),
                                               ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.remove_circle,
-                                                  color: Colors.red,
-                                                ),
-                                                onPressed: () {
-                                                  print(reverse[index]);
-                                                  var toBeRemoved = reverse
-                                                      .indexOf(reverse[index]);
-                                                  showOrderdeleteDialog(
-                                                      context,
-                                                      auth.uid,
-                                                      reverse,
-                                                      toBeRemoved);
-                                                },
-                                              ),
                                             ],
                                           ),
+                                          SizedBox(height: 10,),
                                           Text("Order price : EGP ${snapshotOrderDetail.data['price'].toStringAsFixed(2)}"),
                                           SizedBox(height: 3,),
                                           Row(

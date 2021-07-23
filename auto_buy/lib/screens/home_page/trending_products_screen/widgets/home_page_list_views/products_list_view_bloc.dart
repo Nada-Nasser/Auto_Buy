@@ -6,7 +6,6 @@ import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/products_services.dart';
 
 class ProductsListViewBloc {
-  //final HomePageProductsServices databaseServices = HomePageProductsServices();
   final ProductsBackendServices _productsBackendServices =
       ProductsBackendServices();
   CloudFirestoreService _firestoreService = CloudFirestoreService.instance;
@@ -45,12 +44,22 @@ class ProductsListViewBloc {
   Future<List<Product>> _recommendedProducts() async {
     List<Product> products = [];
 
+    Map<String, dynamic> data = await _firestoreService.readOnceDocumentData(
+        documentId: uid,
+        collectionPath: "/users_orders",
+        builder: (Map<String, dynamic> data, String documentId) => data);
+
+    if (data == null) return [];
+
     List<dynamic> orderIDs = await _firestoreService.readOnceDocumentData(
         documentId: uid,
         collectionPath: "/users_orders",
         builder: (Map<String, dynamic> data, String documentId) =>
             data['orders_ids']);
     int top20 = 1;
+
+    if (orderIDs == null) return [];
+
     for (int i = 0; i < orderIDs.length; i++) {
       List<dynamic> productsIds =
           await _firestoreService.readFieldValueFromDocument(
@@ -62,6 +71,7 @@ class ProductsListViewBloc {
       for (int j = 0; j < productsIds.length; j++) {
         Product p = await _productsBackendServices.readProduct(productsIds[j]);
         products.add(p);
+        top20++;
         if (top20 == 20) break;
       }
     }

@@ -332,7 +332,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         }
                       },
                       child: Text(
-                        "Check Out",
+                        "Checkout",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,

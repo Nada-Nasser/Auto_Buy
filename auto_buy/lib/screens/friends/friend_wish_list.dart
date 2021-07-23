@@ -195,8 +195,8 @@ class _FriendWishListState extends State<FriendWishList> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
-                  padding: EdgeInsets.all(20),
+                primary: Colors.orange,
+                padding: EdgeInsets.all(20),
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(25.0),
                 ),
@@ -220,22 +220,13 @@ class _FriendWishListState extends State<FriendWishList> {
                         isGift: true,
                         friendId: widget.friendId,
                   )));
-                  // then((value) {
-                  //   setState(() {
-                  //     widget.checkedOrNot = List.filled(widget.checkListLength, false);
-                  //     totalPrice = 0.0;
-                  //     for(int i= 0 ; i < widget.itemIds.length ; i++)
-                  //       widget.itemIds.removeAt(i);
-                  //   });
-                  // });
-
                 }
               },
               child: Text(
-                "Check Out Gift",
+                "Checkout Gift",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 30,
+                  fontSize: 18,
                 ),
               ),
             ),

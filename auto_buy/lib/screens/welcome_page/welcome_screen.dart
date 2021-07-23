@@ -11,17 +11,19 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFEC9A67),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: _appIcon(),
-            ),
-            _button("Sign In" ,()=> _openSignInPage(context)),
-            _button("Register",()=> _openRegisterPage(context)),
-          ],
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: _appIcon(),
+              ),
+              _button("Sign In" ,()=> _openSignInPage(context)),
+              _button("Register",()=> _openRegisterPage(context)),
+            ],
+          ),
         ),
       ),
     );

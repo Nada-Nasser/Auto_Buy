@@ -413,7 +413,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       padding: const EdgeInsets.only(bottom: 15.0),
       child: DropdownButtonFormField(
           style: TextStyle(fontSize: 13.0, color: Colors.black),
-          hint: (ingov == null) ? "Governorate" : Text(ingov),
+          hint: (ingov == null || ingov =="") ? "Governorate" : Text(ingov),
           decoration: InputDecoration(
             border: InputBorder.none,
             filled: true,
