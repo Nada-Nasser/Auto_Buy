@@ -50,6 +50,11 @@ class ProductSearchServices {
           if(word != "" && s.contains(word)) {
             similarStrings.add(s);
           }
+          List<String> prodwords = s.split(" ");
+          for(String w in prodwords){
+            if(w.similarityTo(word) > .5)
+              similarStrings.add(s);
+          }
         }
 
       print("SIMILARITY OF $searchTerm = ${s.similarityTo(searchTerm)}");
