@@ -1,3 +1,4 @@
+import 'package:auto_buy/main.dart';
 import 'package:auto_buy/models/advertisement_model.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/product_info_screen/product_info_screen.dart';
@@ -34,7 +35,7 @@ class ImageSwiper extends StatelessWidget {
                 print(
                     "AD_MODEL_ON_TAP Search using : ${advertisementsList[index].searchQuery}");
                 await _onClickAdvertisement(
-                    context, advertisementsList[index].searchQuery);
+                    advertisementsList[index].searchQuery);
               },
               child: CachedNetworkImage(
                 imageUrl: urls[index],
@@ -52,9 +53,8 @@ class ImageSwiper extends StatelessWidget {
     );
   }
 
-  Future<void> _onClickAdvertisement(
-      BuildContext context, String searchQuery) async {
-    Navigator.of(context).push(
+  Future<void> _onClickAdvertisement(String searchQuery) async {
+    Navigator.of(navigatorKey.currentContext).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => SearchResultsScreen(
@@ -98,7 +98,7 @@ class SearchResultsScreen extends StatelessWidget {
               return VerticalProductsListView(
                 productsList: snapshot.data,
                 onTap: (context, product) {
-                  Navigator.of(context).push(
+                  Navigator.of(navigatorKey.currentContext).push(
                     MaterialPageRoute(
                       fullscreenDialog: true,
                       builder: (context) => ProductInfoScreen.create(
@@ -112,25 +112,6 @@ class SearchResultsScreen extends StatelessWidget {
               );
             }
           },
-        )
-
-        /*
-
-      VerticalProductsListView(
-        productsList: products,
-        onTap: (context , product){
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => ProductInfoScreen.create(
-                context,
-                product,
-                product.picturePath,
-              ),
-            ),
-          );
-        },
-      ),*/
-        );
+        ));
   }
 }
