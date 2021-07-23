@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:auto_buy/screens/optio/optio_commands/expense_tracker_commands.dart';
 import 'package:auto_buy/screens/optio/optio_commands/monthly_cart_commands.dart';
-import 'package:auto_buy/screens/optio/optio_commands/shopping_cart_commands.dart';
 import 'package:auto_buy/screens/optio/optio_commands/search_commands.dart';
+import 'package:auto_buy/screens/optio/optio_commands/shopping_cart_commands.dart';
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -27,57 +28,62 @@ class CommandGenerator {
     BuildContext context = navigatorKey.currentContext;
 
     try {
-      if (commandBody[0] == 'add') {
-        commandType = CommandType.ADD;
-        if (commandBody.length == 5) {
-          productName = '${commandBody[3]}';
-          quantity = commandBody[1] == "" ? 1 : commandBody[1].toInt();
-          if (commandBody.last == 'shopping')
-            commandPlace = CommandPlace.ShoppingCart;
-          else
-            commandPlace = CommandPlace.MonthlyCart;
-        } else {
-          commandPlace = CommandPlace.FriendsSystem;
-        }
-      } else if (commandBody[0] == 'delete') {
-        commandType = CommandType.DELETE;
-        if (commandBody.length == 3) {
-          productName = commandBody[1];
-          if (commandBody.last == 'shopping')
-            commandPlace = CommandPlace.ShoppingCart;
-          else
-            commandPlace = CommandPlace.MonthlyCart;
-        } else {
-          commandPlace = CommandPlace.FriendsSystem;
-        }
-      } else if (commandBody[0] == 'open') {
-        commandType = CommandType.OPEN;
-        if (commandBody.length == 2) {
-          if (commandBody.last.toString().contains('monthly'))
-            commandPlace = CommandPlace.MonthlyCart;
-          else if (commandBody.last.toString().contains('wish list'))
-            commandPlace = CommandPlace.WishList;
-          else if (commandBody.last.toString().contains('cart') ||
-              commandBody.last.toString().contains('shopping'))
-            commandPlace = CommandPlace.ShoppingCart;
-          else if (commandBody.last.toString().contains('friend'))
+      if (commandBody != null) {
+        if (commandBody[0] == 'add') {
+          commandType = CommandType.ADD;
+          if (commandBody.length == 5) {
+            productName = '${commandBody[3]}';
+            quantity = commandBody[1] == "" ? 1 : commandBody[1].toInt();
+            if (commandBody.last == 'shopping')
+              commandPlace = CommandPlace.ShoppingCart;
+            else
+              commandPlace = CommandPlace.MonthlyCart;
+          } else {
             commandPlace = CommandPlace.FriendsSystem;
-          else if (commandBody.last.toString().contains('expense') ||
-              commandBody.last.toString().contains('tracker'))
-            commandPlace = CommandPlace.ExpenseTracker;
-          else {
-            commandPlace = CommandPlace.Invalid;
-            commandType = CommandType.INVALID;
           }
-        } else {
-          commandType = CommandType.INVALID;
-          commandPlace = CommandPlace.Invalid;
-        }
-      } else if (commandBody[0] == 'search') {
-        commandType = CommandType.SEARCH;
-        if (commandBody.length == 2) {
-          commandPlace = CommandPlace.ProductsSearching;
-          productName = commandBody[1];
+        } else if (commandBody[0] == 'delete') {
+          commandType = CommandType.DELETE;
+          if (commandBody.length == 3) {
+            productName = commandBody[1];
+            if (commandBody.last == 'shopping')
+              commandPlace = CommandPlace.ShoppingCart;
+            else
+              commandPlace = CommandPlace.MonthlyCart;
+          } else {
+            commandPlace = CommandPlace.FriendsSystem;
+          }
+        } else if (commandBody[0] == 'open') {
+          commandType = CommandType.OPEN;
+          if (commandBody.length == 2) {
+            if (commandBody.last.toString().contains('monthly'))
+              commandPlace = CommandPlace.MonthlyCart;
+            else if (commandBody.last.toString().contains('wish list'))
+              commandPlace = CommandPlace.WishList;
+            else if (commandBody.last.toString().contains('cart') ||
+                commandBody.last.toString().contains('shopping'))
+              commandPlace = CommandPlace.ShoppingCart;
+            else if (commandBody.last.toString().contains('friend'))
+              commandPlace = CommandPlace.FriendsSystem;
+            else if (commandBody.last.toString().contains('expense') ||
+                commandBody.last.toString().contains('tracker'))
+              commandPlace = CommandPlace.ExpenseTracker;
+            else {
+              commandPlace = CommandPlace.Invalid;
+              commandType = CommandType.INVALID;
+            }
+          } else {
+            commandType = CommandType.INVALID;
+            commandPlace = CommandPlace.Invalid;
+          }
+        } else if (commandBody[0] == 'search') {
+          commandType = CommandType.SEARCH;
+          if (commandBody.length == 2) {
+            commandPlace = CommandPlace.ProductsSearching;
+            productName = commandBody[1];
+          } else {
+            commandType = CommandType.INVALID;
+            commandPlace = CommandPlace.Invalid;
+          }
         } else {
           commandType = CommandType.INVALID;
           commandPlace = CommandPlace.Invalid;
@@ -129,7 +135,7 @@ class InvalidCommand implements Command {
       commandArguments.commandType != CommandType.INVALID;
 
   @override
-  Future<void> run() async {
+  Future<void> run(ProductSearchServices searchService) async {
     await showAlertDialog(
       commandArguments.context,
       titleText: "Error",

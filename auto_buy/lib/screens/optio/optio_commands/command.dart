@@ -1,3 +1,4 @@
+import 'package:auto_buy/services/product_search_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -45,7 +46,7 @@ abstract class Command {
 
   Command(this.commandArguments);
 
-  Future<void> run();
+  Future<void> run(ProductSearchServices searchService);
 
   bool get isValidCommand =>
       commandArguments.commandType != CommandType.INVALID;
