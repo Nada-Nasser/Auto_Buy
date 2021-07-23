@@ -64,7 +64,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
               child: VerticalProductsListView(
                 productsList:widget.products,
                 onTap: _onTapProduct,
-                listHeight: 80,
+                // listHeight: 0,
               )),
         ],
       ),
