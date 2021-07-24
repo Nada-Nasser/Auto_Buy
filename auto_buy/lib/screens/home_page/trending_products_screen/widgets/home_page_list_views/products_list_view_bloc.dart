@@ -24,59 +24,70 @@ class ProductsListViewBloc {
   }
 
   Future<List<Product>> _trendingProducts() async {
-    List<Product> products =
-        await _productsBackendServices.readProductsFromFirestore();
-    products.sort((a, b) {
-      return a.compareTo(b);
-    });
-    products = products.reversed.toList();
-    int top10 = 1;
+    try {
+      List<Product> products =
+          await _productsBackendServices.readProductsFromFirestore();
+      products.sort((a, b) {
+        return a.compareTo(b);
+      });
+      products = products.reversed.toList();
+      int top10 = 1;
 
-    List<Product> trending = [];
-    for (int i = 0; i < products.length; i++) {
-      trending.add(products[i]);
-      top10++;
-      if (top10 == 10) break;
+      List<Product> trending = [];
+      for (int i = 0; i < products.length; i++) {
+        trending.add(products[i]);
+        top10++;
+        if (top10 == 10) break;
+      }
+      return trending;
+    } on Exception catch (e) {
+      print(e);
+      return [];
     }
-    return trending;
   }
 
   Future<List<Product>> _recommendedProducts() async {
-    List<Product> products = [];
+    try {
+      List<Product> products = [];
 
-    Map<String, dynamic> data = await _firestoreService.readOnceDocumentData(
-        documentId: uid,
-        collectionPath: "/users_orders",
-        builder: (Map<String, dynamic> data, String documentId) => data);
+      Map<String, dynamic> data = await _firestoreService.readOnceDocumentData(
+          documentId: uid,
+          collectionPath: "/users_orders",
+          builder: (Map<String, dynamic> data, String documentId) => data);
 
-    if (data == null) return [];
+      if (data == null) return [];
 
-    List<dynamic> orderIDs = await _firestoreService.readOnceDocumentData(
-        documentId: uid,
-        collectionPath: "/users_orders",
-        builder: (Map<String, dynamic> data, String documentId) =>
-            data['orders_ids']);
-    int top20 = 1;
+      List<dynamic> orderIDs = await _firestoreService.readOnceDocumentData(
+          documentId: uid,
+          collectionPath: "/users_orders",
+          builder: (Map<String, dynamic> data, String documentId) =>
+              data['orders_ids']);
+      int top20 = 1;
 
-    if (orderIDs == null) return [];
+      if (orderIDs == null) return [];
 
-    for (int i = 0; i < orderIDs.length; i++) {
-      List<dynamic> productsIds =
-          await _firestoreService.readFieldValueFromDocument(
-        collectionPath: "/orders/",
-        documentID: "${orderIDs[i]}",
-        fieldName: "product_ids",
-      );
+      for (int i = 0; i < orderIDs.length; i++) {
+        List<dynamic> productsIds =
+            await _firestoreService.readFieldValueFromDocument(
+          collectionPath: "/orders/",
+          documentID: "${orderIDs[i]}",
+          fieldName: "product_ids",
+        );
 
-      for (int j = 0; j < productsIds.length; j++) {
-        Product p = await _productsBackendServices.readProduct(productsIds[j]);
-        products.add(p);
-        top20++;
-        if (top20 == 20) break;
+        for (int j = 0; j < productsIds.length; j++) {
+          Product p =
+              await _productsBackendServices.readProduct(productsIds[j]);
+          products.add(p);
+          top20++;
+          if (top20 == 20) break;
+        }
       }
-    }
 
-    return products;
+      return products;
+    } on Exception catch (e) {
+      print(e);
+      return [];
+    }
   }
 
 /*

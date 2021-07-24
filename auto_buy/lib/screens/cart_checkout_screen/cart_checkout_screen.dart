@@ -2,9 +2,10 @@ import 'package:auto_buy/screens/monthly_supplies/monthly_carts_bloc.dart';
 import 'package:auto_buy/services/checkingOutServices.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
+import 'package:auto_buy/widgets/exception_dialog.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
@@ -437,7 +438,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
-  Future update(
+  Future<void> update(
       BuildContext context,
       FirebaseAuthService auth,
       TextEditingController bNumberController,
@@ -446,36 +447,127 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       TextEditingController aNumberController,
       TextEditingController fNumberController,
       TextEditingController phoneNumberController) async {
-    Map<String, dynamic> newAdress;
-    if(governorate == null)
-    {
-      newGov = initGovernorate;
-    }else
-    {
-      newGov = governorate;
+    final flag = await _verifyPhoneNumber(phoneNumberController.text, context);
+
+    if (flag) {
+      print("PHONE VERIFICATION DOCE");
+
+      Map<String, dynamic> newAdress;
+      if (governorate == null) {
+        newGov = initGovernorate;
+      } else {
+        newGov = governorate;
+      }
+      newAdress = {
+        "building_number": bNumberController.text,
+        "city": cityController.text,
+        "street": streetController.text,
+        "governorate": newGov,
+        "apartment_number": aNumberController.text,
+        "floor_number": fNumberController.text
+      };
+
+      // Update adress.
+      await CloudFirestoreService.instance.updateDocumentField(
+          collectionPath: "users/",
+          documentID: auth.user.uid,
+          fieldName: 'adress',
+          updatedValue: newAdress);
+
+      //update number
+      await CloudFirestoreService.instance.updateDocumentField(
+          collectionPath: "users/",
+          documentID: auth.user.uid,
+          fieldName: 'phone_number',
+          updatedValue: phoneNumberController.text);
+    } else {
+      print("FLAG  =  FALSE");
     }
-    newAdress = {
-      "building_number": bNumberController.text,
-      "city": cityController.text,
-      "street": streetController.text,
-      "governorate": newGov,
-      "apartment_number": aNumberController.text,
-      "floor_number": fNumberController.text
-    };
+  }
 
-    // Update adress.
-    await CloudFirestoreService.instance.updateDocumentField(
-        collectionPath: "users/",
-        documentID: auth.user.uid,
-        fieldName: 'adress',
-        updatedValue: newAdress);
+  Future<bool> _verifyPhoneNumber(
+      String phoneNumber, BuildContext context) async {
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+    bool flag = false;
 
-    //update number
-    await CloudFirestoreService.instance.updateDocumentField(
-        collectionPath: "users/",
-        documentID: auth.user.uid,
-        fieldName: 'phone_number',
-        updatedValue: phoneNumberController.text);
+    await auth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) async {
+        await showAlertDialog(
+          context,
+          titleText: "verification Failed",
+          content: "${e.message}",
+          actionButtonString: "OK",
+        );
+      },
+      timeout: Duration(minutes: 1),
+      codeSent: (String verificationId, int resendToken) async {
+        final strVerificationId = verificationId;
+        final smsCode = await _showPhoneNumberVerificationDialog();
+        // Create a PhoneAuthCredential with the code
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: strVerificationId, smsCode: smsCode);
+        try {
+          await auth.user.updatePhoneNumber(credential);
+          flag = true;
+        } on Exception catch (e) {
+          flag = false;
+          throw e;
+        }
+        print("CODE SENT $verificationId , $resendToken");
+      },
+      codeAutoRetrievalTimeout: (String verificationId) async {
+        print("codeAutoRetrievalTimeout : $verificationId");
+        if (!flag) {
+          await showAlertDialog(
+            context,
+            titleText: "verification Failed",
+            content: "SMS Code sent Timeout",
+            actionButtonString: "OK",
+          );
+        }
+      },
+    );
+    return flag;
+  }
+
+  Future<String> _showPhoneNumberVerificationDialog() async {
+    String smsCode = "";
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(16.0),
+          content: new Row(
+            children: <Widget>[
+              new Expanded(
+                child: new TextField(
+                  onChanged: (val) => smsCode = val,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                      labelText: 'SMS CODE', hintText: 'eg. 123xxx'),
+                ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('CANCEL'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            new FlatButton(
+                child: const Text('OPEN'),
+                onPressed: () {
+                  Navigator.pop(context);
+                })
+          ],
+        );
+      },
+    );
+
+    return smsCode;
   }
 }
 

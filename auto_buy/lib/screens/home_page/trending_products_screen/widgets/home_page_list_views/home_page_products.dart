@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'list_type.dart';
 import 'products_list_view_bloc.dart';
 
-class HomePageProductsListView extends StatelessWidget {
+class HomePageProductsListView extends StatefulWidget {
   final ProductsListViewBloc bloc;
 
   const HomePageProductsListView({Key key, this.bloc}) : super(key: key);
@@ -24,17 +24,26 @@ class HomePageProductsListView extends StatelessWidget {
   }
 
   @override
+  _HomePageProductsListViewState createState() =>
+      _HomePageProductsListViewState();
+}
+
+class _HomePageProductsListViewState extends State<HomePageProductsListView> {
+  @override
   Widget build(BuildContext context) {
     final height = _calcHeight(context);
     return FutureBuilder<List<Product>>(
-        future: bloc.readProducts(),
+        future: widget.bloc.readProducts(),
         initialData: [],
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           try {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
+              /*setState(() {
+
+              });*/
               return Text(
-                  'Something went wrong , ${snapshot.error.toString()}');
+                  'Something went wrong , check your internet connection');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(

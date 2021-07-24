@@ -42,7 +42,7 @@ class ProductDescription extends StatelessWidget {
         _buildDescriptionElementWidget(context, "Category : ", productCategory),
         SizedBox(height: 10),
         _buildDescriptionElementWidget(
-            context, "Size : ", '$productSize $productSizeUnit'),
+            context, "Size : ", '${productSize ?? ""} $productSizeUnit'),
       ],
     );
   }

@@ -14,13 +14,11 @@ class FriendCommand implements Command {
   FriendCommand(this.commandArguments);
 
   @override
-  // TODO: implement isValidCommand
   bool get isValidCommand =>
       commandArguments.commandType != CommandType.INVALID;
 
   @override
   Future<void> run(ProductSearchServices searchService) async {
-    // TODO: implement run
     if (commandArguments.commandType == CommandType.ADD) {
       await _addFriend();
     } else if (commandArguments.commandType == CommandType.DELETE) {

@@ -51,7 +51,7 @@ class OptioChangeNotifier extends ChangeNotifier {
     var response;
     try {
       var url =
-          Uri.parse('https://e0e822c03277.ngrok.io/classifytext/$translation');
+          Uri.parse('https://2c17eb614d6c.ngrok.io/classifytext/$translation');
       response = await http.get(url);
       print(response.body.toString());
 
@@ -97,9 +97,10 @@ class OptioChangeNotifier extends ChangeNotifier {
 
           print("Command executed successfully");
         } on Exception catch (e) {
-          String errorMessage = response.body.toString(); //TODO
-          optioResponse = _createOptioResponse(e.toString(), false);
+          optioResponse =
+              _createOptioResponse(e.toString().split(":")[1], false);
           print(e);
+          print("RUNNING EXCEPTION");
         }
       } else {
         String errorMessage = response.body.toString(); //TODO
