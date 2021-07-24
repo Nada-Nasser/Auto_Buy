@@ -24,7 +24,7 @@ class ExpenseTrackerCommand implements Command {
   }
 
   _openExpenseTracker() {
-    Navigator.of(commandArguments.context).push(
+    return Navigator.of(commandArguments.context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => ExpenseTrackerScreen.create(context),

@@ -36,7 +36,7 @@ class FriendCommand implements Command {
   }
 
   Future<void>_addFriend() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
       return await showDialog(
           context: commandArguments.context,
           builder: (context) {
@@ -57,9 +57,6 @@ class FriendCommand implements Command {
     List<dynamic> userFriends = userData['friends'];
 
     await userListDialog(commandArguments.context,commandArguments.uid,userFriends,'Choose some one to delete');
-
-
-
   }
 
 
