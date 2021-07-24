@@ -7,10 +7,15 @@ Widget customSearchBar(BuildContext context) {
   return Container(
     padding: EdgeInsets.fromLTRB(50, 5, 0, 5),
     child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Flexible(
-          child: TextFormField(
-              decoration: InputDecoration(
+          child: IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              /* decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderRadius: const BorderRadius.all(
                     const Radius.circular(10.0),
@@ -19,23 +24,27 @@ Widget customSearchBar(BuildContext context) {
                 hintText: 'type something',
                 fillColor: Colors.white,
                 filled: true,
-              ),
-              onTap: () {
+              ),*/
+              onPressed: () {
                 Navigator.of(context).push(
-                  PageRouteBuilder(
-                      opaque: false,
-                      pageBuilder: (BuildContext context, _, __) {
+                  MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (BuildContext context) {
                         return SearchBar();
                       }),
                 );
               }),
         ),
+        SizedBox(
+          width: 10,
+        ),
         IconButton(
+            //icon: Icon(Icons.face_outlined),
             icon: Image.asset('assets/images/optioface.png'),
             onPressed: () async {
               final ProductSearchServices searchService =
                   ProductSearchServices();
-              await searchService.readAllProducts();
+              searchService.readAllProducts();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,
