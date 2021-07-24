@@ -106,7 +106,7 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
         updateModelWith(isEnable: true);
         return false;
       }
-      user.sendEmailVerification(); // TODO sendEmailVerification
+      user.sendEmailVerification();
 
       String s = auth.uid.substring(0, 5);
       print(s);

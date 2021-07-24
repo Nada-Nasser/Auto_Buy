@@ -30,7 +30,7 @@ class Product implements Comparable {
     @required this.price,
     @required this.categoryID,
     @required this.maxDemandPerUser,
-    this.numberSold,
+    this.numberSold = 0,
     this.brand = 'None',
     this.description = '',
     this.hasDiscount = false,

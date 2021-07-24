@@ -45,7 +45,7 @@ class SearchCommand implements Command{
   }
 
   Future<void> goToProductInfo(BuildContext context, Product product) {
-    Navigator.of(commandArguments.context).push(
+    return Navigator.of(commandArguments.context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => ProductInfoScreen.create(

@@ -14,13 +14,11 @@ class FriendCommand implements Command {
   FriendCommand(this.commandArguments);
 
   @override
-  // TODO: implement isValidCommand
   bool get isValidCommand =>
       commandArguments.commandType != CommandType.INVALID;
 
   @override
   Future<void> run(ProductSearchServices searchService) async {
-    // TODO: implement run
     if (commandArguments.commandType == CommandType.ADD) {
       await _addFriend();
     } else if (commandArguments.commandType == CommandType.DELETE) {
@@ -38,7 +36,7 @@ class FriendCommand implements Command {
   }
 
   Future<void>_addFriend() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
       return await showDialog(
           context: commandArguments.context,
           builder: (context) {
@@ -59,9 +57,6 @@ class FriendCommand implements Command {
     List<dynamic> userFriends = userData['friends'];
 
     await userListDialog(commandArguments.context,commandArguments.uid,userFriends,'Choose some one to delete');
-
-
-
   }
 
 

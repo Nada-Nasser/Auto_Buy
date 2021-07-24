@@ -4,7 +4,6 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
@@ -437,7 +436,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
-  Future update(
+  Future<void> update(
       BuildContext context,
       FirebaseAuthService auth,
       TextEditingController bNumberController,
@@ -446,37 +445,39 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       TextEditingController aNumberController,
       TextEditingController fNumberController,
       TextEditingController phoneNumberController) async {
-    Map<String, dynamic> newAdress;
-    if(governorate == null)
-    {
-      newGov = initGovernorate;
-    }else
-    {
-      newGov = governorate;
-    }
-    newAdress = {
-      "building_number": bNumberController.text,
-      "city": cityController.text,
-      "street": streetController.text,
-      "governorate": newGov,
-      "apartment_number": aNumberController.text,
-      "floor_number": fNumberController.text
-    };
 
-    // Update adress.
-    await CloudFirestoreService.instance.updateDocumentField(
-        collectionPath: "users/",
-        documentID: auth.user.uid,
-        fieldName: 'adress',
-        updatedValue: newAdress);
+      Map<String, dynamic> newAdress;
+      if (governorate == null) {
+        newGov = initGovernorate;
+      } else {
+        newGov = governorate;
+      }
+      newAdress = {
+        "building_number": bNumberController.text,
+        "city": cityController.text,
+        "street": streetController.text,
+        "governorate": newGov,
+        "apartment_number": aNumberController.text,
+        "floor_number": fNumberController.text
+      };
 
-    //update number
-    await CloudFirestoreService.instance.updateDocumentField(
-        collectionPath: "users/",
-        documentID: auth.user.uid,
-        fieldName: 'phone_number',
-        updatedValue: phoneNumberController.text);
+      // Update adress.
+      await CloudFirestoreService.instance.updateDocumentField(
+          collectionPath: "users/",
+          documentID: auth.user.uid,
+          fieldName: 'adress',
+          updatedValue: newAdress);
+
+      //update number
+      await CloudFirestoreService.instance.updateDocumentField(
+          collectionPath: "users/",
+          documentID: auth.user.uid,
+          fieldName: 'phone_number',
+          updatedValue: phoneNumberController.text);
   }
+
+
+
 }
 
 Widget makeSure(

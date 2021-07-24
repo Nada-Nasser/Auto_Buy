@@ -66,7 +66,8 @@ class MonthlyCartCommand implements Command {
             _selectedCartName,
             item,
           );
-          print("Product added");
+          throw Exception(
+              "Product Named ${_selectedProduct.name} added to your $_selectedCartName monthly cart");
         } else {
           throw Exception("You didn't select a cart");
         }
@@ -86,12 +87,20 @@ class MonthlyCartCommand implements Command {
   Future<void> _deleteFromMonthlyCart() async {
     try {
       await _getSelectedCartName();
+      if (_selectedCartName == null)
+        throw Exception("You didn't select a cart name");
+
       List<Product> products;
       List<Product> monthlyCartProducts =
           await _monthlyCartServices.readMonthlyCartProducts(
         commandArguments.uid,
         _selectedCartName,
       );
+
+      if (monthlyCartProducts.isEmpty) {
+        throw Exception("This cart is empty, you can not delete from it");
+      }
+
       if (commandArguments.productsName.isEmpty)
         products = monthlyCartProducts;
       else {
@@ -112,6 +121,11 @@ class MonthlyCartCommand implements Command {
             products.add(monthlyCartProducts[i]);
           }
         }
+      }
+
+      if (products.isEmpty) {
+        throw Exception(
+            "There is not any product with name ${commandArguments.productsName} in your $_selectedCartName monthly cart");
       }
 
       await productsListDialog(

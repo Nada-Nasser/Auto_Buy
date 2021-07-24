@@ -1,11 +1,11 @@
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'order_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -152,7 +152,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       child: Center(
                         child: Text("You don't have any orders"),
                       ),
-                    ); //todo please display a message or anything else
+                    );
                   }
                 },
               ),
