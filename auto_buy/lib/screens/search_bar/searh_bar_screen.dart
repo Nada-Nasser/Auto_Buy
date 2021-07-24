@@ -7,9 +7,9 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchBarScreen extends StatefulWidget {
-  ProductSearchServices sv;
+  final ProductSearchServices sv;
 
-  SearchBarScreen({ProductSearchServices this.sv});
+  SearchBarScreen({this.sv});
 
   @override
   SearchBarState createState() => SearchBarState(sv: sv);
