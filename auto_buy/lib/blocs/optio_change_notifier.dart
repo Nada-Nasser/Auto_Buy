@@ -51,7 +51,7 @@ class OptioChangeNotifier extends ChangeNotifier {
     var response;
     try {
       var url =
-          Uri.parse('https://fbaec76ffc94.ngrok.io/classifytext/$translation');
+          Uri.parse('https://19ec64ea10dc.ngrok.io/classifytext/$translation');
       response = await http.get(url);
       print(response.body.toString());
 
