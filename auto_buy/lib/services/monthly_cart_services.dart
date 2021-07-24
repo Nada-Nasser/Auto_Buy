@@ -10,7 +10,7 @@ import 'firebase_backend/firestore_service.dart';
 class MonthlyCartServices {
   final _firestoreService = CloudFirestoreService.instance;
   final ProductsBackendServices _productsBackendServices =
-      ProductsBackendServices();
+      ProductsBackendServices.instance;
 
   Stream<List<String>> userMonthlyCartsNamesStream(String uid) =>
       _firestoreService.collectionStream(

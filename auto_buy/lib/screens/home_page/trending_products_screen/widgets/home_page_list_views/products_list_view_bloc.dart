@@ -7,7 +7,7 @@ import 'package:auto_buy/services/products_services.dart';
 
 class ProductsListViewBloc {
   final ProductsBackendServices _productsBackendServices =
-      ProductsBackendServices();
+      ProductsBackendServices.instance;
   CloudFirestoreService _firestoreService = CloudFirestoreService.instance;
 
   String firestorePath;
@@ -25,8 +25,7 @@ class ProductsListViewBloc {
 
   Future<List<Product>> _trendingProducts() async {
     try {
-      List<Product> products =
-          await _productsBackendServices.readProductsFromFirestore();
+      List<Product> products = _productsBackendServices.allProducts;
       products.sort((a, b) {
         return a.compareTo(b);
       });

@@ -9,14 +9,13 @@ import 'package:flutter/material.dart';
 
 class MonthlyCartsScreenBloc {
   MonthlyCartsScreenBloc({@required this.uid, this.selectedCartName}) {
-    if(uid != null)
-     getCartProducts();
+    if (uid != null) getCartProducts();
   }
 
   final String uid;
   final MonthlyCartServices _monthlyCartServices = MonthlyCartServices();
   final ProductsBackendServices _productsBackendServices =
-      ProductsBackendServices();
+      ProductsBackendServices.instance;
 
   final selectedCartName;
   List<Product> monthlyCartProducts = [];

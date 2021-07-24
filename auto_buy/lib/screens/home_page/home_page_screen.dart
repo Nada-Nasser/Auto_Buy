@@ -1,5 +1,5 @@
+import 'package:auto_buy/models/product_model.dart';
 import 'package:auto_buy/screens/expense_tracker/expense_tracker_screen.dart';
-import 'package:auto_buy/screens/friends/friends_screen.dart';
 import 'package:auto_buy/screens/home_page/trending_products_screen/homepage_products_screen.dart';
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_screen.dart';
 import 'package:auto_buy/screens/my_orders/my_orders_screen.dart';
@@ -7,8 +7,8 @@ import 'package:auto_buy/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:auto_buy/screens/user_account/user_account_screen.dart';
 import 'package:auto_buy/screens/wishlist/wishlist_screen.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
+import 'package:auto_buy/services/products_services.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +17,7 @@ import '../Categories/backEnd/MainCategoryWidgets/main_categories_screen.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final productsServices = ProductsBackendServices.instance;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: customAppBar(
@@ -24,7 +25,32 @@ class HomePage extends StatelessWidget {
         hasLeading: false,
       ),
       drawer: _drawer(context),
-      body: HomePageProducts(),
+      body: FutureBuilder<List<Product>>(
+        future: productsServices.readProductsFromFirestore(),
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (snap.hasData)
+            return HomePageProducts();
+          else if (snap.hasError) {
+            return Container(
+              child: Center(
+                child: Text("${snap.error}"),
+              ),
+            );
+          } else {
+            return Container(
+              child: Center(
+                child: Text("check your internet connection"),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

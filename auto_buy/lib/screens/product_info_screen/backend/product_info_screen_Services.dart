@@ -11,7 +11,7 @@ class ProductInfoScreenServices {
   final _shoppingCartServices = ShoppingCartServices();
   final _wishListServices = WishListServices();
   final _monthlyCartServices = MonthlyCartServices();
-  final _productServices = ProductsBackendServices();
+  final _productServices = ProductsBackendServices.instance;
 
   Stream<Product> getProductStream(String productID) =>
       _productServices.getProductStream(productID);

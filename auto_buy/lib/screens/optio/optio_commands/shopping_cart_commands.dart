@@ -12,13 +12,17 @@ import 'package:flutter/material.dart';
 class ShoppingCartCommand implements Command{
   @override
   final CommandArguments commandArguments;
+
   ShoppingCartCommand(this.commandArguments);
-  final ProductsBackendServices _productsBackendServices = ProductsBackendServices();
+
+  final ProductsBackendServices _productsBackendServices =
+      ProductsBackendServices.instance;
   final ShoppingCartServices shoppingCartServices = ShoppingCartServices();
   Product selectedProduct;
 
   @override
-  bool get isValidCommand => commandArguments.commandType != CommandType.INVALID;
+  bool get isValidCommand =>
+      commandArguments.commandType != CommandType.INVALID;
 
   @override
   Future<void> run(ProductSearchServices searchService) async {

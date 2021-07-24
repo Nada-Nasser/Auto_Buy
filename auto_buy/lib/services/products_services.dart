@@ -9,6 +9,12 @@ class ProductsBackendServices {
   final _firestoreService = CloudFirestoreService.instance;
   final _storageService = FirebaseStorageService.instance;
 
+  List<Product> allProducts = [];
+
+  ProductsBackendServices._();
+
+  static ProductsBackendServices instance = ProductsBackendServices._();
+
   Stream<Product> getProductStream(String productID) =>
       _firestoreService.documentStream(
         path: APIPath.productPath(productID: productID),
@@ -74,17 +80,17 @@ class ProductsBackendServices {
   }
 
   Future<List<Product>> readProductsFromFirestore() async {
-    List<Product> products = await _firestoreService.getCollectionData(
+    allProducts = [];
+    allProducts = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),
       queryBuilder: (query) => query.where('name', isNotEqualTo: ""),
     );
-    for (int i = 0; i < products.length; i++) {
-      String url = await _storageService.downloadURL(products[i].picturePath);
-      products[i].picturePath = url;
+    for (int i = 0; i < allProducts.length; i++) {
+      String url =
+          await _storageService.downloadURL(allProducts[i].picturePath);
+      allProducts[i].picturePath = url;
     }
-    return products;
+    return allProducts;
   }
-
-
 }

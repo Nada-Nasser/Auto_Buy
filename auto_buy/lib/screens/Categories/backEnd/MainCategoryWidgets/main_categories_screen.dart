@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'main_category_listView.dart';
-import '../subCategoryWidgets/sub_categories_screen.dart';
 import '../SelectedCategoryNotifier.dart';
+import '../subCategoryWidgets/sub_categories_screen.dart';
+import 'main_category_listView.dart';
 
 class MainCategoriesScreen extends StatefulWidget {
   static List<category> categs = [];
@@ -17,8 +17,9 @@ class MainCategoriesScreen extends StatefulWidget {
 
   final Future<List<category>> _Categoryfuture =
       CategoryServices().ReadCategoriesFromFirestore();
-  final Future<List<Product>> _Productfuture =
-      ProductsBackendServices().readProductsFromFirestore();
+
+  final ProductsBackendServices _productsBackendServices =
+      ProductsBackendServices.instance;
 
   @override
   _MainCategoriesScreenState createState() => _MainCategoriesScreenState();
@@ -31,10 +32,10 @@ class _MainCategoriesScreenState extends State<MainCategoriesScreen> {
     return ChangeNotifierProvider(
       create: (_) => SelectedCategoryNotifier(0,0),
       child: FutureBuilder(
-        future: Future.wait([widget._Categoryfuture , widget._Productfuture]),
+        future: Future.wait([widget._Categoryfuture]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           try {
-           // final myListener = context.select<SelectedCategoryNotifier,bool>((value) => value.isAllSelected);
+            // final myListener = context.select<SelectedCategoryNotifier,bool>((value) => value.isAllSelected);
 
             if (snapshot.hasError) {
               print(snapshot.error.toString());
@@ -43,7 +44,8 @@ class _MainCategoriesScreenState extends State<MainCategoriesScreen> {
             }
             if (snapshot.hasData) {
               MainCategoriesScreen.categs = snapshot.data[0];
-              MainCategoriesScreen.AllProducts =snapshot.data[1];
+              MainCategoriesScreen.AllProducts =
+                  widget._productsBackendServices.allProducts;
               return //CategoryListView(categories : GetCategories.categs);
                   Container(
                 child: Column(
