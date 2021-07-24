@@ -52,12 +52,13 @@ class ProductSearchServices {
           }
           List<String> prodwords = s.split(" ");
           for(String w in prodwords){
-            if(w.similarityTo(word) > .5)
+            print("SIMILARITY OF $w  and $word = ${w.similarityTo(word)}");
+
+            if(w.similarityTo(word) > .7)
               similarStrings.add(s);
           }
         }
 
-      print("SIMILARITY OF $searchTerm = ${s.similarityTo(searchTerm)}");
     }
     pairs.sort((a,b)=> a.element1 < b.element1? 1 : 0);
 

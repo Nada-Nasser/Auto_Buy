@@ -1,3 +1,4 @@
+import 'package:auto_buy/main.dart';
 import 'package:auto_buy/models/product_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -159,21 +160,33 @@ class ProductTile extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Row(
         children: [
-          Text(
-            "EGP $price",
-            style: TextStyle(
-              decoration: TextDecoration.lineThrough,
-              fontWeight: FontWeight.w200,
+          Flexible(
+            child: Column(
+              children: [
+                Text(
+                  "EGP $price",
+                  style: TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
             width: 10,
           ),
-          Text(
-            "-${percent.toStringAsFixed(2)}%",
-            style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Column(
+              children: [
+                Text(
+                  "-${percent.toStringAsFixed(2)}%",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -185,6 +198,7 @@ class ProductTile extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: this.product.picturePath,
       height: smallPic ? 50 : 100,
+      width: MediaQuery.of(navigatorKey.currentContext).size.width/5,
       placeholder: (context, url) => SizedBox(
         child: CircularProgressIndicator(),
         height: 10,
