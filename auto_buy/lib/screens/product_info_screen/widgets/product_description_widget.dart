@@ -52,7 +52,7 @@ class ProductDescription extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Text(
         productDescription,
-        textAlign: TextAlign.justify,
+        textAlign: TextAlign.start,
         softWrap: true,
         style: TextStyle(
           color: Colors.grey[700],

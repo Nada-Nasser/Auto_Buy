@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
       drawer: _drawer(context),
       body: FutureBuilder<List<Product>>(
         future: productsServices.readProductsFromFirestore(),
+        initialData: [],
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return Container(
