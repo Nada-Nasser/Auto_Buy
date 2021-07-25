@@ -6,8 +6,8 @@ import 'package:string_similarity/string_similarity.dart';
 class ProductSearchServices {
 
   List<Product> _allProducts = [];
-  List<String> _productNamesList = [];
-  final Map<String, Product> _fromNameToProduct = {};
+  List<Pair<String,String>> _productNamesListAndID = [];
+  final Map<String, Product> _fromIDToProduct = {};
 
   bool hasProducts() {
     return _allProducts.isNotEmpty;
@@ -16,8 +16,8 @@ class ProductSearchServices {
   List<Product> toLowerCase() {
     _allProducts = ProductsBackendServices.instance.allProducts;
     for (Product prod in _allProducts) {
-      _fromNameToProduct[prod.name.toLowerCase()] = prod;
-      _productNamesList.add(prod.name.toLowerCase());
+      _fromIDToProduct[prod.id] = prod;
+      _productNamesListAndID.add(Pair(prod.name.toLowerCase(),prod.id));
     }
     return _allProducts;
   }
@@ -42,8 +42,8 @@ class ProductSearchServices {
     if(searchTerm == "")
       return [];
 
-    for(String s in _productNamesList) {
-      pairs.add(Pair(s.similarityTo(searchTerm), s));
+    for(Pair<String,String> s in _productNamesListAndID) {
+      pairs.add(Pair(s.element1.similarityTo(searchTerm), s.element2));
     }
     pairs.sort((a,b) => b.element1.compareTo(a.element1));
 
@@ -53,18 +53,18 @@ class ProductSearchServices {
       else break;
     }
     pairs = [];
-    for(String s in _productNamesList){
+    for(Pair<String,String> s in _productNamesListAndID){
       List<String> sentenceSplit = searchTerm.split(" ");
         for (String word in sentenceSplit) {
-          List<String> prodWords = s.split(" ");
+          List<String> prodWords = s.element1.split(" ");
           for(String w in prodWords){
             print("SIMILARITY OF $w  and $word = ${w.similarityTo(word)}");
 
             if(w.similarityTo(word) > .7)
-              similarStrings.add(s);
+              similarStrings.add(s.element2);
           }
-          if(word != "" && s.contains(word)) {
-            similarStrings.add(s);
+          if(word != "" && s.element1.contains(word)) {
+            similarStrings.add(s.element2);
           }
         }
     }
@@ -75,7 +75,7 @@ class ProductSearchServices {
   List<Product> _convertFromNameToProduct(List<String> productNames){
     List<Product> products = [];
     for(String s in productNames){
-      products.add(_fromNameToProduct[s]);
+      products.add(_fromIDToProduct[s]);
     }
     return products;
   }
