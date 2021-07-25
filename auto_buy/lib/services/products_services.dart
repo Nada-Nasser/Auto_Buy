@@ -10,6 +10,7 @@ class ProductsBackendServices {
   final _storageService = FirebaseStorageService.instance;
 
   List<Product> allProducts = [];
+  Map<String, String> picturePath = {};
 
   ProductsBackendServices._();
 
@@ -80,9 +81,21 @@ class ProductsBackendServices {
   }
 
   Future<List<Product>> readProductsFromFirestore() async {
-    if (allProducts.length > 0) return allProducts;
+    if (allProducts.length > 0) {
+      for (int i = 0; i < allProducts.length; i++) {
+        try {
+          String url =
+              await _storageService.downloadURL(picturePath[allProducts[i].id]);
+          allProducts[i].picturePath = url;
+        } on Exception catch (e) {
+          print(e);
+        }
+      }
+      return allProducts;
+    }
 
     allProducts = [];
+    picturePath.clear();
     allProducts = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),
@@ -90,9 +103,16 @@ class ProductsBackendServices {
     );
 
     for (int i = 0; i < allProducts.length; i++) {
+      final path = allProducts[i].picturePath;
+      picturePath[allProducts[i].id] = path;
+
+      try {
         String url =
             await _storageService.downloadURL(allProducts[i].picturePath);
         allProducts[i].picturePath = url;
+      } on Exception catch (e) {
+        print(e);
+      }
     }
     return allProducts;
   }

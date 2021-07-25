@@ -249,7 +249,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                                 );
 
                                 if (regExp.hasMatch(phoneNumberController.text) == false && widget.isGift==false)
-                                   return errorDialog(context, "please make sure your number is valid");
+                                   return errorDialog(context, "Please make sure that your phone number is following one of these formats:\n\n012XXXXXXXX\n010XXXXXXXX\n011XXXXXXXX");
 
                                 if (cityController.text.isNotEmpty &&
                                     bNumberController.text.isNotEmpty &&
@@ -512,7 +512,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
 
     if (regExp.hasMatch(phoneNumberController.text) == false)
-      return errorDialog(context, "please make sure your number is valid");
+      return errorDialog(context, "Please make sure that your phone number is following one of these formats:\n\n012XXXXXXXX\n010XXXXXXXX\n011XXXXXXXX");
 
     Map<String, dynamic> newAdress;
     if (governorate == null) {
