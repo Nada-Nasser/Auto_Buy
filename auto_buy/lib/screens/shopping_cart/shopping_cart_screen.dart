@@ -176,11 +176,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                       imageUrl: image.data,
                                                       placeholder:
                                                           (context, url) =>
-                                                              SizedBox(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                        height: 10,
-                                                        width: 10,
+                                                              Center(
+                                                        child: SizedBox(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                          height: 10,
+                                                          width: 10,
+                                                        ),
                                                       ),
                                                       errorWidget: (context,
                                                               url, error) =>
@@ -196,7 +198,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                     ),
                                                   );
                                                 } else {
-                                                  return CircularProgressIndicator();
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                  );
                                                 }
                                               }),
                                           SizedBox(
@@ -304,7 +313,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     ),
                                   );
                                 } else {
-                                  return CircularProgressIndicator();
+                                  return Center(
+                                    child: SizedBox(
+                                      child: CircularProgressIndicator(),
+                                      height: 10,
+                                      width: 10,
+                                    ),
+                                  );
                                 }
                               },
                             );
