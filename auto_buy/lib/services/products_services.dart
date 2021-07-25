@@ -8,6 +8,7 @@ import 'firebase_backend/storage_service.dart';
 class ProductsBackendServices {
   final _firestoreService = CloudFirestoreService.instance;
   final _storageService = FirebaseStorageService.instance;
+  Map<String, String> picturePath = {};
 
   List<Product> allProducts = [];
 
@@ -80,7 +81,20 @@ class ProductsBackendServices {
   }
 
   Future<List<Product>> readProductsFromFirestore() async {
-    if (allProducts.length > 0) return allProducts;
+    if (allProducts.length > 0) {
+      for (int i = 0; i < allProducts.length; i++) {
+        try {
+          String url =
+          await _storageService.downloadURL(picturePath[allProducts[i].id]);
+          allProducts[i].picturePath = url;
+        } on Exception catch (e) {
+          print(e);
+        }
+      }
+      return allProducts;
+    }
+
+    picturePath.clear();
 
     allProducts = [];
     allProducts = await _firestoreService.getCollectionData(
@@ -90,13 +104,14 @@ class ProductsBackendServices {
     );
 
     for (int i = 0; i < allProducts.length; i++) {
+      final path = allProducts[i].picturePath;
+      picturePath[allProducts[i].id] = path;
       try {
         String url =
             await _storageService.downloadURL(allProducts[i].picturePath);
         allProducts[i].picturePath = url;
       } on Exception catch (e) {
         print(e);
-        allProducts.removeAt(i);
       }
     }
     return allProducts;

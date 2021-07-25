@@ -108,8 +108,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                         return output;
                                       }),
                               builder: (context, snapshot) {
-                                print('what is going on');
-                                print(alldata.data[index]['data']);
                                 if (snapshot.hasData) {
                                   Product product = Product.fromMap(
                                       snapshot.data['data'],
@@ -184,95 +182,98 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                   return CircularProgressIndicator();
                                                 }
                                               }),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ///product name
-                                              Container(
-                                                padding: EdgeInsets.all(5),
-                                                child: Text(
-                                                  product.name,
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
+                                          Flexible(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ///product name
+                                                Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Flexible(
+                                                    child: Text(
+                                                      product.name,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              ///product price
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        5, 0, 5, 0),
-                                                child: Text(
-                                                  "EGP ${product.hasDiscount ? product.priceAfterDiscount.toStringAsFixed(2) : product.price.toStringAsFixed(2)}",
-                                                  textAlign: TextAlign.start,
-                                                  //    softWrap: true,
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-
-                                              ///product discount
-                                              if (product.hasDiscount)
+                                                ///product price
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
                                                           5, 0, 5, 0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "EGP ${product.price}",
-                                                        style: TextStyle(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                          fontWeight:
-                                                              FontWeight.w200,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "-${product.discountPercentage.toStringAsFixed(2)}%",
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  child: Text(
+                                                    "EGP ${product.hasDiscount ? product.priceAfterDiscount.toStringAsFixed(2) : product.price.toStringAsFixed(2)}",
+                                                    textAlign: TextAlign.start,
+                                                    //    softWrap: true,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
                                                 ),
 
-                                              ///product quantity
-                                              if (alldata.data[index]['data']
-                                                      ['quantity'] !=
-                                                  null)
-                                                Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Text(
-                                                    "${alldata.data[index]['data']['quantity']} pcs",
-                                                    softWrap: true,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 15,
+                                                ///product discount
+                                                if (product.hasDiscount)
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.fromLTRB(
+                                                            5, 0, 5, 0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "EGP ${product.price}",
+                                                          style: TextStyle(
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                            fontWeight:
+                                                                FontWeight.w200,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "-${product.discountPercentage.toStringAsFixed(2)}%",
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                )
-                                            ],
+
+                                                ///product quantity
+                                                if (alldata.data[index]['data']
+                                                        ['quantity'] !=
+                                                    null)
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(
+                                                      "${alldata.data[index]['data']['quantity']} pcs",
+                                                      softWrap: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),

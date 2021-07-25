@@ -1,4 +1,5 @@
 import 'package:auto_buy/screens/monthly_supplies/monthly_carts_bloc.dart';
+import 'package:auto_buy/screens/user_account/User_Settings.dart';
 import 'package:auto_buy/services/checkingOutServices.dart';
 import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
@@ -152,34 +153,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (widget.enabledEditing == false) {
-                            widget.enabledEditing = true;
-                            print(widget.enabledEditing);
-                            setState(() {});
-                          } else {
-                            print(phoneNumberController.text);
-                            print(governorate);
-                            if(cityController.text.isNotEmpty && bNumberController.text.isNotEmpty && fNumberController.text.isNotEmpty
-                                && aNumberController.text.isNotEmpty && streetController.text.isNotEmpty && phoneNumberController.text.isNotEmpty
-                                && (governorate != null || initGovernorate != null))
-                            {
-                              update(
-                                  context,
-                                  auth,
-                                  bNumberController,
-                                  cityController,
-                                  streetController,
-                                  aNumberController,
-                                  fNumberController,
-                                  phoneNumberController);
-                              widget.enabledEditing = false;
-                              print(widget.enabledEditing);
-                              setState(() {});
-                            }else {
-                              showInSnackBar("please fill in all the fields to update", context);
-                            }
-
-                          }
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfilePage()));
                         },
                         child: Text(
                             widget.enabledEditing == false
