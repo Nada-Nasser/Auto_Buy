@@ -100,17 +100,14 @@ class OptioChangeNotifier extends ChangeNotifier {
           optioResponse =
               _createOptioResponse(e.toString().split(":")[1], false);
           print(e);
-          print("RUNNING EXCEPTION");
         }
       } else {
         String errorMessage = response.body.toString(); //TODO
         optioResponse = _createOptioResponse("Command Failed", false);
-        print("Command Failed");
       }
     } else {
       String errorMessage = response.body.toString(); //TODO
       optioResponse = _createOptioResponse("Something went wrong", false);
-      print("Command = NULL");
     }
 
     chatWidgets.add(listWidget(optioResponse, 0));

@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("RegisterPage SCREEN");
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return ChangeNotifierProvider<RegisterChangeNotifier>(
       create: (context) => RegisterChangeNotifier(auth: auth),

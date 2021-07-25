@@ -90,14 +90,9 @@ class ProductsBackendServices {
     );
 
     for (int i = 0; i < allProducts.length; i++) {
-      try {
         String url =
             await _storageService.downloadURL(allProducts[i].picturePath);
         allProducts[i].picturePath = url;
-      } on Exception catch (e) {
-        print(e);
-        allProducts.removeAt(i);
-      }
     }
     return allProducts;
   }

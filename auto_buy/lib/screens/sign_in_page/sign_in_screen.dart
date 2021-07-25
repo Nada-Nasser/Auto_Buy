@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("SIGN IN SCREEN");
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
     return ChangeNotifierProvider<SignInChangeNotifier>(
       create: (context) => SignInChangeNotifier(auth: auth),
