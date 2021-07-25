@@ -14,7 +14,12 @@ import 'package:provider/provider.dart';
 
 import '../Categories/backEnd/MainCategoryWidgets/main_categories_screen.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final productsServices = ProductsBackendServices.instance;
@@ -38,6 +43,9 @@ class HomePage extends StatelessWidget {
           } else if (snap.hasData)
             return HomePageProducts();
           else if (snap.hasError) {
+            setState(() {
+              print(snap.error);
+            });
             return Container(
               child: Center(
                 child: Text("${snap.error}"),
