@@ -275,7 +275,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
 
                     buildTextFormField("Full Name",nameController),
-                    buildTextFormField("Phone Number",numberController,limit: true),
+                    buildTextFormField("Phone Number",numberController),
                     Row(
                       children: [
                         
@@ -338,15 +338,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController cityController, TextEditingController streetController, 
   TextEditingController aNumberController, TextEditingController fNumberController, TextEditingController numberController) async{
 
-    RegExp regExp = new RegExp(
-      r"^(01)[1520][0-9]{8}$",
-      caseSensitive: false,
-      multiLine: false,
-    );
-    if(regExp.hasMatch(numberController.text)==false)
-      return errorDialog(context, "please make sure your number is valid");
-
-
     Map <String, dynamic> newAdress;
     String newGov;
     // Image.
@@ -368,7 +359,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         documentID: auth.user.uid,
         fieldName: 'name',
         updatedValue: nameController.text);
-
+    
     // Update number.
     await CloudFirestoreService.instance.updateDocumentField(
         collectionPath: "users/",
@@ -386,20 +377,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
         updatedValue: newAdress);
   }
   
-  Widget buildTextFormField(String labelText, TextEditingController cont,{bool limit}) {
+  Widget buildTextFormField(String labelText, TextEditingController cont) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextFormField(
         style: TextStyle(fontSize: 13.0, color: Colors.black),
-        maxLength: limit==true?11:500,
         controller: cont,
         decoration: InputDecoration(
-          counterText: "",
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.white,
+          
           contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
           labelText: labelText,
+          
           enabledBorder: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(10.0),
                         borderSide: new BorderSide(

@@ -66,7 +66,7 @@ class _WishListScreenState extends State<WishListScreen> {
                             crossAxisCount: 2,
                             childAspectRatio:
                             MediaQuery.of(context).size.width /
-                                (MediaQuery.of(context).size.height / 1.5),
+                                (MediaQuery.of(context).size.height / 2),
                           ),
                           itemBuilder: (context, index) {
                             ///this feature builder goes through each item in the user wishlist
@@ -123,7 +123,8 @@ class _WishListScreenState extends State<WishListScreen> {
                                                       errorWidget:
                                                           (context, url, error) =>
                                                           Icon(Icons.error),
-                                                      width: MediaQuery.of(context).size.width/3,
+                                                      width: double.infinity,
+                                                      height: 0.5 * 200,
                                                     ),
                                                   );
                                                 } else {

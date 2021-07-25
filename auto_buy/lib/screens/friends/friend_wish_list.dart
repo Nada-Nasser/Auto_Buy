@@ -153,7 +153,8 @@ class _FriendWishListState extends State<FriendWishList> {
                                                   errorWidget:
                                                       (context, url, error) =>
                                                       Icon(Icons.error),
-                                                  width: MediaQuery.of(context).size.width/3,
+                                                  width: double.infinity,
+                                                  height: 0.5 * 200,
                                                 ),
                                               );
                                             } else {
