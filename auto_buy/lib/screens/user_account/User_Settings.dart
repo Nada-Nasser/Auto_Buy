@@ -309,6 +309,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         RaisedButton(
                           onPressed: () {
                             update(context, auth, nameController, bNumberController, cityController, streetController, aNumberController, fNumberController, numberController);
+                            showInSnackBar("Your data updated successfuly", context);
                           },
                           color: Colors.orange,
                           padding: EdgeInsets.symmetric(horizontal: 50),
@@ -343,12 +344,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       multiLine: false,
     );
     if(regExp.hasMatch(numberController.text)==false)
-    {
-      errorDialog(context, "Please make sure that your phone number is following one of these formats:\n\n012XXXXXXXX\n010XXXXXXXX\n011XXXXXXXX");
-      return;
-    }
-      
-
+      return errorDialog(context, "please make sure your number is valid");
 
 
     Map <String, dynamic> newAdress;
@@ -388,7 +384,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         documentID: auth.user.uid,
         fieldName: 'adress',
         updatedValue: newAdress);
-    showInSnackBar("Your data updated successfuly", context);
   }
   
   Widget buildTextFormField(String labelText, TextEditingController cont,{bool limit}) {
