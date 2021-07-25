@@ -15,23 +15,13 @@ Widget customSearchBar(BuildContext context) {
                 Icons.search,
                 color: Colors.white,
               ),
-              /* decoration: InputDecoration(
-                border: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
-                  ),
-                ),
-                hintText: 'type something',
-                fillColor: Colors.white,
-                filled: true,
-              ),*/
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (BuildContext context) {
-                        return SearchBar();
-                      }),
+                    fullscreenDialog: true,
+                    builder: (context) =>
+                        SearchBar(),
+                  ),
                 );
               }),
         ),
