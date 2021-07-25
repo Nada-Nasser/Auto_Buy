@@ -8,6 +8,7 @@ class ProductSearchServices {
   List<Product> _allProducts = [];
   List<Pair<String,String>> _productNamesListAndID = [];
   final Map<String, Product> _fromIDToProduct = {};
+  final Map<String, String> _fromIDToName = {};
 
   bool hasProducts() {
     return _allProducts.isNotEmpty;
@@ -18,20 +19,21 @@ class ProductSearchServices {
     for (Product prod in _allProducts) {
       _fromIDToProduct[prod.id] = prod;
       _productNamesListAndID.add(Pair(prod.name.toLowerCase(),prod.id));
+      _fromIDToName[prod.id] = prod.name;
     }
     return _allProducts;
   }
 
   List<Product> search(String searchTerm) {
-    List<String> similarStrings = searchReturnsNames(searchTerm);
+    List<String> similarStrings = searchReturnsIDs(searchTerm);
     List<Product> products = [];
     if(similarStrings.isNotEmpty)
-      products = _convertFromNameToProduct(similarStrings);
+      products = _convertFromIDToProduct(similarStrings);
 
     return products;
   }
 
-  List<String> searchReturnsNames(String searchTerm) {
+  List<String> searchReturnsIDs(String searchTerm) {
     if(searchTerm == "")
       return [];
     Set<String> similarStrings =  new Set<String>();
@@ -71,8 +73,18 @@ class ProductSearchServices {
 
     return similarStrings.toList();
   }
-
-  List<Product> _convertFromNameToProduct(List<String> productNames){
+  List<String> searchReturnsNames(String searchTerm){
+    List<String> names= searchReturnsIDs(searchTerm);
+    return _convertFromIDToName(names);
+  }
+  List<String> _convertFromIDToName(List<String> IDs){
+    List<String> names = [];
+    for(String s in IDs){
+      names.add(_fromIDToName[s]);
+    }
+    return names;
+  }
+  List<Product> _convertFromIDToProduct(List<String> productNames){
     List<Product> products = [];
     for(String s in productNames){
       products.add(_fromIDToProduct[s]);
