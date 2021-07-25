@@ -70,7 +70,6 @@ Widget _drawer(BuildContext context) {
     elevation: 10,
     child: SafeArea(
       child: ListView(
-        // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(

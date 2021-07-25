@@ -6,21 +6,24 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
-import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
+
 class ShoppingCartScreen extends StatefulWidget {
   double totalPrice;
+
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   ShoppingCartScreenBloc _cartScreenBloc = ShoppingCartScreenBloc();
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -173,106 +176,128 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                       imageUrl: image.data,
                                                       placeholder:
                                                           (context, url) =>
-                                                              LoadingImage(),
+                                                              SizedBox(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                        height: 10,
+                                                        width: 10,
+                                                      ),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           Icon(Icons.error),
                                                       height: 100,
+                                                      width: MediaQuery.of(
+                                                                  navigatorKey
+                                                                      .currentContext)
+                                                              .size
+                                                              .width /
+                                                          5,
+                                                      fit: BoxFit.fitHeight,
                                                     ),
                                                   );
                                                 } else {
                                                   return CircularProgressIndicator();
                                                 }
                                               }),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ///product name
-                                              Container(
-                                                padding: EdgeInsets.all(5),
-                                                child: Text(
-                                                  product.name,
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 15,
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Flexible(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ///product name
+                                                Flexible(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Flexible(
+                                                      child: Text(
+                                                        product.name,
+                                                        overflow:
+                                                            TextOverflow.clip,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        maxLines: 1,
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              ///product price
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        5, 0, 5, 0),
-                                                child: Text(
-                                                  "EGP ${product.hasDiscount ? product.priceAfterDiscount.toStringAsFixed(2) : product.price.toStringAsFixed(2)}",
-                                                  textAlign: TextAlign.start,
-                                                  //    softWrap: true,
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-
-                                              ///product discount
-                                              if (product.hasDiscount)
+                                                ///product price
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
                                                           5, 0, 5, 0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "EGP ${product.price}",
-                                                        style: TextStyle(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                          fontWeight:
-                                                              FontWeight.w200,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        "-${product.discountPercentage.toStringAsFixed(2)}%",
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  child: Text(
+                                                    "EGP ${product.hasDiscount ? product.priceAfterDiscount.toStringAsFixed(2) : product.price.toStringAsFixed(2)}",
+                                                    textAlign: TextAlign.start,
+                                                    //    softWrap: true,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
                                                 ),
 
-                                              ///product quantity
-                                              if (alldata.data[index]['data']
-                                                      ['quantity'] !=
-                                                  null)
-                                                Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Text(
-                                                    "${alldata.data[index]['data']['quantity']} pcs",
-                                                    softWrap: true,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      fontSize: 15,
+                                                ///product discount
+                                                if (product.hasDiscount)
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(5, 0, 5, 0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "EGP ${product.price}",
+                                                          style: TextStyle(
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough,
+                                                            fontWeight:
+                                                                FontWeight.w200,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "-${product.discountPercentage.toStringAsFixed(2)}%",
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                )
-                                            ],
+
+                                                ///product quantity
+                                                if (alldata.data[index]['data']
+                                                        ['quantity'] !=
+                                                    null)
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Text(
+                                                      "${alldata.data[index]['data']['quantity']} pcs",
+                                                      softWrap: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),

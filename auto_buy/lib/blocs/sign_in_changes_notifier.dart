@@ -52,7 +52,6 @@ class SignInChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       }
     } on Exception catch (e) {
       updateModelWith(isEnable: true);
-      print(e);
       return false;
     }
   }
