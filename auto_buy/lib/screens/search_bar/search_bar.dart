@@ -8,7 +8,7 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    sv.readAllProducts();
-    return Container(child: SearchBarScreen(sv: sv));
+    sv.toLowerCase();
+    return SearchBarScreen(sv: sv);
   }
 }

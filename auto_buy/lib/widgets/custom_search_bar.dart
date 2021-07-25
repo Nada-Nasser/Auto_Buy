@@ -34,7 +34,8 @@ Widget customSearchBar(BuildContext context) {
             onPressed: () async {
               final ProductSearchServices searchService =
                   ProductSearchServices();
-              searchService.readAllProducts();
+              searchService.toLowerCase();
+
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,

@@ -65,7 +65,7 @@ class ImageSwiper extends StatelessWidget {
 
   Future<List<Product>> _getSearchResults(String term) async {
     final ProductSearchServices searchService = ProductSearchServices();
-    await searchService.readAllProducts();
+    await searchService.toLowerCase();
     return searchService.search(term);
   }
 }
