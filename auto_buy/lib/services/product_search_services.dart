@@ -13,7 +13,7 @@ class ProductSearchServices {
     return _allProducts.isNotEmpty;
   }
 
-  List<Product> readAllProducts() {
+  List<Product> toLowerCase() {
     _allProducts = ProductsBackendServices.instance.allProducts;
     for (Product prod in _allProducts) {
       _fromNameToProduct[prod.name.toLowerCase()] = prod;
