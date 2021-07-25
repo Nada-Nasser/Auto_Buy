@@ -160,7 +160,7 @@ class _WishListScreenState extends State<WishListScreen> {
                           },
                         );
                       } else {
-                        return CircularProgressIndicator();
+                        return Container();
                       }
                     }),
               ),
