@@ -126,23 +126,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return data;
                 }),
             builder: (ctx, snapShot) {
+              print(snapShot);
               if (snapShot.hasData) {
                 /* inject the user's data into the textConrollers to allow the modification on them */
                 TextEditingController nameController    = TextEditingController(text: snapShot.data['name']);
-                TextEditingController cityController    = TextEditingController(text: ("${snapShot.data['adress']['city']}" != null ? "${snapShot.data['adress']['city']}" : ""));
-                TextEditingController bNumberController = TextEditingController(text: ("${snapShot.data['adress']['building_number']}" != null ? "${snapShot.data['adress']['building_number']}" : ""));
-                TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != null ? "${snapShot.data['adress']['floor_number']}" : ""));
-                TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != null ? "${snapShot.data['adress']['apartment_number']}" : ""));
-                TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != null ? "${snapShot.data['adress']['street']}" : ""));
-                TextEditingController numberController  = TextEditingController(text: snapShot.data['phone_number']);
+                TextEditingController cityController    = TextEditingController(text: ("${snapShot.data['adress']['city']}" != "" ? "${snapShot.data['adress']['city']}" : ""));
+                TextEditingController bNumberController = TextEditingController(text: ("${snapShot.data['adress']['building_number']}" != "" ? "${snapShot.data['adress']['building_number']}" : ""));
+                TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != "" ? "${snapShot.data['adress']['floor_number']}" : ""));
+                TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != "" ? "${snapShot.data['adress']['apartment_number']}" : ""));
+                TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != "" ? "${snapShot.data['adress']['street']}" : ""));
+                TextEditingController numberController  = TextEditingController(text: ("${snapShot.data['phone_number']}" != "" ? "${snapShot.data['phone_number']}" : ""));
                 initGovernorate = snapShot.data['adress']['governorate'];
+                if(initGovernorate == null || initGovernorate == "")
+                {
+                  initGovernorate = "Governorate";
+                }
                 print(initGovernorate);
                 return ListView(
                   children: [
                     Center(
                       child: Stack(
                         children: [
-                          /* 
+                          /*
                               This future builder is used to get a url of the user's image by checking on the follwing:
                                   1- if the stored pic_path of the user doesn't contain (googleusercontent), this means
                                      that the user's image is stored in firesotre and we can get this image by the provided
@@ -394,7 +399,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget buildTextFormField(String labelText, TextEditingController cont,{bool limit}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: TextField(
+      child: TextFormField(
         style: TextStyle(fontSize: 13.0, color: Colors.black),
         maxLength: limit==true?11:500,
         controller: cont,
