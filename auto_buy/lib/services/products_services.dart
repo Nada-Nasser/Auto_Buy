@@ -11,7 +11,6 @@ class ProductsBackendServices {
   Map<String, String> picturePath = {};
 
   List<Product> allProducts = [];
-  Map<String, String> picturePath = {};
 
   ProductsBackendServices._();
 
