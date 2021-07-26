@@ -19,12 +19,12 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
 
   String governorate , initGovernorate;
-  /*Static List that contains all governorates of egypt to allow the user to choose one of them */ 
+  /*Static List that contains all governorates of egypt to allow the user to choose one of them */
   List listItem = ['Al Sharqia', 'Alexandria', 'Aswan', 'Asyut', 'Behira', 'Beni Suef', 'Cairo', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia', 'Giza', 'Ismalia',
-                    'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said', 'Qalyubia', 'Qena', 'Red Sea', 'Sohag',
-                    'South Sinai', 'Suez'];
-  
-  
+    'Kafr el-Sheikh', 'Luxor', 'Matruh', 'Minya', 'Monufia', 'New Valley', 'North Sinai', 'Port Said', 'Qalyubia', 'Qena', 'Red Sea', 'Sohag',
+    'South Sinai', 'Suez'];
+
+
   File _image;
   final picker = ImagePicker();
 
@@ -64,7 +64,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
 
-  /* This function is used to upload the selected image on the FireStore and also change the user's image */ 
+  /* This function is used to upload the selected image on the FireStore and also change the user's image */
   Future uploadPic(BuildContext context, FirebaseAuthService auth) async {
     String fileName = basename(_image.path);
 
@@ -126,23 +126,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return data;
                 }),
             builder: (ctx, snapShot) {
+              print(snapShot);
               if (snapShot.hasData) {
-                /* inject the user's data into the textConrollers to allow the modification on them */ 
+                /* inject the user's data into the textConrollers to allow the modification on them */
                 TextEditingController nameController    = TextEditingController(text: snapShot.data['name']);
-                TextEditingController cityController    = TextEditingController(text: ("${snapShot.data['adress']['city']}" != null ? "${snapShot.data['adress']['city']}" : ""));
-                TextEditingController bNumberController = TextEditingController(text: ("${snapShot.data['adress']['building_number']}" != null ? "${snapShot.data['adress']['building_number']}" : ""));
-                TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != null ? "${snapShot.data['adress']['floor_number']}" : ""));
-                TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != null ? "${snapShot.data['adress']['apartment_number']}" : ""));
-                TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != null ? "${snapShot.data['adress']['street']}" : ""));
-                TextEditingController numberController  = TextEditingController(text: snapShot.data['phone_number']);
+                TextEditingController cityController    = TextEditingController(text: ("${snapShot.data['adress']['city']}" != "" ? "${snapShot.data['adress']['city']}" : ""));
+                TextEditingController bNumberController = TextEditingController(text: ("${snapShot.data['adress']['building_number']}" != "" ? "${snapShot.data['adress']['building_number']}" : ""));
+                TextEditingController fNumberController = TextEditingController(text: ("${snapShot.data['adress']['floor_number']}" != "" ? "${snapShot.data['adress']['floor_number']}" : ""));
+                TextEditingController aNumberController = TextEditingController(text: ("${snapShot.data['adress']['apartment_number']}" != "" ? "${snapShot.data['adress']['apartment_number']}" : ""));
+                TextEditingController streetController  = TextEditingController(text: ("${snapShot.data['adress']['street']}" != "" ? "${snapShot.data['adress']['street']}" : ""));
+                TextEditingController numberController  = TextEditingController(text: ("${snapShot.data['phone_number']}" != "" ? "${snapShot.data['phone_number']}" : ""));
                 initGovernorate = snapShot.data['adress']['governorate'];
+                if(initGovernorate == null || initGovernorate == "")
+                {
+                  initGovernorate = "Governorate";
+                }
                 print(initGovernorate);
                 return ListView(
                   children: [
                     Center(
                       child: Stack(
                         children: [
-                          /* 
+                          /*
                               This future builder is used to get a url of the user's image by checking on the follwing:
                                   1- if the stored pic_path of the user doesn't contain (googleusercontent), this means
                                      that the user's image is stored in firesotre and we can get this image by the provided
@@ -167,21 +172,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   width: 130,
                                   height: 130,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 4,
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          spreadRadius: 2,
-                                          blurRadius: 10,
-                                          color: Colors.black.withOpacity(0.2),
-                                          offset: Offset(0, 10))
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: (_image == null)
-                                        ? DecorationImage(fit: BoxFit.cover, image: NetworkImage(pth))
-                                        : DecorationImage(image: new FileImage(_image), fit: BoxFit.fill)
+                                      border: Border.all(
+                                          width: 4,
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            spreadRadius: 2,
+                                            blurRadius: 10,
+                                            color: Colors.black.withOpacity(0.2),
+                                            offset: Offset(0, 10))
+                                      ],
+                                      shape: BoxShape.circle,
+                                      image: (_image == null)
+                                          ? DecorationImage(fit: BoxFit.cover, image: NetworkImage(pth))
+                                          : DecorationImage(image: new FileImage(_image), fit: BoxFit.fill)
                                   ),
                                 );
                               }
@@ -198,7 +203,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 border: Border.all(
                                   width: 4,
                                   color:
-                                      Theme.of(context).scaffoldBackgroundColor,
+                                  Theme.of(context).scaffoldBackgroundColor,
                                 ),
                                 color: Colors.orange[400],
                               ),
@@ -278,7 +283,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     buildTextFormField("Phone Number",numberController,limit: true),
                     Row(
                       children: [
-                        
+
                         Expanded(child: buildTextFormField("Apartment Number", aNumberController), flex: 1,),
                         SizedBox(width: 4,),
                         Expanded(child: buildTextFormField("Floor Number", fNumberController), flex: 1),
@@ -289,7 +294,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     buildTextFormField("Street", streetController),
                     buildTextFormField("City", cityController),
                     buildDropDownMenu(initGovernorate),
-                    
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -332,10 +337,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Future update(BuildContext context, FirebaseAuthService auth, 
-  TextEditingController nameController, TextEditingController bNumberController, 
-  TextEditingController cityController, TextEditingController streetController, 
-  TextEditingController aNumberController, TextEditingController fNumberController, TextEditingController numberController) async{
+  Future update(BuildContext context, FirebaseAuthService auth,
+      TextEditingController nameController, TextEditingController bNumberController,
+      TextEditingController cityController, TextEditingController streetController,
+      TextEditingController aNumberController, TextEditingController fNumberController, TextEditingController numberController) async{
 
     RegExp regExp = new RegExp(
       r"^(01)[1520][0-9]{8}$",
@@ -347,7 +352,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       errorDialog(context, "Please make sure that your phone number is following one of these formats:\n\n012XXXXXXXX\n010XXXXXXXX\n011XXXXXXXX");
       return;
     }
-      
+
 
 
 
@@ -390,7 +395,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         updatedValue: newAdress);
     showInSnackBar("Your data updated successfuly", context);
   }
-  
+
   Widget buildTextFormField(String labelText, TextEditingController cont,{bool limit}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
@@ -399,23 +404,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
         maxLength: limit==true?11:500,
         controller: cont,
         decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
-          labelText: labelText,
-          enabledBorder: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        borderSide: new BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-          focusedBorder: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          borderSide: new BorderSide(
-                            color: Colors.orange,
-                          ))           
+            counterText: "",
+            border: InputBorder.none,
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
+            labelText: labelText,
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(10.0),
+              borderSide: new BorderSide(
+                color: Colors.grey,
+              ),
+            ),
+            focusedBorder: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(10.0),
+                borderSide: new BorderSide(
+                  color: Colors.orange,
+                ))
 
         ),
       ),
@@ -426,41 +431,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: DropdownButtonFormField(
-          style: TextStyle(fontSize: 13.0, color: Colors.black),
-          hint: (ingov == null || ingov =="") ? "Governorate" : Text(ingov),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
-            
-            enabledBorder: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                        borderSide: new BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-            
+        style: TextStyle(fontSize: 13.0, color: Colors.black),
+        hint: (ingov == null || ingov =="") ? "Governorate" : Text(ingov),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.only(left: 14.0, bottom: 6.0, top: 8.0),
+
+          enabledBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+            borderSide: new BorderSide(
+              color: Colors.grey,
+            ),
           ),
-           
-          dropdownColor: Colors.white,
-          
-          icon: Icon(Icons.arrow_drop_down, color: Colors.orange),
-          iconSize: 36,
-          
-          value: governorate,
-          onChanged: (newValue){
-              governorate = newValue;
-          },
-          items: listItem.map((valueItem){
-            return DropdownMenuItem(
-              
-              value: valueItem,
-              child: Text(valueItem),
-            );
-          }).toList(),
+
         ),
-      );
-    
+
+        dropdownColor: Colors.white,
+
+        icon: Icon(Icons.arrow_drop_down, color: Colors.orange),
+        iconSize: 36,
+
+        value: governorate,
+        onChanged: (newValue){
+          governorate = newValue;
+        },
+        items: listItem.map((valueItem){
+          return DropdownMenuItem(
+
+            value: valueItem,
+            child: Text(valueItem),
+          );
+        }).toList(),
+      ),
+    );
+
   }
 }
