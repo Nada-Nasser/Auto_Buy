@@ -1,0 +1,87 @@
+body
+{
+    padding: 0;
+    margin: 0;    
+    background-size: cover;
+    text-align: center;
+    
+}
+.customheight
+{
+    height:400px;
+    overflow: hidden;
+    
+}
+.customheight img
+{
+    transition: all 0.5s;
+}
+.overlay
+{
+    width: 95%;
+    height: 95%;
+    background-color:#eee;
+    position: absolute;
+    top: 2.5%;
+    left: 2.5%;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+.movieitem:hover
+{
+    cursor: pointer;
+}
+.movieitem:hover .overlay
+{
+    opacity: 0.90;
+}
+.movieitem:hover img
+{
+    transform: scale(1.2,1.2);
+}
+
+
+
+.movies span
+{
+    display: inline-block;
+    padding: 3px 20px;
+    font-weight: 600;
+    color: white;
+    border-radius: 50px;
+    border: 1px solid white;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.movies span:hover
+{
+    color: #f25454;
+}
+.movies .active
+{    
+    border-color: #f25454;
+    color: #f25454;
+    
+
+}
+.portfoliofilters
+{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+.hambozo
+{
+    display: none;
+}
+
+
+.customform
+{
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    height: fit-content;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}

@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/all.min.css">
+        <script src="js/jquery-3.4.1.min.js"></script>
+        <script src="js/index.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/all.min.js"></script>
+    </head>
+    <body>
+        <div class="options align-items-center justify-content-center">
+            <div class="mb-2">
+                <div class="row  border border-secondary rounded p-4 bg-light">
+                    <div class="col-2">
+                        Api-key:
+                    </div>
+                    <div class="col-6">                        
+                        <input type="text" class="form-control" id="apikey" placeholder="56" name="apikey">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" id="mybtn" class="btn btn-outline-dark customwidth" onclick="login()">Login</button>
+                    </div>
+                </div>
+            </div>
+            <div class="contentarea">
+                <div class="camera">
+                    <video id="video">Video stream not available.</video>
+                </div>
+                <div><button id="startbutton">Take photo</button></div>
+                
+                <canvas id="canvas"></canvas>
+                <div class="output">
+                    <img id="photo" alt="The screen capture will appear in this box."> 
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

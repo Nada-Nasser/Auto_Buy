@@ -1,0 +1,43 @@
+{"intents": [
+        {"tag": "greeting",
+         "patterns": ["Hi there", "How are you", "Is anyone there?","Hey","Hola", "Hello", "Good day"],
+         "responses": ["Hello, thanks for asking", "Good to see you again", "Hi there, how can I help?"],
+         "context": [""]
+        },
+	{"tag": "delete",
+         "patterns": ["Hi there can i delete something from my order", "i need to delete from my order", "i want to delete from my order", "i want to delete something", "i want to delete this item", "i want to delete", "i need to delete something","delete","can i delete something from my order", "can i delete something", "delete from my order", "i need to delete an item from my monthly order", "delete this item from my order this month", "Hi there can i remove something from my order", "i need to remove from my order", "i want to remove from my order", "i want to remove something", "i want to remove this item", "i want to remove", "i need to remove something","remove","can i remove something from my order", "can i remove something", "remove from my order", "i need to remove an item from my monthly order", "remove this item from my order this month","Hi there can i wipe something from my order", "i need to wipe from my order", "i want to wipe from my order", "i want to wipe something", "i want to wipe this item", "i want to wipe", "i need to wipe something","wipe","can i wipe something from my order", "can i wipe something", "wipe from my order", "i need to wipe an item from my monthly order", "wipe this item from my order this month","delete a friend","remove a friend","wipe a friend","delete friend","remove friend","wipe friend"],
+         "responses": ["Okay,can you provide me with the name of the item you want to add?", "tell me what item do you want to add?"],
+         "context": [""]
+        },
+	{"tag": "add",
+         "patterns": ["hi there please supply me with this object in my monthly order", "i need you to supply me with an item in my next order", "can you supply me with something","hi there please provide me with this object in my monthly order", "i need you to provide me with an item in my next order", "can you provide me with something", "Hi there can i add something to my order", "i need to add to my order", "i want to add to my order", "i want to add something", "i want to add this item", "i want to add", "i need to add something","add","can i add something to my order", "can i add something", "add to my order", "i need to add an item to my monthly order", "add this item to my order this month", "Hi there can i buy something to my order", "i need to buy to my order", "i want to buy to my order", "i want to buy something", "i want to buy this item", "i want to buy", "i need to buy something","buy","can i buy something to my order", "can i buy something", "buy to my order", "i need to buy an item to my monthly order", "buy this item to my order this month","add a friend","i need to add a friend","add friend"],
+         "responses": ["Okay,can you provide me with the name of the item you want to add?", "tell me what item do you want to add?"],
+         "context": [""]
+        },
+	{"tag": "search",
+         "patterns": ["Search for item","Search for an item","search for a product","look for a product","look for an a item","find an item","find a product","find product"],
+         "responses": [],
+         "context": [""]
+        },
+        {"tag": "goodbye",
+         "patterns": ["Bye", "See you later", "Goodbye", "Nice chatting to you, bye", "Till next time"],
+         "responses": ["See you!", "Have a nice day", "Bye! Come back again soon."],
+         "context": [""]
+        },
+        {"tag": "open",
+         "patterns": ["open settings", "open my wish list","open my settings","open my wishlist","open my friends menu","open friends"],
+         "responses": ["See you!", "Have a nice day", "Bye! Come back again soon."],
+         "context": [""]
+        },
+        {"tag": "thanks",
+         "patterns": ["Thanks", "Thank you", "That's helpful", "Awesome, thanks", "Thanks for helping me"],
+         "responses": ["Happy to help!", "Any time!", "My pleasure"],
+         "context": [""]
+        },
+        {"tag": "options",
+         "patterns": ["How you could help me?", "What you can do?", "What help you provide?", "How you can be helpful?", "What support is offered"],
+         "responses": ["I can guide you through Adverse drug reaction list, Blood pressure tracking, Hospitals and Pharmacies", "Offering support for Adverse drug reaction, Blood pressure, Hospitals and Pharmacies"],
+         "context": [""]
+        }
+   ]
+}

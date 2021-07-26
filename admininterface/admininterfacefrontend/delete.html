@@ -1,0 +1,149 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/update.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/delete.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+
+
+                <div class="mb-2">
+                    <div class="row  border border-secondary rounded p-4 bg-warning">
+                        <div class="col-2">
+                            Product Id:
+                        </div>
+                        <div class="col-6">
+                            
+                            <input type="text" class="form-control" id="productid" placeholder="56" name="productid" ">
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-outline-dark customwidth" onclick="search()">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label for="productname">Product Name</label>
+                    <input type="text" class="form-control" id="productname" placeholder="AlDoha Rice"
+                        name="productname">
+                </div>
+                <div class="row">
+                    <div class="col-sm pl-0">
+                        <div class="form-group">
+                            <label for="productcategory">Category</label>
+                            <select class="form-control" id="productcategory" onchange="changesubcategory()" name="productcategory">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm pl-0">
+                        <div class="form-group">
+                            <label for="subproductcategory">Sub-Category</label>
+                            <select class="form-control" id="subproductcategory" name="subproductcategory">
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="mb-2">
+                    <label for="productdescription">Product Description</label>
+                    <textarea class="form-control" id="productdescription" rows="3"
+                        name="productdescription"></textarea>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-sm pl-0">
+                            <label for="productimagepath">Product Image</label>
+                            <input type="file" class="form-control" id="productimagepath" />
+                        </div>
+                        <div class="col-sm pl-0">
+                            Max demand
+                            <input type="text" class="form-control" id="maxdemand" placeholder="68"
+                                name="maxdemand">
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div>
+                    <div class="row">
+                        <div class="col-sm pl-0">
+                            Number in Stock
+                            <input type="text" class="form-control" id="stocknumber" placeholder="68"
+                                name="stocknumber">
+                        </div>
+                        <div class="col-sm pl-0">
+                            Brand
+                            <input type="text" class="form-control" id="productbrand" placeholder="AlDoha"
+                                name="productbrand">
+                        </div>
+                        <div class="col-sm pl-0">
+                            Price
+                            <input type="text" class="form-control" id="productprice" placeholder="44"
+                                name="productprice">
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="row align-items-center">
+                        <div class="col-1">
+                            <input type="checkbox" class="btn-check" checked id="btn-check-outlined" onclick="myfunction()"
+                                autocomplete="off">
+                            <label class="btn btn-outline-success" for="btn-check-outlined">Sale</label><br>
+                        </div>
+                        <div class="col-3">
+
+                            <label for="productdescription">Price After Sale</label>
+                            <input type="text" class="form-control" id="productsale" placeholder="56" name="productsale" ">
+
+                        </div>
+                        <div class=" col-4">
+                            Size
+                            <input type="text" class="form-control" id="productsize" placeholder="5"
+                                name="productsize">
+                        </div>
+                        <div class="col-4">
+                            Size Unit
+                            <input type="text" class="form-control" id="productsizeunit" placeholder="Kilo"
+                                name="productsizeunit">
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-outline-dark customwidth" onclick="submit()">Delete</button>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+
+
+
+</html>
