@@ -87,7 +87,6 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
         return false;
       }
     } on FirebaseException catch (e) {
-      print(e);
       updateModelWith(isEnable: true);
       rethrow;
     }
@@ -109,7 +108,6 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       user.sendEmailVerification();
 
       String s = auth.uid.substring(0, 5);
-      print(s);
       Map<String, dynamic> data = {
         "name": name == "" ? "" : name,
         "friends": [],
@@ -135,7 +133,6 @@ class RegisterChangeNotifier with ChangeNotifier, EmailAndPasswordValidator {
       updateModelWith(isEnable: true);
       return true;
     } on FirebaseException catch (e) {
-      print(e.message);
       updateModelWith(isLoading: false);
       updateModelWith(isEnable: true);
       rethrow;

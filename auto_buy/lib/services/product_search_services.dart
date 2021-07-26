@@ -6,8 +6,9 @@ import 'package:string_similarity/string_similarity.dart';
 class ProductSearchServices {
 
   List<Product> _allProducts = [];
-  List<String> _productNamesList = [];
-  final Map<String, Product> _fromNameToProduct = {};
+  List<Pair<String,String>> _productNamesListAndID = [];
+  final Map<String, Product> _fromIDToProduct = {};
+  final Map<String, String> _fromIDToName = {};
 
   bool hasProducts() {
     return _allProducts.isNotEmpty;
@@ -16,22 +17,23 @@ class ProductSearchServices {
   List<Product> toLowerCase() {
     _allProducts = ProductsBackendServices.instance.allProducts;
     for (Product prod in _allProducts) {
-      _fromNameToProduct[prod.name.toLowerCase()] = prod;
-      _productNamesList.add(prod.name.toLowerCase());
+      _fromIDToProduct[prod.id] = prod;
+      _productNamesListAndID.add(Pair(prod.name.toLowerCase(),prod.id));
+      _fromIDToName[prod.id] = prod.name;
     }
     return _allProducts;
   }
 
   List<Product> search(String searchTerm) {
-    List<String> similarStrings = searchReturnsNames(searchTerm);
+    List<String> similarStrings = searchReturnsIDs(searchTerm);
     List<Product> products = [];
     if(similarStrings.isNotEmpty)
-      products = _convertFromNameToProduct(similarStrings);
+      products = _convertFromIDToProduct(similarStrings);
 
     return products;
   }
 
-  List<String> searchReturnsNames(String searchTerm) {
+  List<String> searchReturnsIDs(String searchTerm) {
     if(searchTerm == "")
       return [];
     Set<String> similarStrings =  new Set<String>();
@@ -42,40 +44,50 @@ class ProductSearchServices {
     if(searchTerm == "")
       return [];
 
-    for(String s in _productNamesList){
-      pairs.add(Pair(s.similarityTo(searchTerm) , s));
-
-      List<String> sentenceSplit = searchTerm.split(" ");
-        for (String word in sentenceSplit) {
-          if(word != "" && s.contains(word)) {
-            similarStrings.add(s);
-          }
-          List<String> prodwords = s.split(" ");
-          for(String w in prodwords){
-            print("SIMILARITY OF $w  and $word = ${w.similarityTo(word)}");
-
-            if(w.similarityTo(word) > .7)
-              similarStrings.add(s);
-          }
-        }
-
+    for(Pair<String,String> s in _productNamesListAndID) {
+      pairs.add(Pair(s.element1.similarityTo(searchTerm), s.element2));
     }
-    pairs.sort((a,b)=> a.element1 < b.element1? 1 : 0);
+    pairs.sort((a,b) => b.element1.compareTo(a.element1));
 
     for(Pair<double,String> p in pairs ) {
-      if (p.element1 > .4)
+      if (p.element1 > .5)
         similarStrings.add(p.element2);
       else break;
     }
+    pairs = [];
+    for(Pair<String,String> s in _productNamesListAndID){
+      List<String> sentenceSplit = searchTerm.split(" ");
+        for (String word in sentenceSplit) {
+          List<String> prodWords = s.element1.split(" ");
+          for(String w in prodWords){
+            print("SIMILARITY OF $w  and $word = ${w.similarityTo(word)}");
 
-    print("DOHA DUHA ${StringSimilarity.compareTwoStrings("doha","duha")}");
+            if(w.similarityTo(word) > .7)
+              similarStrings.add(s.element2);
+          }
+          if(word != "" && s.element1.contains(word)) {
+            similarStrings.add(s.element2);
+          }
+        }
+    }
+
     return similarStrings.toList();
   }
-
-  List<Product> _convertFromNameToProduct(List<String> productNames){
+  List<String> searchReturnsNames(String searchTerm){
+    List<String> names= searchReturnsIDs(searchTerm);
+    return _convertFromIDToName(names);
+  }
+  List<String> _convertFromIDToName(List<String> IDs){
+    List<String> names = [];
+    for(String s in IDs){
+      names.add(_fromIDToName[s]);
+    }
+    return names;
+  }
+  List<Product> _convertFromIDToProduct(List<String> productNames){
     List<Product> products = [];
     for(String s in productNames){
-      products.add(_fromNameToProduct[s]);
+      products.add(_fromIDToProduct[s]);
     }
     return products;
   }

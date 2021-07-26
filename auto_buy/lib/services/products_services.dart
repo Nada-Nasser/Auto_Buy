@@ -11,6 +11,7 @@ class ProductsBackendServices {
   Map<String, String> picturePath = {};
 
   List<Product> allProducts = [];
+  Map<String, String> picturePath = {};
 
   ProductsBackendServices._();
 
@@ -30,8 +31,8 @@ class ProductsBackendServices {
     return rates;
   }
 
-  Future<void> rateProductWithNStars(int n, String uid,
-      String productID) async {
+  Future<void> rateProductWithNStars(
+      int n, String uid, String productID) async {
     try {
       Rate rate = Rate(nStars: n, id: uid);
       await _firestoreService.setDocument(
@@ -85,7 +86,7 @@ class ProductsBackendServices {
       for (int i = 0; i < allProducts.length; i++) {
         try {
           String url =
-          await _storageService.downloadURL(picturePath[allProducts[i].id]);
+              await _storageService.downloadURL(picturePath[allProducts[i].id]);
           allProducts[i].picturePath = url;
         } on Exception catch (e) {
           print(e);
@@ -97,6 +98,7 @@ class ProductsBackendServices {
     picturePath.clear();
 
     allProducts = [];
+    picturePath.clear();
     allProducts = await _firestoreService.getCollectionData(
       collectionPath: APIPath.productsPath(),
       builder: (value, id) => Product.fromMap(value, id),

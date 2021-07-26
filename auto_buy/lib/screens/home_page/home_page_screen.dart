@@ -43,12 +43,23 @@ class _HomePageState extends State<HomePage> {
           } else if (snap.hasData)
             return HomePageProducts();
           else if (snap.hasError) {
-            setState(() {
+            /*   setState(() {
               print(snap.error);
-            });
+            });*/
+            print(snap.error);
             return Container(
               child: Center(
-                child: Text("${snap.error}"),
+                child: Column(
+                  children: [
+                    Text("Check Your internet connection"),
+                    ElevatedButton(
+                      child: Text("Try Again"),
+                      onPressed: () {
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
@@ -70,7 +81,6 @@ Widget _drawer(BuildContext context) {
     elevation: 10,
     child: SafeArea(
       child: ListView(
-        // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(

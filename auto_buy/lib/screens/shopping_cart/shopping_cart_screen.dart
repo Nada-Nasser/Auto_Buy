@@ -6,21 +6,24 @@ import 'package:auto_buy/services/firebase_backend/firebase_auth_service.dart';
 import 'package:auto_buy/services/firebase_backend/firestore_service.dart';
 import 'package:auto_buy/services/firebase_backend/storage_service.dart';
 import 'package:auto_buy/widgets/custom_app_bar.dart';
-import 'package:auto_buy/widgets/loading_image.dart';
 import 'package:auto_buy/widgets/snackbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
+
 class ShoppingCartScreen extends StatefulWidget {
   double totalPrice;
+
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   ShoppingCartScreenBloc _cartScreenBloc = ShoppingCartScreenBloc();
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -57,8 +60,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             future: _cartScreenBloc.calculateTotalPrice(
                                 "/shopping_carts/${auth.uid}/shopping_cart_items",
                                 "/products/",
-                                "/shopping_carts/${auth.uid}"
-                            ),
+                                "/shopping_carts/${auth.uid}"),
                             builder: (context, price) {
                               if (price.hasData) {
                                 widget.totalPrice = price.data;
@@ -66,7 +68,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                   ///Text("Total Price = EGP${widget.bloc.totalPrice.toStringAsFixed(3)}")
                                   "Total Price = EGP ${widget.totalPrice.toStringAsFixed(2)}",
                                 );
-                              } else{
+                              } else {
                                 return Text("Total Price = EGP 0.00");
                               }
                             });
@@ -89,7 +91,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         return output;
                       },
                     ),
-                    builder: (context, alldata){
+                    builder: (context, alldata) {
                       if (alldata.hasData) {
                         return ListView.builder(
                           itemCount: alldata.data.length,
@@ -171,17 +173,41 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                       imageUrl: image.data,
                                                       placeholder:
                                                           (context, url) =>
-                                                              LoadingImage(),
+                                                              Center(
+                                                        child: SizedBox(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                          height: 10,
+                                                          width: 10,
+                                                        ),
+                                                      ),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           Icon(Icons.error),
                                                       height: 100,
+                                                      width: MediaQuery.of(
+                                                                  navigatorKey
+                                                                      .currentContext)
+                                                              .size
+                                                              .width /
+                                                          5,
+                                                      fit: BoxFit.fitHeight,
                                                     ),
                                                   );
                                                 } else {
-                                                  return CircularProgressIndicator();
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                  );
                                                 }
                                               }),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
                                           Flexible(
                                             child: Column(
                                               mainAxisAlignment:
@@ -198,7 +224,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                       product.name,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      textAlign: TextAlign.start,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 15,
                                                       ),
@@ -225,9 +252,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                 ///product discount
                                                 if (product.hasDiscount)
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.fromLTRB(
-                                                            5, 0, 5, 0),
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(5, 0, 5, 0),
                                                     child: Row(
                                                       children: [
                                                         Text(
@@ -266,7 +292,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                       softWrap: true,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      textAlign: TextAlign.start,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                         fontSize: 15,
                                                       ),
@@ -280,7 +307,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                     ),
                                   );
                                 } else {
-                                  return CircularProgressIndicator();
+                                  return Center(
+                                    child: SizedBox(
+                                      child: CircularProgressIndicator(),
+                                      height: 10,
+                                      width: 10,
+                                    ),
+                                  );
                                 }
                               },
                             );
@@ -316,20 +349,17 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                           await _cartScreenBloc.calculateTotalPrice(
                               "/shopping_carts/${auth.uid}/shopping_cart_items",
                               "/products/",
-                              "/shopping_carts/${auth.uid}"
-                          );
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => CartCheckoutScreen(
-                                        orderPrice: widget.totalPrice,
-                                        productIDs: _cartScreenBloc.productIds,
-                                        productIdsAndQuantity: _cartScreenBloc
-                                            .productIdsAndQuantity,
-                                        productIdsAndPrices:
-                                            _cartScreenBloc.productIdsAndPrices,
-                                        isMonthlyCart: false,
-                                      )));
-
+                              "/shopping_carts/${auth.uid}");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CartCheckoutScreen(
+                                    orderPrice: widget.totalPrice,
+                                    productIDs: _cartScreenBloc.productIds,
+                                    productIdsAndQuantity:
+                                        _cartScreenBloc.productIdsAndQuantity,
+                                    productIdsAndPrices:
+                                        _cartScreenBloc.productIdsAndPrices,
+                                    isMonthlyCart: false,
+                                  )));
                         }
                       },
                       child: Text(

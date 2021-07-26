@@ -51,7 +51,7 @@ class OptioChangeNotifier extends ChangeNotifier {
     var response;
     try {
       var url =
-          Uri.parse('https://0447ba98d2fc.ngrok.io/classifytext/$translation');
+          Uri.parse('https://18a7ba43cc51.ngrok.io/classifytext/$translation');
       response = await http.get(url);
       print(response.body.toString());
 
@@ -100,17 +100,14 @@ class OptioChangeNotifier extends ChangeNotifier {
           optioResponse =
               _createOptioResponse(e.toString().split(":")[1], false);
           print(e);
-          print("RUNNING EXCEPTION");
         }
       } else {
         String errorMessage = response.body.toString(); //TODO
         optioResponse = _createOptioResponse("Command Failed", false);
-        print("Command Failed");
       }
     } else {
       String errorMessage = response.body.toString(); //TODO
       optioResponse = _createOptioResponse("Something went wrong", false);
-      print("Command = NULL");
     }
 
     chatWidgets.add(listWidget(optioResponse, 0));
