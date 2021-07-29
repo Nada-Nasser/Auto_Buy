@@ -8,17 +8,22 @@ This project has two interfaces, one for customers (Mobile application) and the 
 
 ### :iphone: Mobile Application Main Features:
 
-* **Monthly carts** - each user has more than one monthly cart delivered to them automatically every month.
-* **The application helper** - is a machine learning model that gets user inputs via voice or text messages and returns a customized response depending on user inputs.
-* **Expense Tracker** - tracks and visualizes user expenses over months
-* **Wish-list** - user can  add products to -or delete products from- his wish-list
-* **Friendship System** - each user has a list of friends and the user can send them gifts from their wishlist using the application
-* **Shopping cart** - user can  add products to -or delete products from- his shopping cart
+| Feature | Description| 
+| --- | --- |
+|**Monthly carts** | Each user has more than one monthly cart delivered to them automatically every month.|
+|**The application helper** | Machine learning model that gets user inputs via voice or text messages and returns a customized response depending on user inputs|
+|**Expense Tracker** | tracks and visualizes user expenses over months|
+|**Wish-list** | Users can  add products to -or delete products from- their wish-list|
+|**Friendship System** | Each user has a list of friends and the user can send them gifts from their wishlist using the application|
+|**Shopping cart** | Users can  add products to -or delete products from- their shopping cart|
+
 
 ### :computer: Admin Interface Main Features:
 
-* **Authentication** - admins authenticate themselves using face-recognition and API key
-* **CRUD Operations** - Admins can add/delete products and advertiements to/from the cloud database.
+| Feature | Description| 
+| --- | --- |
+|**Authentication** | Admins authenticate themselves using face-recognition and API key|
+|**CRUD Operations** | Admins can add/delete products and advertiements to/from the cloud database.|
 
 ## :camera: ScreenShots 
 
