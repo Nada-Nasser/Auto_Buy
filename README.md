@@ -1,6 +1,6 @@
 # Auto-Buy
 
-E-commerce application built using flutter SDK and Firebase backend services.
+E-commerce application built using flutter SDK and Firebase backend services. In addition to all common features in e-commerce applications, **Auto-Buy** has new features implemented using trending technologies like Machine learning.   
 
 ## :star: Main Features:
 
@@ -10,8 +10,8 @@ This project has two interfaces, one for customers (Mobile application) and the 
 
 | Feature | Description| 
 | --- | --- |
-|**Monthly carts** | Each user has more than one monthly cart delivered to them automatically every month.|
-|**The application helper** | Machine learning model that gets user inputs via voice or text messages and returns a customized response depending on user inputs|
+|**Monthly carts** |Each user has more than one monthly cart that is delivered automatically every month on a specific date selected by the user.|
+|**The application helper** | A machine learning model that gets user inputs via voice or text messages then returns a customized response depending on user inputs. The returned response can be adding/deleting products to/from user carts, Open a screen in the application, or add/delete a friend from the user's friend list.|
 |**Expense Tracker** | tracks and visualizes user expenses over months|
 |**Wish-list** | Users can  add products to -or delete products from- their wish-list|
 |**Friendship System** | Each user has a list of friends and the user can send them gifts from their wishlist using the application|
@@ -50,6 +50,9 @@ This project has two interfaces, one for customers (Mobile application) and the 
 <p align='center'>
 <img src="screenshots/admin-interface/1 - home-page.png" width="400">
 <img src="screenshots/admin-interface/2- editing product.png " width="400">
+<img src="screenshots/admin-interface/3- addProduct.png " width="400">
+<img src="screenshots/admin-interface/4- orders.png " width="400">
+<img src="screenshots/admin-interface/5- search.png " width="400">  
 </p>
 
 ## Getting Started
