@@ -1,6 +1,9 @@
 # Auto-Buy
 
-E-commerce application built using flutter SDK and Firebase backend services. In addition to all common features in e-commerce applications, **Auto-Buy** has new features implemented using trending technologies like Machine learning.   
+E-commerce application built using flutter SDK and Firebase backend services. In addition to all common features in e-commerce applications, **Auto-Buy** has new features implemented using trending technologies like Machine learning. 
+
+### Documentation
+check the documentation file [here](https://github.com/Nada-Nasser/Auto_Buy/blob/main/FCAI-CU-GP-Final-Document-2021-final%20version.pdf)
 
 ## :star: Main Features:
 
